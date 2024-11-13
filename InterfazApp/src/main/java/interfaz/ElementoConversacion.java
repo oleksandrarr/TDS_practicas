@@ -23,9 +23,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import modelo.Mensaje;
-import modelo.Mensajes;
-import modelo.Usuario;
+import dominio.Usuario;
 import tds.BubbleText;
 
 import java.awt.GridBagLayout;
@@ -56,9 +54,9 @@ public class ElementoConversacion extends JPanel{
  		
          
 
-         for(Mensaje m: contacto.getMensajeUsuario(contacto.getTelefono())) {
-        	chat.add(new BubbleText(chat,m));
-         }
+         //for(Mensaje m: contacto.getMensajeUsuario(contacto.getTelefono())) {
+        	//chat.add(new BubbleText(chat,m));
+         //}
         
         
 
