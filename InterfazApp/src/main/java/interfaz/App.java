@@ -39,7 +39,14 @@ public class App {
 	private JLabel personaje;
 	private ArrayList<ImageIcon> imagenes;
 	private JPanel pantalla;
+	
+	
 
+
+	public void mostrarVentana() {
+		ventana.setLocationRelativeTo(null);
+		ventana.setVisible(true);
+	}
 	/**
 	 * Launch the application.
 	 */
@@ -75,11 +82,7 @@ public class App {
 	private void initialize() throws IOException {
 		//-------------------------------
 		JPanel pantalla2=new Chat();
-		imagenes=new ArrayList<ImageIcon>();
-		imagenes.add(new ImageIcon(getClass().getResource("/resources/pikachu.png")));
-		imagenes.add(new ImageIcon(getClass().getResource("/resources/Mujermaravilla.png")));
-		imagenes.add(new ImageIcon(getClass().getResource("/resources/shongoku.png")));
-		imagenes.add(new ImageIcon(getClass().getResource("/resources/raro.png")));
+		
 		//-------------------------------
 		ventana = new JFrame();
 		ventana.setSize(new Dimension(900, 900));

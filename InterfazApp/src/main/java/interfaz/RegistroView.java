@@ -37,11 +37,13 @@ public class RegistroView extends JDialog {
 	private JLabel lblUsuario;
 	private JLabel lblPassword;
 	private JLabel lblPasswordChk;
+	private JLabel lblTelefono;
 	private JTextField txtNombre;
 	private JTextField txtApellidos;
 	private JTextField txtFechaNacimiento;
 	private JTextField txtEmail;
 	private JTextField txtUsuario;
+	private JTextField txtTelefono;
 	private JPasswordField txtPassword;
 	private JPasswordField txtPasswordChk;
 	private JButton btnRegistrar;
@@ -53,19 +55,23 @@ public class RegistroView extends JDialog {
 	private JLabel lblEmailError;
 	private JLabel lblUsuarioError;
 	private JLabel lblPasswordError;
+	private JLabel lblTelefonoError;
 	private JPanel panelCampoNombre;
 	private JPanel panel;
 	private JPanel panelCampoApellidos;
 	private JPanel panelCamposEmail;
 	private JPanel panelCamposUsuario;
 	private JPanel panelCamposFechaNacimiento;
-
+	private JPanel panelCampoTelefono;
+	
+	
 	public RegistroView(JFrame owner){
 		super(owner, "Registro Usuario", true);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.setResizable(false);
 		this.crearPanelRegistro();
 	}
+
 
 	private void crearPanelRegistro() {
 		this.getContentPane().setLayout(new BorderLayout());
@@ -81,7 +87,7 @@ public class RegistroView extends JDialog {
 		datosPersonales.add(crearLineaUsuario());
 		datosPersonales.add(crearLineaPassword());
 		datosPersonales.add(crearLineaFechaNacimiento());
-		
+		datosPersonales.add(creaLineaTelefono());
 		this.crearPanelBotones();
 
 		this.ocultarErrores();
@@ -158,6 +164,31 @@ public class RegistroView extends JDialog {
 		
 		return lineaEmail;
 	}
+	
+	private JPanel creaLineaTelefono() {
+		JPanel lineaTelefono = new JPanel();
+		lineaTelefono.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		lineaTelefono.setLayout(new BorderLayout(0, 0));
+		
+		panelCampoTelefono = new JPanel();
+		lineaTelefono.add(panelCampoTelefono, BorderLayout.CENTER);
+		
+		lblTelefono = new JLabel("Telefono: ", JLabel.RIGHT);
+		panelCampoTelefono.add(lblTelefono);
+		fixedSize(lblTelefono, 75, 20);
+		txtTelefono = new JTextField();
+		panelCampoTelefono.add(txtTelefono);
+		fixedSize(txtTelefono, 270, 20);
+		
+		lblTelefonoError = new JLabel("El telefono es obligatorio", SwingConstants.CENTER);
+		fixedSize(lblTelefonoError, 224, 15);
+		lblTelefonoError.setForeground(Color.RED);
+		lineaTelefono.add(lblTelefonoError, BorderLayout.SOUTH);
+		lblTelefonoError.setVisible(false);
+		
+		return lineaTelefono;
+	}
+
 
 	private JPanel crearLineaUsuario() {
 		JPanel lineaUsuario = new JPanel();
@@ -259,6 +290,7 @@ public class RegistroView extends JDialog {
 							txtApellidos.getText(), 
 							txtEmail.getText(), 
 							txtUsuario.getText(),
+							txtTelefono.getText(),
 							new String(txtPassword.getPassword()), 
 							txtFechaNacimiento.getText()
 					);
@@ -314,6 +346,12 @@ public class RegistroView extends JDialog {
 			txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
 			salida = false;
 		}
+		if (txtTelefono.getText().trim().isEmpty()) {
+			lblTelefonoError.setVisible(true);
+			lblTelefono.setForeground(Color.RED);
+			txtTelefono.setBorder(BorderFactory.createLineBorder(Color.RED));
+			salida = false;
+		}
 		if (txtUsuario.getText().trim().isEmpty()) {
 			lblUsuarioError.setText("El usuario es obligatorio");
 			lblUsuarioError.setVisible(true);
@@ -346,7 +384,7 @@ public class RegistroView extends JDialog {
 			txtPasswordChk.setBorder(BorderFactory.createLineBorder(Color.RED));
 			salida = false;
 		}
-		/* Comprobar que no exista otro usuario con igual login */
+		 //Comprobar que no exista otro usuario con igual login 
 		if (!lblUsuarioError.getText().isEmpty() && Controlador.INSTANCE.esUsuarioRegistrado(txtUsuario.getText())) {
 			lblUsuarioError.setText("Ya existe ese usuario");
 			lblUsuarioError.setVisible(true);
@@ -383,17 +421,16 @@ public class RegistroView extends JDialog {
 		txtNombre.setBorder(border);
 		txtApellidos.setBorder(border);
 		txtEmail.setBorder(border);
+		txtTelefono.setBorder(border);
 		txtUsuario.setBorder(border);
 		txtPassword.setBorder(border);
 		txtPasswordChk.setBorder(border);
-		txtPassword.setBorder(border);
-		txtPasswordChk.setBorder(border);
-		txtUsuario.setBorder(border);
 		txtFechaNacimiento.setBorder(border);
 		
 		lblNombre.setForeground(Color.BLACK);
 		lblApellidos.setForeground(Color.BLACK);
 		lblEmail.setForeground(Color.BLACK);
+		lblTelefono.setForeground(Color.BLACK);
 		lblUsuario.setForeground(Color.BLACK);
 		lblPassword.setForeground(Color.BLACK);
 		lblPasswordChk.setForeground(Color.BLACK);

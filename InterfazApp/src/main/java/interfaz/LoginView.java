@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -48,7 +49,7 @@ public class LoginView {
 	private void initialize() {
 		frmLogin = new JFrame();
 		frmLogin.setTitle("Login AppVideo");
-		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLogin.getContentPane().setLayout(new BorderLayout());
 
 		crearPanelTitulo();
@@ -170,9 +171,15 @@ public class LoginView {
 						new String(textPassword.getPassword()));
 
 				if (login) {
-					VentanaPrincipal principal = new VentanaPrincipal();
-					principal.mostrarVentana();
-					frmLogin.dispose();
+					App principal;
+					try {
+						principal = new App();
+						principal.mostrarVentana();
+						frmLogin.dispose();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
 				} else
 					JOptionPane.showMessageDialog(frmLogin, "Nombre de usuario o contraseña no valido",
 							"Error", JOptionPane.ERROR_MESSAGE);

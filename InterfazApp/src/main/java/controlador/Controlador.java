@@ -14,7 +14,7 @@ public enum Controlador {
 	private Controlador() {
 		usuarioActual = null;
 		try {
-			factoria = FactoriaDAO.getInstancia();
+			factoria = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
@@ -37,12 +37,12 @@ public enum Controlador {
 		return false;
 	}
 
-	public boolean registrarUsuario(String nombre, String apellidos, String email, String login, String password,
+	public boolean registrarUsuario(String nombre, String apellidos, String email, String login, String telefono, String password,
 			String fechaNacimiento) {
 
 		if (esUsuarioRegistrado(login))
 			return false;
-		Usuario usuario = new Usuario(nombre, apellidos, email, login, password, fechaNacimiento);
+		Usuario usuario = new Usuario(nombre, apellidos, email, login, telefono,password, fechaNacimiento);
 
 		UsuarioDAO usuarioDAO = factoria
 				.getUsuarioDAO(); /* Adaptador DAO para almacenar el nuevo Usuario en la BD */
@@ -62,4 +62,6 @@ public enum Controlador {
 		RepositorioUsuarios.INSTANCE.removeUsuario(usuario);
 		return true;
 	}
+	
+	
 }

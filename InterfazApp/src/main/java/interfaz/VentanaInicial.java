@@ -20,32 +20,33 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.FlowLayout;
 
-public class VentanaPrincipal extends JFrame implements ActionListener {
+public class VentanaInicial {
 
-	private JFrame frmVentanaPrincipal;
+	private JFrame frmVentanaInicial;
 	private RegistroView pantallaRegistroView;
 	
-	public VentanaPrincipal() throws IOException {
+	public VentanaInicial() throws IOException {
 		initialize();
 	}
-
-
+	
 	public void mostrarVentana() {
-		setLocationRelativeTo(null);
-		setVisible(true);
+		frmVentanaInicial.setLocationRelativeTo(null);
+		frmVentanaInicial.setVisible(true);
 	}
+
+	
 	
 	public void initialize() throws IOException {
-		frmVentanaPrincipal = new JFrame();
-		frmVentanaPrincipal.setTitle("AppChat- Ventana Inicio");
-		frmVentanaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmVentanaPrincipal.setPreferredSize(new Dimension(800,600));
+		frmVentanaInicial = new JFrame();
+		frmVentanaInicial.setTitle("AppChat- Ventana Inicio");
+		frmVentanaInicial.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmVentanaInicial.setPreferredSize(new Dimension(800,600));
 		
-		pantallaRegistroView = new RegistroView(this);
+		//pantallaRegistroView = new RegistroView(this);
 		
-		JPanel contentPane = (JPanel) frmVentanaPrincipal.getContentPane();
+		JPanel contentPane = (JPanel) frmVentanaInicial.getContentPane();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-		frmVentanaPrincipal.getContentPane().setLayout(new BoxLayout(frmVentanaPrincipal.getContentPane(), BoxLayout.Y_AXIS));
+		frmVentanaInicial.getContentPane().setLayout(new BoxLayout(frmVentanaInicial.getContentPane(), BoxLayout.Y_AXIS));
 		
 		JLabel labelApp = new JLabel("Bienvenidos a AppVideo");
 		labelApp.setFont(new Font("Arial", Font.PLAIN, 30));
@@ -77,26 +78,48 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	    
 	     
 	    Component verticalStrut = Box.createVerticalStrut(50);
-	    frmVentanaPrincipal.getContentPane().add(verticalStrut);
+	    frmVentanaInicial.getContentPane().add(verticalStrut);
 
 	    contentPane.add(botonLogin);
 	     
 	    Component verticalStrut_1 = Box.createVerticalStrut(20);
-	    frmVentanaPrincipal.getContentPane().add(verticalStrut_1);
+	    frmVentanaInicial.getContentPane().add(verticalStrut_1);
 	    contentPane.add(botonRegistro);
 	     
 	    labelApp.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    botonRegistro.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-		frmVentanaPrincipal.pack();
+		frmVentanaInicial.pack();
 		
-	}
-
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
-	}
+		//Action listener login
+		 botonLogin.addActionListener(new ActionListener() {
+	         @Override
+	         public void actionPerformed(ActionEvent e) {
+	             // Instanciar y mostrar la pantalla de LoginView
+	             LoginView loginView = new LoginView();
+	             loginView.mostrarVentana();
 
+	             // Opcional: ocultar o cerrar la ventana actual
+	             // MainView.this.dispose();
+	         }
+	     });
+		//Action listener Registro
+		 botonRegistro.addActionListener(new ActionListener() {
+	         @Override
+	         public void actionPerformed(ActionEvent e) {
+	             // Instanciar y mostrar la pantalla de LoginView
+	        	 JFrame registro = new JFrame();
+	             RegistroView  registroView = new  RegistroView(registro);
+	             registroView.setVisible(true);
+	             registro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	             // Opcional: ocultar la ventana actual
+	             // MainView.this.dispose();
+	         }
+	     });
+	}
+	
+	
+
+	
 }
+

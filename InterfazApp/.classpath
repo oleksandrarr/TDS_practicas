@@ -39,4 +39,10 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/USUARIO/.m2/repository/tds/chatWindowLib/1.1/chatWindowLib-1.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
+	<classpathentry kind="lib" path="lib/JTattoo-1.6.13.jar"/>
+	<classpathentry kind="lib" path="lib/DriverPersistencia.jar"/>
+	<classpathentry kind="lib" path="lib/eclipselink-2.7.7.jar"/>
+	<classpathentry kind="lib" path="lib/h2-1.3.160.jar"/>
+	<classpathentry kind="lib" path="lib/javax.persistence-api-2.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

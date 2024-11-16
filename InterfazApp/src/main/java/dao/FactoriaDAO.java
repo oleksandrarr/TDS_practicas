@@ -6,14 +6,16 @@ package dao;
 
 public abstract class FactoriaDAO {
 	
-	public static final String DAO_TDS = "umu.tds.dao.TDSFactoriaDAO";
+	public static final String DAO_TDS = "dao.TDSFactoriaDAO";
+	
 
-	private static FactoriaDAO unicaInstancia = null;
+	private static FactoriaDAO unicaInstancia;
 	
 	/** 
 	 * Crea un tipo de factoria DAO.
 	 * Solo existe el tipo TDSFactoriaDAO
 	 */
+	
 	public static FactoriaDAO getInstancia(String tipo) throws DAOException{
 		if (unicaInstancia == null)
 			try { 

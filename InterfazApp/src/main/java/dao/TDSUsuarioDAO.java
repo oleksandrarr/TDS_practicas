@@ -10,6 +10,7 @@ import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import dominio.Usuario;
 import beans.Entidad;
+import beans.Mensaje;
 import beans.Propiedad;
 
 /**
@@ -27,6 +28,8 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	private static final String LOGIN = "login";
 	private static final String PASSWORD = "password";
 	private static final String FECHA_NACIMIENTO = "fechaNacimiento";
+	private static final String TELEFONO_USUARIO = "numeroUsuario";
+	private static final List<Mensaje> MENSAJE_USUARIOS = new ArrayList<Mensaje>();
 
 	private ServicioPersistencia servPersistencia;
 	private SimpleDateFormat dateFormat;
@@ -44,8 +47,9 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 		String login = servPersistencia.recuperarPropiedadEntidad(eUsuario, LOGIN);
 		String password = servPersistencia.recuperarPropiedadEntidad(eUsuario, PASSWORD);
 		String fechaNacimiento = servPersistencia.recuperarPropiedadEntidad(eUsuario, FECHA_NACIMIENTO);
-
-		Usuario usuario = new Usuario(nombre, apellidos, email, login, password, fechaNacimiento);
+		String numeroUsuario = servPersistencia.recuperarPropiedadEntidad(eUsuario, TELEFONO_USUARIO);
+		//List<Mensaje> mensajeUsuario = servPersistencia.recuperarMensajes(eUsuario);
+		Usuario usuario = new Usuario(nombre, apellidos, email, login,numeroUsuario, password, fechaNacimiento);
 		usuario.setId(eUsuario.getId());
 
 		return usuario;
@@ -57,7 +61,7 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 
 		eUsuario.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad(NOMBRE, usuario.getNombre()),
 				new Propiedad(APELLIDOS, usuario.getApellidos()), new Propiedad(EMAIL, usuario.getEmail()),
-				new Propiedad(LOGIN, usuario.getLogin()), new Propiedad(PASSWORD, usuario.getPassword()),
+				new Propiedad(LOGIN, usuario.getLogin()), new Propiedad(TELEFONO_USUARIO, usuario.getNumeroTelefono()),new Propiedad(PASSWORD, usuario.getPassword()),
 				new Propiedad(FECHA_NACIMIENTO, usuario.getFechaNacimiento()))));
 		return eUsuario;
 	}
@@ -92,9 +96,13 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 				prop.setValor(usuario.getApellidos());
 			} else if (prop.getNombre().equals(LOGIN)) {
 				prop.setValor(usuario.getLogin());
+			} else if (prop.getNombre().equals(TELEFONO_USUARIO)) {
+				prop.setValor(usuario.getNumeroTelefono());
 			} else if (prop.getNombre().equals(FECHA_NACIMIENTO)) {
 				prop.setValor(dateFormat.format(usuario.getFechaNacimiento()));
 			}
+			
+			
 			servPersistencia.modificarPropiedad(prop);
 		}
 	}
