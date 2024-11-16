@@ -26,7 +26,7 @@ public class Usuario {
 		this.password = password;
 		this.fechaNacimiento = fechaNacimiento;
 		this.numeroTelefono = numeroTelefono;
-		this.mensajes = new ArrayList<Mensaje>();
+		
 	}
 	
 	
@@ -95,47 +95,7 @@ public class Usuario {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 	
-	public static void enviarMensajeAGrupo(String texto, String telefonoReceptor, List<Usuario> contactos,LocalDateTime fechaHoraEnvio) {
-        for (Usuario receptor : contactos) {
-            Mensaje mensaje = new Mensaje(texto, numeroTelefono , receptor.getNumeroTelefono(),  fechaHoraEnvio);
-            mensajes.add(mensaje);
-        }
-        
-    }
 	
-	public static void enviarMensajeAGrupo(int emoticono, String telefonoReceptor, List<Usuario> contactos,LocalDateTime fechaHoraEnvio) {
-        for (Usuario receptor : contactos) {
-            Mensaje mensaje = new Mensaje(emoticono, numeroTelefono, receptor.getNumeroTelefono(),  fechaHoraEnvio);
-            mensajes.add(mensaje);
-        }
-        
-    }
-	
-	public static void enviarMensaje(String texto,  String telefonoReceptor ,LocalDateTime fechaHoraEnvio) {
-        
-        Mensaje mensaje = new Mensaje(texto, numeroTelefono,  telefonoReceptor,  fechaHoraEnvio);
-        mensajes.add(mensaje);
-        
-	}
-
-
-	public static void enviarMensaje(int emoticono,  String telefonoReceptor ,LocalDateTime fechaHoraEnvio) {
-	
-        Mensaje mensaje = new Mensaje(emoticono,numeroTelefono, telefonoReceptor,  fechaHoraEnvio);
-        mensajes.add(mensaje);
-}
-
-
-
-	public static List<Mensaje> getMensajes() {
-		return mensajes;
-	}
-
-
-
-	public static void setMensajes(List<Mensaje> mensajes) {
-		Usuario.mensajes = mensajes;
-	}
 
 	
 }
