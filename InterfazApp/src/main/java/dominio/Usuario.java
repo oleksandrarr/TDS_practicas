@@ -14,7 +14,7 @@ public class Usuario {
 	private String password;
 	private String fechaNacimiento;
 	private static String numeroTelefono;
-	
+	private List<Contacto> contactos;
 
 	public Usuario(String nombre, String apellidos, String email, String login,String numeroTelefono, String password,
 			String fechaNacimiento) {
@@ -26,6 +26,7 @@ public class Usuario {
 		this.password = password;
 		this.fechaNacimiento = fechaNacimiento;
 		this.numeroTelefono = numeroTelefono;
+		this.contactos = new ArrayList<Contacto>();
 		
 	}
 	
@@ -95,7 +96,21 @@ public class Usuario {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 	
+	public boolean esContacto(Usuario usuario) { //Método para saber si tiene un usuario registrado para cuando recibe un mensaje
+		boolean valor = false;
+		for(Contacto c: contactos) {
+			if(c instanceof ContactoIndividual) {
+				if(((ContactoIndividual) c).getUsuario()==usuario) {
+					valor=true;
+				}
+			}
+		}
+		return valor;
+	}
 	
+	public void añadirContacto(Contacto contacto) {
+		contactos.add(contacto);
+	}
 
 	
 }
