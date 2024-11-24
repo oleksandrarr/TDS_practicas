@@ -11,7 +11,7 @@ import dao.UsuarioDAO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TDSContactoDAO {
+public final class TDSContactoDAO implements ContactoDAO {
 
     private static TDSContactoDAO instancia;
     private ServicioPersistencia servPersistencia;
@@ -37,11 +37,8 @@ public class TDSContactoDAO {
 
     
     public Contacto get(int id) {
-        
         Entidad eContacto = servPersistencia.recuperarEntidad(id);
-
         if (eContacto != null) {
-            
             try {
 				return entidadToContacto(eContacto);
 			} catch (DAOException e) {
@@ -99,4 +96,82 @@ public class TDSContactoDAO {
         }
         return contactos;
     }
+
+
+    @Override
+    public void create(Contacto contacto) {
+    	try {
+            // Convertimos el contacto en una entidad para ser persistida
+            Entidad eContacto = new Entidad();
+            eContacto.setNombre(CONTACTO); // Establecemos el tipo de entidad como 'Contacto'
+
+            // Establecemos las propiedades del contacto
+            servPersistencia.anadirPropiedadEntidad(eContacto, NOMBRE, contacto.getNombre());
+            
+            if (contacto instanceof ContactoIndividual) {
+                ContactoIndividual contactoIndividual = (ContactoIndividual) contacto;
+                servPersistencia.anadirPropiedadEntidad(eContacto, TIPO_CONTACTO, "ContactoIndividual");
+                servPersistencia.anadirPropiedadEntidad(eContacto, USUARIO, String.valueOf(contactoIndividual.getUsuario().getId()));
+            } else if (contacto instanceof Grupo) {
+                Grupo grupo = (Grupo) contacto;
+                servPersistencia.anadirPropiedadEntidad(eContacto, TIPO_CONTACTO, "Grupo");
+                // Guardar los contactos en el grupo como una cadena separada por comas de IDs
+                StringBuilder contactosIds = new StringBuilder();
+                for (Contacto c : grupo.getContactos()) {
+                    if (contactosIds.length() > 0) {
+                        contactosIds.append(",");
+                    }
+                    contactosIds.append(c.getId());
+                }
+                servPersistencia.anadirPropiedadEntidad(eContacto, CONTACTOS_GRUPO, contactosIds.toString());
+            }
+            
+            // Usamos el servicio de persistencia para guardar la entidad
+            servPersistencia.registrarEntidad(eContacto);
+            contacto.setId(eContacto.getId()); // Establecemos el ID generado
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public boolean delete(Contacto contacto) {
+        try {
+            // Recuperamos la entidad de contacto utilizando su ID
+            Entidad eContacto = servPersistencia.recuperarEntidad(contacto.getId());
+            if (eContacto != null) {
+                // Si existe, eliminamos la entidad
+                servPersistencia.borrarEntidad(eContacto);
+                return true; // Eliminación exitosa
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false; // Si no se pudo eliminar
+    }
+
+    @Override
+    public List<Contacto> getAll() {
+        List<Contacto> contactos = new ArrayList<>();
+        try {
+        
+            List<Entidad> entidades = servPersistencia.recuperarEntidades(CONTACTO);
+            
+        
+            for (Entidad eContacto : entidades) {
+                Contacto contacto = entidadToContacto(eContacto);
+                if (contacto != null) {
+                    contactos.add(contacto);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return contactos;
+    }
+    
+ 
+    
 }

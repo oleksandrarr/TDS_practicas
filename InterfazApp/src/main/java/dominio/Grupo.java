@@ -21,4 +21,8 @@ public class Grupo extends Contacto{
 		return true;
 	}
 
+	public List<ContactoIndividual> getContactos() {
+		return integrantes;
+	}
+
 }
