@@ -7,7 +7,8 @@ import java.util.List;
 
 public class Mensaje {
 	//Atributos
-    private String texto;
+	int id;
+	private String texto;
 	private int emoticono;
     private String telefonoEmisor;
     private String telefonoReceptor;
@@ -54,6 +55,13 @@ public class Mensaje {
         return fechaHoraEnvio;
     }
 
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
     
    
 }

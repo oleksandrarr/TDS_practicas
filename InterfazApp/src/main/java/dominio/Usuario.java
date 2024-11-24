@@ -16,6 +16,9 @@ public class Usuario {
 	private static String numeroTelefono;
 	private List<Contacto> contactos;
 
+	
+
+
 	public Usuario(String nombre, String apellidos, String email, String login,String numeroTelefono, String password,
 			String fechaNacimiento) {
 		this.id = 0;
@@ -31,6 +34,15 @@ public class Usuario {
 	}
 	
 	
+	public List<Contacto> getContactos() {
+		return contactos;
+	}
+
+
+
+	public void setContactos(List<Contacto> list) {
+		this.contactos = list;
+	}
 
 	public String getNumeroTelefono() {
 		return numeroTelefono;
@@ -106,6 +118,10 @@ public class Usuario {
 			}
 		}
 		return valor;
+	}
+	
+	public void setContacto(List<Contacto> contactos) {
+		this.contactos=contactos;
 	}
 	
 	public void añadirContacto(Contacto contacto) {

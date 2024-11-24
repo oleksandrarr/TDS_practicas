@@ -8,9 +8,10 @@ import java.util.List;
 
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
+import dominio.Contacto;
+import dominio.ContactoIndividual;
 import dominio.Usuario;
 import beans.Entidad;
-import beans.Mensaje;
 import beans.Propiedad;
 
 /**
@@ -21,7 +22,6 @@ import beans.Propiedad;
 public final class TDSUsuarioDAO implements UsuarioDAO {
 
 	private static final String USUARIO = "Usuario";
-
 	private static final String NOMBRE = "nombre";
 	private static final String APELLIDOS = "apellidos";
 	private static final String EMAIL = "email";
@@ -29,7 +29,7 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	private static final String PASSWORD = "password";
 	private static final String FECHA_NACIMIENTO = "fechaNacimiento";
 	private static final String TELEFONO_USUARIO = "numeroUsuario";
-	private static final List<Mensaje> MENSAJE_USUARIOS = new ArrayList<Mensaje>();
+	
 
 	private ServicioPersistencia servPersistencia;
 	private SimpleDateFormat dateFormat;
@@ -48,11 +48,43 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 		String password = servPersistencia.recuperarPropiedadEntidad(eUsuario, PASSWORD);
 		String fechaNacimiento = servPersistencia.recuperarPropiedadEntidad(eUsuario, FECHA_NACIMIENTO);
 		String numeroUsuario = servPersistencia.recuperarPropiedadEntidad(eUsuario, TELEFONO_USUARIO);
+		String contactosIds = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contactos");
 		//List<Mensaje> mensajeUsuario = servPersistencia.recuperarMensajes(eUsuario);
+		
 		Usuario usuario = new Usuario(nombre, apellidos, email, login,numeroUsuario, password, fechaNacimiento);
 		usuario.setId(eUsuario.getId());
-
+		
+		List<Contacto> contactos;
+		try {
+			contactos = obtenerContactos(contactosIds);
+			usuario.setContactos(contactos);
+		} catch (DAOException e) {
+			e.printStackTrace();
+		}
+	    
+		
 		return usuario;
+	}
+
+	private List<Contacto> obtenerContactos(String contactosIds) throws DAOException {
+	    List<Contacto> contactos = new ArrayList<>();
+	    
+	    if (contactosIds != null && !contactosIds.isEmpty()) {
+	        String[] idsArray = contactosIds.split(",");
+	        for (String id : idsArray) {
+	            try {
+	                // Convertir el ID de contacto de String a Integer
+	                Integer contactoId = Integer.parseInt(id);
+	                // Obtener el contacto desde el DAO correspondiente
+	                Contacto contacto = TDSContactoDAO.getInstance().get(contactoId); // Usamos TDSContactoDAO para obtener el contacto
+	                contactos.add(contacto); // Agregar el contacto a la lista
+	            } catch (NumberFormatException e) {
+	                // Manejo de error: Si hay algún ID inválido, lo ignoramos o gestionamos de acuerdo a tu caso
+	                System.err.println("Error al convertir el ID de contacto: " + id);
+	            }
+	        }
+	    }
+	    return contactos; // Devolver la lista de contactos
 	}
 
 	private Entidad usuarioToEntidad(Usuario usuario) {
@@ -109,7 +141,6 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 
 	public Usuario get(int id) {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(id);
-
 		return entidadToUsuario(eUsuario);
 	}
 
@@ -123,5 +154,7 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 
 		return usuarios;
 	}
+
+	
 
 }

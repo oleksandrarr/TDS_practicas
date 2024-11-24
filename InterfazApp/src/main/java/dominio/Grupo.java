@@ -13,12 +13,12 @@ public class Grupo extends Contacto{
 	}
 
 	@Override
-	public void registrarMensaje(Mensaje mensaje) {
+	public boolean registrarMensaje(Mensaje mensaje) {
 		this.listaMensaje.add(mensaje);
 		for(ContactoIndividual u: integrantes) { //Recorre todos los contactos individuales del grupo y les envia un mensaje
 			u.registrarMensaje(mensaje);
 		}
-		
+		return true;
 	}
 
 }

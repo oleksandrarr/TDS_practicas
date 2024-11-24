@@ -4,6 +4,8 @@ import dao.UsuarioDAO;
 import dao.DAOException;
 import dao.FactoriaDAO;
 import dominio.Usuario;
+import dominio.Contacto;
+import dominio.Mensaje;
 import dominio.RepositorioUsuarios;
 
 public enum Controlador {
@@ -61,6 +63,14 @@ public enum Controlador {
 
 		RepositorioUsuarios.INSTANCE.removeUsuario(usuario);
 		return true;
+	}
+	
+	public boolean enviarMensaje(Contacto contacto, Mensaje mensaje) {
+		contacto.registrarMensaje(mensaje);
+		
+		return true;
+		
+		
 	}
 	
 	

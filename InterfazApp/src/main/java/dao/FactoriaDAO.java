@@ -35,5 +35,6 @@ public abstract class FactoriaDAO {
 	
 	// Metodos factoria para obtener adaptadores
 	
-	public abstract UsuarioDAO getUsuarioDAO();	
+	public abstract UsuarioDAO getUsuarioDAO();
+	public abstract TDSContactoDAO getContactoDAO();
 }

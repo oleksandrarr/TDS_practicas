@@ -13,8 +13,10 @@ public class ContactoIndividual extends Contacto {
 		
 	}
 
-	public void registrarMensaje(Mensaje mensaje) {
-		this.listaMensaje.add(mensaje);
+	public boolean registrarMensaje(Mensaje mensaje) {
+		
+		return true;
+		
 	}
 
 	public Usuario getUsuario() {

@@ -13,5 +13,10 @@ public final class TDSFactoriaDAO extends FactoriaDAO {
 	public TDSUsuarioDAO getUsuarioDAO() {	
 		return new TDSUsuarioDAO(); 
 	}
+	
+	@Override
+	public TDSContactoDAO getContactoDAO() {	
+		return new TDSContactoDAO(); 
+	}
 
 }
