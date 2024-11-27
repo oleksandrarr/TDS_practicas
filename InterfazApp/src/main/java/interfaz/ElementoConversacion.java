@@ -1,5 +1,6 @@
 package interfaz;
-
+//Clase que represeta al chat que se muestra en cada momento en la ventanaPrincipal.
+//Esta clase será la encargada de mostrar los mensajes del contacto que se cargue en cada momento
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,6 +24,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import controlador.Controlador;
+import dominio.Contacto;
+import dominio.Mensaje;
 import dominio.Usuario;
 import tds.BubbleText;
 
@@ -37,8 +41,11 @@ import java.awt.Component;
 import javax.swing.Box;
 
 public class ElementoConversacion extends JPanel{
+	
 
-	public ElementoConversacion(Usuario contacto) throws IOException {
+	
+	public ElementoConversacion() throws IOException {
+		
 		this.setLayout(new BorderLayout());
         this.setMaximumSize(new Dimension(500, 700));
  		this.setMinimumSize(new Dimension(500, 700));
@@ -53,11 +60,7 @@ public class ElementoConversacion extends JPanel{
  		
  		
          
-
-         //for(Mensaje m: contacto.getMensajeUsuario(contacto.getTelefono())) {
-        	//chat.add(new BubbleText(chat,m));
-         //}
-        
+ 		
         
 
 

@@ -29,7 +29,7 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	private static final String PASSWORD = "password";
 	private static final String FECHA_NACIMIENTO = "fechaNacimiento";
 	private static final String TELEFONO_USUARIO = "numeroUsuario";
-	
+	private static final String CONTACTO = "contactos";
 
 	private ServicioPersistencia servPersistencia;
 	private SimpleDateFormat dateFormat;
@@ -48,8 +48,8 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 		String password = servPersistencia.recuperarPropiedadEntidad(eUsuario, PASSWORD);
 		String fechaNacimiento = servPersistencia.recuperarPropiedadEntidad(eUsuario, FECHA_NACIMIENTO);
 		String numeroUsuario = servPersistencia.recuperarPropiedadEntidad(eUsuario, TELEFONO_USUARIO);
-		String contactosIds = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contactos");
-		//List<Mensaje> mensajeUsuario = servPersistencia.recuperarMensajes(eUsuario);
+		String contactosIds = servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTO);
+		
 		
 		Usuario usuario = new Usuario(nombre, apellidos, email, login,numeroUsuario, password, fechaNacimiento);
 		usuario.setId(eUsuario.getId());
@@ -57,7 +57,9 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 		List<Contacto> contactos;
 		try {
 			contactos = obtenerContactos(contactosIds);
+			System.out.println("La lista de contactos"+contactosIds);
 			usuario.setContactos(contactos);
+			System.out.printf("Al recuperar el usuario '%s' ha encontrado %d contactos. \n",nombre,contactos.size());
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
@@ -67,41 +69,67 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	}
 
 	private List<Contacto> obtenerContactos(String contactosIds) throws DAOException {
-	    List<Contacto> contactos = new ArrayList<>();
-	    
-	    if (contactosIds != null && !contactosIds.isEmpty()) {
-	        String[] idsArray = contactosIds.split(",");
-	        for (String id : idsArray) {
-	            try {
-	                // Convertir el ID de contacto de String a Integer
-	                Integer contactoId = Integer.parseInt(id);
-	                // Obtener el contacto desde el DAO correspondiente
-	                Contacto contacto = TDSContactoDAO.getInstance().get(contactoId); // Usamos TDSContactoDAO para obtener el contacto
-	                contactos.add(contacto); // Agregar el contacto a la lista
-	            } catch (NumberFormatException e) {
-	                // Manejo de error: Si hay algún ID inválido, lo ignoramos o gestionamos de acuerdo a tu caso
-	                System.err.println("Error al convertir el ID de contacto: " + id);
-	            }
-	        }
-	    }
-	    return contactos; // Devolver la lista de contactos
+		 List<Contacto> contactos = new ArrayList<>();
+		    if (contactosIds != null && !contactosIds.isEmpty()) {
+		        String[] idsArray = contactosIds.split(",");
+		        for (String id : idsArray) {
+		            try {
+		                int contactoId = Integer.parseInt(id.trim()); // Eliminar espacios en blanco
+		                Contacto contacto = TDSContactoDAO.getInstance().get(contactoId);
+		                if (contacto != null) {
+		                    contactos.add(contacto);
+		                } else {
+		                    System.err.println("Contacto no encontrado para ID: " + contactoId);
+		                }
+		            } catch (NumberFormatException e) {
+		                System.err.println("Error al convertir el ID de contacto: " + id);
+		            }
+		        }
+		    }
+		    return contactos;
 	}
 
 	private Entidad usuarioToEntidad(Usuario usuario) {
-		Entidad eUsuario = new Entidad();
-		eUsuario.setNombre(USUARIO);
+	    Entidad eUsuario = new Entidad();
+	    eUsuario.setNombre(USUARIO);
+	    
+	    Contacto contacto1 = new ContactoIndividual("yo",usuario);
+	    usuario.añadirContacto(contacto1);
+	    StringBuilder contactosIds = new StringBuilder();
+	    if (usuario.getContactos() != null && !usuario.getContactos().isEmpty()) {
+	        for (Contacto contacto : usuario.getContactos()) {
+	            contactosIds.append(contacto.getId()).append(",");
+	        }
+	        // Elimina la última coma
+	        if (contactosIds.length() > 0) {
+	            contactosIds.deleteCharAt(contactosIds.length() - 1);
+	        }
+	    }
+	    
+	    
+	    // Registrar las propiedades del usuario
+	    eUsuario.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
+	        new Propiedad(NOMBRE, usuario.getNombre()),
+	        new Propiedad(APELLIDOS, usuario.getApellidos()),
+	        new Propiedad(EMAIL, usuario.getEmail()),
+	        new Propiedad(LOGIN, usuario.getLogin()),
+	        new Propiedad(TELEFONO_USUARIO, usuario.getNumeroTelefono()),
+	        new Propiedad(PASSWORD, usuario.getPassword()),
+	        new Propiedad(FECHA_NACIMIENTO, usuario.getFechaNacimiento().toString()),
+	        new Propiedad(CONTACTO, contactosIds.toString())  // Aquí se registra la propiedad 'contactos'
+	    )));
 
-		eUsuario.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad(NOMBRE, usuario.getNombre()),
-				new Propiedad(APELLIDOS, usuario.getApellidos()), new Propiedad(EMAIL, usuario.getEmail()),
-				new Propiedad(LOGIN, usuario.getLogin()), new Propiedad(TELEFONO_USUARIO, usuario.getNumeroTelefono()),new Propiedad(PASSWORD, usuario.getPassword()),
-				new Propiedad(FECHA_NACIMIENTO, usuario.getFechaNacimiento()))));
-		return eUsuario;
+	    return eUsuario;
 	}
 
 	public void create(Usuario usuario) {
 		Entidad eUsuario = this.usuarioToEntidad(usuario);
 		eUsuario = servPersistencia.registrarEntidad(eUsuario);
 		usuario.setId(eUsuario.getId());
+		System.out.println("Propiedades al registrar la entidad Usuario:"); //PARA COMPROBAR LAS PROPIEDADES
+		for (Propiedad prop : eUsuario.getPropiedades()) {
+		    System.out.printf("Propiedad: %s, Valor: %s\n", prop.getNombre(), prop.getValor());
+		}
 	}
 
 	public boolean delete(Usuario usuario) {
@@ -115,34 +143,57 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	 * Permite que un Usuario modifique su perfil: password y email
 	 */
 	public void update(Usuario usuario) {
-		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
+	    Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
+	
+	    // Verifica que el usuario tenga contactos
+	    StringBuilder nombresConcatenados = new StringBuilder();
+	    for (Contacto contacto : usuario.getContactos()) {
+	        if (nombresConcatenados.length() > 0) {
+	            nombresConcatenados.append(", ");
+	        }
+	        nombresConcatenados.append(contacto.getId());
+	    }
+	    
 
-		for (Propiedad prop : eUsuario.getPropiedades()) {
-			if (prop.getNombre().equals(PASSWORD)) {
-				prop.setValor(usuario.getPassword());
-			} else if (prop.getNombre().equals(EMAIL)) {
-				prop.setValor(usuario.getEmail());
-			} else if (prop.getNombre().equals(NOMBRE)) {
-				prop.setValor(usuario.getNombre());
-			} else if (prop.getNombre().equals(APELLIDOS)) {
-				prop.setValor(usuario.getApellidos());
-			} else if (prop.getNombre().equals(LOGIN)) {
-				prop.setValor(usuario.getLogin());
-			} else if (prop.getNombre().equals(TELEFONO_USUARIO)) {
-				prop.setValor(usuario.getNumeroTelefono());
-			} else if (prop.getNombre().equals(FECHA_NACIMIENTO)) {
-				prop.setValor(dateFormat.format(usuario.getFechaNacimiento()));
-			}
-			
-			
-			servPersistencia.modificarPropiedad(prop);
-		}
+	    // Actualiza la propiedad 'contactos'
+	    for (Propiedad prop : eUsuario.getPropiedades()) {
+	        if (prop.getNombre().equals(CONTACTO)) {
+	        	System.out.println("ENTRA //222////////\n");
+	            prop.setValor(nombresConcatenados.toString());
+	            break;
+	        }
+	    }
+	    
+	    // Actualiza todas las demás propiedades
+	    for (Propiedad prop : eUsuario.getPropiedades()) {
+	        if (prop.getNombre().equals(PASSWORD)) {
+	            prop.setValor(usuario.getPassword());
+	        } else if (prop.getNombre().equals(EMAIL)) {
+	            prop.setValor(usuario.getEmail());
+	        } else if (prop.getNombre().equals(NOMBRE)) {
+	            prop.setValor(usuario.getNombre());
+	        } else if (prop.getNombre().equals(APELLIDOS)) {
+	            prop.setValor(usuario.getApellidos());
+	        } else if (prop.getNombre().equals(LOGIN)) {
+	            prop.setValor(usuario.getLogin());
+	        } else if (prop.getNombre().equals(TELEFONO_USUARIO)) {
+	            prop.setValor(usuario.getNumeroTelefono());
+	        } else if (prop.getNombre().equals(FECHA_NACIMIENTO)) {
+	            prop.setValor(usuario.getFechaNacimiento());
+	        }
+
+	        // Guarda la propiedad modificada
+	        servPersistencia.modificarPropiedad(prop);
+	    }
 	}
+
 
 	public Usuario get(int id) {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(id);
 		return entidadToUsuario(eUsuario);
 	}
+	
+	
 
 	public List<Usuario> getAll() {
 		List<Entidad> entidades = servPersistencia.recuperarEntidades(USUARIO);

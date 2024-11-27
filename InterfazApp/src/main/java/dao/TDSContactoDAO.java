@@ -7,13 +7,14 @@ import dominio.ContactoIndividual;
 import dominio.Grupo;
 import dominio.Usuario;
 import beans.Entidad;
+import beans.Propiedad;
 import dao.UsuarioDAO;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class TDSContactoDAO implements ContactoDAO {
 
-    private static TDSContactoDAO instancia;
+    private static TDSContactoDAO unicaInstancia;
     private ServicioPersistencia servPersistencia;
 
     private static final String CONTACTO = "Contacto";
@@ -29,10 +30,10 @@ public final class TDSContactoDAO implements ContactoDAO {
 
 
     public static TDSContactoDAO getInstance() {
-        if (instancia == null) {
-            instancia = new TDSContactoDAO();
+        if (unicaInstancia == null) {
+            unicaInstancia = new TDSContactoDAO();
         }
-        return instancia;
+        return unicaInstancia;
     }
 
     
@@ -48,15 +49,15 @@ public final class TDSContactoDAO implements ContactoDAO {
         }
         return null;  
     }
-
+    
   
     private Contacto entidadToContacto(Entidad eContacto) throws DAOException {
         
         String nombre = servPersistencia.recuperarPropiedadEntidad(eContacto, NOMBRE);
         String tipoContacto = servPersistencia.recuperarPropiedadEntidad(eContacto, TIPO_CONTACTO);
 
-      
-        if ("ContactoIndividual".equals(tipoContacto)) {
+        System.out.println("TIPO CONTACTO"+tipoContacto);
+        if ("Individual".equals(tipoContacto)) {
             int idUsuario = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eContacto, USUARIO));
             UsuarioDAO usuarioDAO = FactoriaDAO.getInstancia().getUsuarioDAO();
             Usuario usuario = usuarioDAO.get(idUsuario);
@@ -96,25 +97,62 @@ public final class TDSContactoDAO implements ContactoDAO {
         }
         return contactos;
     }
+    
+    private Entidad contactoToEntidad(Contacto contacto) throws DAOException {
+        
+    	
+        Entidad eContacto = new Entidad();
+        eContacto.setNombre(CONTACTO);
 
+        // Establecemos las propiedade del contacto
+        servPersistencia.anadirPropiedadEntidad(eContacto, NOMBRE, contacto.getNombre());
 
+        // Si el contacto es de tipo 'ContactoIndividual'
+        if (contacto instanceof ContactoIndividual) {
+        	
+            ContactoIndividual contactoIndividual = (ContactoIndividual) contacto;
+            servPersistencia.anadirPropiedadEntidad(eContacto, TIPO_CONTACTO, "Individual");
+            
+            // Asociamos el ID del usuario que pertenece a este contacto
+            servPersistencia.anadirPropiedadEntidad(eContacto, USUARIO, String.valueOf(contactoIndividual.getUsuario().getId()));
+            System.out.println("Se registra como CI");
+        } 
+        // Si el contacto es de tipo 'Grupo'
+        else if (contacto instanceof Grupo) {
+            Grupo grupo = (Grupo) contacto;
+            servPersistencia.anadirPropiedadEntidad(eContacto, TIPO_CONTACTO, "Grupo");
+
+            // Guardamos los IDs de los contactos dentro del grupo en una cadena separada por comas
+            StringBuilder contactosIds = new StringBuilder();
+            for (Contacto c : grupo.getContactos()) {
+                if (contactosIds.length() > 0) {
+                    contactosIds.append(",");
+                }
+                contactosIds.append(c.getId());
+            }
+
+            // Establecemos esta lista de contactos en la propiedad CONTACTOS_GRUPO
+            servPersistencia.anadirPropiedadEntidad(eContacto, CONTACTOS_GRUPO, contactosIds.toString());
+        }
+
+        // Devolvemos la entidad preparada para ser persistida
+        return eContacto;
+    }
+   
     @Override
     public void create(Contacto contacto) {
     	try {
-            // Convertimos el contacto en una entidad para ser persistida
-            Entidad eContacto = new Entidad();
-            eContacto.setNombre(CONTACTO); // Establecemos el tipo de entidad como 'Contacto'
-
+    		Entidad eContacto = this.contactoToEntidad(contacto);
             // Establecemos las propiedades del contacto
-            servPersistencia.anadirPropiedadEntidad(eContacto, NOMBRE, contacto.getNombre());
-            
+    		eContacto = servPersistencia.registrarEntidad(eContacto);
+    		contacto.setId(eContacto.getId());
             if (contacto instanceof ContactoIndividual) {
                 ContactoIndividual contactoIndividual = (ContactoIndividual) contacto;
-                servPersistencia.anadirPropiedadEntidad(eContacto, TIPO_CONTACTO, "ContactoIndividual");
+                servPersistencia.anadirPropiedadEntidad(eContacto, TIPO_CONTACTO, contacto.getTipoContacto());
                 servPersistencia.anadirPropiedadEntidad(eContacto, USUARIO, String.valueOf(contactoIndividual.getUsuario().getId()));
             } else if (contacto instanceof Grupo) {
                 Grupo grupo = (Grupo) contacto;
-                servPersistencia.anadirPropiedadEntidad(eContacto, TIPO_CONTACTO, "Grupo");
+                servPersistencia.anadirPropiedadEntidad(eContacto, TIPO_CONTACTO, contacto.getTipoContacto());
                 // Guardar los contactos en el grupo como una cadena separada por comas de IDs
                 StringBuilder contactosIds = new StringBuilder();
                 for (Contacto c : grupo.getContactos()) {
@@ -123,10 +161,13 @@ public final class TDSContactoDAO implements ContactoDAO {
                     }
                     contactosIds.append(c.getId());
                 }
+                System.out.println("IDs de los contactos del grupo: " + contactosIds.toString());
                 servPersistencia.anadirPropiedadEntidad(eContacto, CONTACTOS_GRUPO, contactosIds.toString());
             }
-            
+
+        	
             // Usamos el servicio de persistencia para guardar la entidad
+            
             servPersistencia.registrarEntidad(eContacto);
             contacto.setId(eContacto.getId()); // Establecemos el ID generado
 

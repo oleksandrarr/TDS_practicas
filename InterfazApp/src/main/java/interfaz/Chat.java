@@ -18,11 +18,17 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.Component;
 
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import controlador.Controlador;
+import dominio.Contacto;
+import dominio.Mensaje;
+
 import javax.swing.border.EtchedBorder;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,11 +37,12 @@ import tds.BubbleText;
 import java.awt.FlowLayout;
 
 public class Chat extends JPanel {
-
-    
+	
+    	
     	private static final long serialVersionUID = 1L;
 
-        public Chat() throws IOException {
+        public Chat(Contacto contacto) throws IOException {
+       
         	BubbleText.noZoom();
             
             this.setLayout(new BorderLayout());
@@ -88,7 +95,19 @@ public class Chat extends JPanel {
 			System.out.println(LocalDateTime.now().format(soloHora));
             
 			LocalDateTime hora = LocalDateTime.now();
-            BubbleText bubbleText = new BubbleText(chat, "Hola grupo", Color.WHITE, "Pascual "+hora.format(soloHora), BubbleText.SENT, 11);
+			
+			List<Mensaje> mensajes = Controlador.INSTANCE.obtenerMensajes(contacto);
+			System.out.printf("Se añade%s\n",mensajes.size());
+			System.out.printf("Se añade%s\n",contacto.getNombre());
+	 		 for (Mensaje m : mensajes) {
+	 			 BubbleText burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE, m.getEmisor().getNombre()+hora.format(soloHora), m.getTipoMensaje(), 11);
+	             chat.add(burbuja); 
+	             chat.scrollRectToVisible(new Rectangle(0,640+burbuja.getHeight(),1,1));
+	             System.out.println("Se añade");
+	         }
+	 		 
+	 		/*
+	        BubbleText bubbleText = new BubbleText(chat, "Hola grupo", Color.WHITE, "Pascual "+hora.format(soloHora), BubbleText.SENT, 11);
             chat.add(bubbleText);
             chat.add(new BubbleText(chat, "Hola grupo", Color.WHITE, "Pablo "+hora.format(soloHora), 1, 11));
             chat.add(new BubbleText(chat, "Hola grupo", Color.WHITE, "Pablo "+hora.format(soloHora), BubbleText.RECEIVED, 11));
@@ -99,7 +118,8 @@ public class Chat extends JPanel {
             chat.add(new BubbleText(chat, "Hola grupo", Color.WHITE, "Pablo"+hora.format(soloHora), BubbleText.RECEIVED, 11));
             BubbleText mensaje2 = new BubbleText(chat, "Hola grupo", Color.WHITE, "Pascual "+hora.format(soloHora), BubbleText.SENT, 11);
             chat.add(bubbleText);
-            chat.scrollRectToVisible(new Rectangle(0,640+mensaje2.getHeight(),1,1));
+            */
+           
             repaint();
             revalidate();
             //Para tabla de emoticonos

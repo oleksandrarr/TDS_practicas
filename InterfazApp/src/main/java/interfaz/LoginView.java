@@ -171,9 +171,10 @@ public class LoginView {
 						new String(textPassword.getPassword()));
 
 				if (login) {
-					App principal;
+					VentanaPrincipal principal;
 					try {
-						principal = new App();
+						System.out.println("Entra bien");
+						principal = new VentanaPrincipal();
 						principal.mostrarVentana();
 						frmLogin.dispose();
 					} catch (IOException e1) {

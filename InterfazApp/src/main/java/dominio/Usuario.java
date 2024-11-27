@@ -121,11 +121,27 @@ public class Usuario {
 	}
 	
 	public void setContacto(List<Contacto> contactos) {
+		System.out.println("añadidos los contactos");
 		this.contactos=contactos;
 	}
 	
 	public void añadirContacto(Contacto contacto) {
-		contactos.add(contacto);
+	    if (contacto != null) {
+	        contactos.add(contacto);
+	    } else {
+	        System.out.println("Intentando añadir un contacto nulo");
+	    }
+	}
+
+
+	public ContactoIndividual getContactoIndividual(int id) {
+	    for (Contacto c : contactos) {
+	        if (c != null && c.getId()==id) {
+	            return (ContactoIndividual) c;
+	        }
+	    }
+	  
+	    return null; // Devuelve null si no encuentra el contacto
 	}
 
 	

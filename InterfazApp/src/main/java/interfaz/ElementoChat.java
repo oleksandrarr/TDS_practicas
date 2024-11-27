@@ -1,3 +1,4 @@
+//Clase que representa cada contacto en la lista que hay en la izquierda de la ventanaPrincipal.
 package interfaz;
 
 import java.awt.BorderLayout;

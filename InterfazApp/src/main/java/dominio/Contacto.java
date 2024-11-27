@@ -7,9 +7,18 @@ public abstract class Contacto {
 	protected int id;
 	protected String nombre;
 	protected List<Mensaje> listaMensaje;
+	protected String tipoContacto;
 	 
 
-	    public Contacto(String nombre) {
+	    public String getTipoContacto() {
+		return tipoContacto;
+	}
+
+	public void setTipoContacto(String tipoContacto) {
+		this.tipoContacto = tipoContacto;
+	}
+
+		public Contacto(String nombre) {
 	        this.nombre = nombre;
 	        this.listaMensaje = new ArrayList<Mensaje>();
 	        this.id = 0;
