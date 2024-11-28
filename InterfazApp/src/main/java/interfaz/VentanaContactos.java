@@ -28,6 +28,7 @@ public class VentanaContactos {
 	private JFrame frame;
 	private DefaultListModel<String> modelContactos;
     private DefaultListModel<String> modelGrupo;
+    private AñadirContacto añadirContacto;
 
 	/**
 	 * Launch the application.
@@ -160,7 +161,7 @@ public class VentanaContactos {
         btnNewButton_4.setBorderPainted(false);
         panelSouth.add(btnNewButton_4);
         
-        JButton btnNewButton_2 = new JButton("Añadir Contacto");
+        JButton btnNewButton_2 = new JButton("Añadir Contacto Nuevo");
         btnNewButton_2.setBackground(new Color(0, 128, 0));
         btnNewButton_2.setForeground(Color.BLACK); // Texto blanco para contraste
         btnNewButton_2.setOpaque(true);
@@ -214,6 +215,15 @@ public class VentanaContactos {
                 }
             });
         
+        
+      //Action listener Añadir Contacto
+        btnNewButton_2.addActionListener(new ActionListener() {
+	         @Override
+	         public void actionPerformed(ActionEvent e) {
+	             AñadirContacto  añadirContacto = new  AñadirContacto();
+	             añadirContacto.mostrarVentana();
+	         }
+	     });
         
         
 	}

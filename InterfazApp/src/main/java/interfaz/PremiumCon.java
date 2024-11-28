@@ -100,13 +100,6 @@ public class PremiumCon {
         panelBotones.setBackground(new Color(40, 167, 69));
         frame.getContentPane().add(panelBotones, BorderLayout.SOUTH);
         
-        JButton btnNewButton = new JButton("Generar PDF");
-        btnNewButton.setBackground(new Color(0, 128, 0));
-        btnNewButton.setForeground(Color.BLACK); // Texto blanco para contraste
-        btnNewButton.setOpaque(true);
-        btnNewButton.setBorderPainted(false);
-        panelBotones.add(btnNewButton);
-        
         
         JButton btnNewButton_1 = new JButton("Cancelar");
         btnNewButton_1.setBackground(new Color(0, 128, 0));
@@ -114,6 +107,23 @@ public class PremiumCon {
         btnNewButton_1.setOpaque(true);
         btnNewButton_1.setBorderPainted(false);
         panelBotones.add(btnNewButton_1);
+        
+        
+        
+        
+		 btnNewButton_1.addActionListener(new ActionListener() {
+			 @Override
+			 public void actionPerformed(ActionEvent e) {
+				 frame.dispose();  // Cierra la ventana
+	         }
+	     });
+        
+        JButton btnNewButton = new JButton("Generar PDF");
+        btnNewButton.setBackground(new Color(0, 128, 0));
+        btnNewButton.setForeground(Color.BLACK); // Texto blanco para contraste
+        btnNewButton.setOpaque(true);
+        btnNewButton.setBorderPainted(false);
+        panelBotones.add(btnNewButton);
         
         JPanel panelI = new JPanel();
         panelI.setBackground(new Color(40, 167, 69));
@@ -150,16 +160,6 @@ public class PremiumCon {
 		botonPanel.setOpaque(true);
 		botonPanel.setBorderPainted(false);
 		panelCentro.add(botonPanel);
-        
-        
-        
-        
-		 btnNewButton_1.addActionListener(new ActionListener() {
-			 @Override
-			 public void actionPerformed(ActionEvent e) {
-				 frame.dispose();  // Cierra la ventana
-	         }
-	     });
        
     }
 }

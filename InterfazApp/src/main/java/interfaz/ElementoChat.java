@@ -29,6 +29,9 @@ import java.awt.Component;
 import javax.swing.Box;
 
 public class ElementoChat extends JPanel{
+	private String fileName;
+	private String usuario;
+	private String mensaje;
 
 	public ElementoChat(String fileName, String usuario,String mensaje) throws IOException {
 		this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
@@ -75,6 +78,16 @@ public class ElementoChat extends JPanel{
 		this.add(panel);
 		
 	}
+	
+	public String getImagenUrl() { return  fileName; }
+    public String getNombre() { return usuario; }
+    public String getDescripcion() { return mensaje; }
+
+    @Override
+    public String toString() {
+        return usuario; // Lo que se mostrará en la lista si no usas un renderer personalizado
+    }
+    
 	
 	private void fixSize(JComponent c, int x, int y) {
 		c.setMinimumSize(new Dimension(x,y));

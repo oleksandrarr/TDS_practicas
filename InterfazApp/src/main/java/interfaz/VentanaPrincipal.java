@@ -303,8 +303,8 @@ public class VentanaPrincipal {
 		chat.setMaximumSize(new Dimension(500, 700));
 		pantalla.add(chat);
 		
-		personaje = new JLabel("");
-		personaje.setBackground(new Color(111, 204, 115));
+		//personaje = new JLabel("");
+		//personaje.setBackground(new Color(111, 204, 115));
 		
 		//Elemento aux= new Elemento("SMV.png","Mujer Maravilla",50,85,85);
 		//cajaIzquierda.add(aux);
@@ -323,12 +323,35 @@ public class VentanaPrincipal {
 		lista.setModel(model);
 		lista.setCellRenderer(new ElementoListRenderer());
 		
+		//para cambiar el chat
 		lista.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.getClickCount()==2)
-				  personaje.setIcon(imagenes.get(lista.getSelectedIndex()));	
-			}
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        if (e.getClickCount() == 2) { // Detectar doble clic
+		            int selectedIndex = lista.getSelectedIndex();
+		            if (selectedIndex != -1) { // Verificar que hay un elemento seleccionado
+		                // Obtener el elemento seleccionado (ElementoChat)
+		                ElementoChat elementoSeleccionado = lista.getModel().getElementAt(selectedIndex);
+
+		                // Buscar el contacto correspondiente al nombre del elemento
+		                Contacto contacto = buscarContactoPorNombre(elementoSeleccionado.getNombre());
+
+		                if (contacto != null) {
+		                    // Crear el panel de chat y mostrarlo
+		                    JPanel nuevoChat = null;
+							try {
+								nuevoChat = new Chat(contacto);
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} // Crear el panel de chat con el contacto
+		                    cambiarPantallaChat(nuevoChat); // Cambiar la pantalla principal al nuevo chat
+		                } else {
+		                    JOptionPane.showMessageDialog(null, "Contacto no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+		                }
+		            }
+		        }
+		    }
 		});
 		
 		JScrollPane scroll=new JScrollPane(lista);
@@ -390,6 +413,16 @@ public class VentanaPrincipal {
 	    contenedor.revalidate(); // Actualizar la vista
 	    contenedor.repaint(); // Re-pintar la interfaz
 	}
+	
+	private Contacto buscarContactoPorNombre(String nombre) {
+	    for (Contacto contacto : Controlador.INSTANCE.obtenerContactos()) {
+	        if (contacto.getNombre().equals(nombre)) {
+	            return contacto;
+	        }
+	    }
+	    return null; // Si no se encuentra el contacto
+	}
+
 
 
 
