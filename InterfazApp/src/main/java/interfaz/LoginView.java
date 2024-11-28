@@ -22,6 +22,7 @@ import javax.swing.border.TitledBorder;
 
 import controlador.Controlador;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 public class LoginView {
 
@@ -49,7 +50,7 @@ public class LoginView {
 	private void initialize() {
 		frmLogin = new JFrame();
 		frmLogin.setTitle("Login AppVideo");
-		//frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLogin.getContentPane().setLayout(new BorderLayout());
 
 		crearPanelTitulo();
@@ -61,6 +62,7 @@ public class LoginView {
 
 	private void crearPanelTitulo() {
 		JPanel panel_Norte = new JPanel();
+		panel_Norte.setBackground(new Color(40, 167, 69));
 		frmLogin.getContentPane().add(panel_Norte, BorderLayout.NORTH);
 		panel_Norte.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 15));
 
@@ -72,6 +74,7 @@ public class LoginView {
 
 	private void crearPanelLogin() {
 		JPanel panelLogin = new JPanel();
+		panelLogin.setBackground(new Color(40, 167, 69));
 		panelLogin.setBorder(new EmptyBorder(10, 10, 10, 10));
 		frmLogin.getContentPane().add(panelLogin, BorderLayout.CENTER);
 		panelLogin.setLayout(new BorderLayout(0, 0));
@@ -82,11 +85,17 @@ public class LoginView {
 
 	private JPanel crearPanelUsuarioPassw() {
 		JPanel panelCampos = new JPanel();
-		panelCampos.setBorder(new TitledBorder(null, "Login", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelCampos.setLayout(new BoxLayout(panelCampos, BoxLayout.Y_AXIS));
+		panelCampos.setBackground(new Color(40, 167, 69));
+		TitledBorder titledBorder = new TitledBorder(new LineBorder(Color.BLACK), 
+                "Login", // Título del borde
+                TitledBorder.LEADING, 
+                TitledBorder.TOP, 
+                null, 
+                Color.BLACK);panelCampos.setLayout(new BoxLayout(panelCampos, BoxLayout.Y_AXIS));
 
 		// Panel Campo Login
 		JPanel panelCampoUsuario = new JPanel();
+		panelCampoUsuario.setBackground(new Color(40, 167, 69));
 		panelCampos.add(panelCampoUsuario);
 		panelCampoUsuario.setLayout(new BorderLayout(0, 0));
 
@@ -96,20 +105,24 @@ public class LoginView {
 		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
 		textUsuario = new JTextField();
+		textUsuario.setBackground(new Color(111, 204, 115)); 
 		panelCampoUsuario.add(textUsuario, BorderLayout.EAST);
 		textUsuario.setColumns(15);
 
 		// Panel Campo Password
 		JPanel panelCampoPassword = new JPanel();
+		panelCampoPassword.setBackground(new Color(40, 167, 69));
 		panelCampos.add(panelCampoPassword);
 		panelCampoPassword.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblPassword = new JLabel("Contrase\u00F1a: ");
+		lblPassword.setBackground(new Color(111, 204, 115)); 
 		panelCampoPassword.add(lblPassword);
 		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
 		textPassword = new JPasswordField();
+		textPassword.setBackground(new Color(111, 204, 115)); 
 		panelCampoPassword.add(textPassword, BorderLayout.EAST);
 		textPassword.setColumns(15);
 		
@@ -118,22 +131,38 @@ public class LoginView {
 
 	private JPanel crearPanelBotones() {
 		JPanel panelBotones = new JPanel();
+		panelBotones.setBackground(new Color(40, 167, 69));
 		panelBotones.setBorder(new EmptyBorder(5, 0, 5, 0));
 		panelBotones.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelBotonesLoginRegistro = new JPanel();
+		panelBotonesLoginRegistro.setBackground(new Color(40, 167, 69));
 		panelBotones.add(panelBotonesLoginRegistro, BorderLayout.WEST);
 
 		JButton btnLogin = new JButton("Login");
+		btnLogin.setBackground(new Color(0, 128, 0));
+		btnLogin.setForeground(Color.BLACK); // Texto blanco para contraste
+		btnLogin.setOpaque(true);
+		btnLogin.setBorderPainted(false);
+		
 		panelBotonesLoginRegistro.add(btnLogin);
 
 		JButton btnRegistro = new JButton("Registro");
+		btnRegistro.setBackground(new Color(0, 128, 0));
+		btnRegistro.setForeground(Color.BLACK); // Texto blanco para contraste
+		btnRegistro.setOpaque(true);
+		btnRegistro.setBorderPainted(false);
 		panelBotonesLoginRegistro.add(btnRegistro);
 
 		JPanel panelBotonSalir = new JPanel();
+		panelBotonSalir.setBackground(new Color(40, 167, 69));
 		panelBotones.add(panelBotonSalir, BorderLayout.EAST);
 
 		JButton btnSalir = new JButton("Salir");
+		btnSalir.setBackground(new Color(0, 128, 0));
+		btnSalir.setForeground(Color.BLACK); // Texto blanco para contraste
+		btnSalir.setOpaque(true);
+		btnSalir.setBorderPainted(false);
 		panelBotonSalir.add(btnSalir);
 
 		addManejadorBotonLogin(btnLogin);

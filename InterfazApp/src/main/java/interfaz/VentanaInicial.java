@@ -1,6 +1,7 @@
 package interfaz;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -39,6 +40,7 @@ public class VentanaInicial {
 	public void initialize() throws IOException {
 		frmVentanaInicial = new JFrame();
 		frmVentanaInicial.setTitle("AppChat- Ventana Inicio");
+		frmVentanaInicial.getContentPane().setBackground(new Color(40, 167, 69));
 		frmVentanaInicial.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmVentanaInicial.setPreferredSize(new Dimension(800,600));
 		
@@ -48,13 +50,16 @@ public class VentanaInicial {
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		frmVentanaInicial.getContentPane().setLayout(new BoxLayout(frmVentanaInicial.getContentPane(), BoxLayout.Y_AXIS));
 		
+		Component verticalStrut_2 = Box.createVerticalStrut(150);
+		frmVentanaInicial.getContentPane().add(verticalStrut_2);
+		
 		JLabel labelApp = new JLabel("Bienvenidos a AppVideo");
 		labelApp.setFont(new Font("Arial", Font.PLAIN, 30));
 		labelApp.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(labelApp);
 		
-		URL urlIconoLogin = new URL("https://c0.klipartz.com/pngpicture/81/570/gratis-png-perfil-logo-iconos-de-computadora-usuario-usuario.png"); // Sustituye con la URL real del icono
-        URL urlIconoRegistro = new URL("https://w7.pngwing.com/pngs/869/794/png-transparent-computer-icons-registered-user-login-user-profile-others-blue-logo-registered-user-thumbnail.png"); // Sustituye con la URL real del icono
+		URL urlIconoLogin = new URL("https://png.pngtree.com/png-vector/20230528/ourmid/pngtree-avatar-icon-profile-member-login-vector-isolated-silhouette-transparent-png-image_7111828.png"); // Sustituye con la URL real del icono
+        URL urlIconoRegistro = new URL("https://cdn.icon-icons.com/icons2/2248/PNG/512/account_check_icon_135997.png"); // Sustituye con la URL real del icono
         
         Image imgLogin = ImageIO.read(urlIconoLogin).getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 	    ImageIcon imgenLogin = new ImageIcon(imgLogin);  
@@ -63,6 +68,10 @@ public class VentanaInicial {
 	    ImageIcon imagenReg = new ImageIcon(imgReg);  
 	    
 	    JButton botonLogin = new JButton("Login", imgenLogin);
+	    botonLogin.setBackground(new Color(0, 128, 0));
+	    botonLogin.setForeground(Color.BLACK); // Texto blanco para contraste
+	    botonLogin.setOpaque(true);
+	    botonLogin.setBorderPainted(false);
 	    botonLogin.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    botonLogin
 	    .setFont(new Font("Arial", Font.BOLD, 18));  
@@ -75,6 +84,10 @@ public class VentanaInicial {
 	    botonRegistro.setPreferredSize(new Dimension(200,60));
 	    botonRegistro.setMaximumSize(new Dimension(200,60));
 	    botonRegistro.setMinimumSize(new Dimension(150,400));
+	    botonRegistro.setBackground(new Color(0, 128, 0));
+	    botonRegistro.setForeground(Color.BLACK); // Texto blanco para contraste
+	    botonRegistro.setOpaque(true);
+	    botonRegistro.setBorderPainted(false);
 	    
 	     
 	    Component verticalStrut = Box.createVerticalStrut(50);

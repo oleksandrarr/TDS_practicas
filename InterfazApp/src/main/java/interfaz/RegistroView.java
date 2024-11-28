@@ -25,6 +25,7 @@ import controlador.Controlador;
 
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.SwingConstants;
 
 public class RegistroView extends JDialog {
@@ -77,8 +78,14 @@ public class RegistroView extends JDialog {
 		this.getContentPane().setLayout(new BorderLayout());
 
 		JPanel datosPersonales = new JPanel();
+		datosPersonales.setBackground(new Color(40, 167, 69));
 		this.getContentPane().add(datosPersonales);
-		datosPersonales.setBorder(new TitledBorder(null, "Datos de Registro", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		datosPersonales.setBorder(new TitledBorder(new LineBorder(Color.BLACK), 
+                "Datos de Registro", 
+                TitledBorder.LEADING, 
+                TitledBorder.TOP, 
+                null, 
+                Color.BLACK));
 		datosPersonales.setLayout(new BoxLayout(datosPersonales, BoxLayout.Y_AXIS));
 
 		datosPersonales.add(creaLineaNombre());
@@ -98,16 +105,19 @@ public class RegistroView extends JDialog {
 
 	private JPanel creaLineaNombre() {
 		JPanel lineaNombre = new JPanel();
+		lineaNombre.setBackground(new Color(40, 167, 69));
 		lineaNombre.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		lineaNombre.setLayout(new BorderLayout(0, 0));
 		
 		panelCampoNombre = new JPanel();
+		panelCampoNombre.setBackground(new Color(40, 167, 69));
 		lineaNombre.add(panelCampoNombre, BorderLayout.CENTER);
 		
 		lblNombre = new JLabel("Nombre: ", JLabel.RIGHT);
 		panelCampoNombre.add(lblNombre);
 		fixedSize(lblNombre, 75, 20);
 		txtNombre = new JTextField();
+		txtNombre.setBackground(new Color(111, 204, 115)); 
 		panelCampoNombre.add(txtNombre);
 		fixedSize(txtNombre, 270, 20);
 		
@@ -121,16 +131,19 @@ public class RegistroView extends JDialog {
 
 	private JPanel crearLineaApellidos() {
 		JPanel lineaApellidos = new JPanel();
+		lineaApellidos.setBackground(new Color(40, 167, 69));
 		lineaApellidos.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		lineaApellidos.setLayout(new BorderLayout(0, 0));
 		
 		panelCampoApellidos = new JPanel();
+		panelCampoApellidos.setBackground(new Color(40, 167, 69));
 		lineaApellidos.add(panelCampoApellidos);
 		
 		lblApellidos = new JLabel("Apellidos: ", JLabel.RIGHT);
 		panelCampoApellidos.add(lblApellidos);
 		fixedSize(lblApellidos, 75, 20);
 		txtApellidos = new JTextField();
+		txtApellidos.setBackground(new Color(111, 204, 115)); 
 		panelCampoApellidos.add(txtApellidos);
 		fixedSize(txtApellidos, 270, 20);
 
@@ -145,16 +158,19 @@ public class RegistroView extends JDialog {
 
 	private JPanel crearLineaEmail() {
 		JPanel lineaEmail = new JPanel();
+		lineaEmail.setBackground(new Color(40, 167, 69));
 		lineaEmail.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		lineaEmail.setLayout(new BorderLayout(0, 0));
 		
 		panelCamposEmail = new JPanel();
+		panelCamposEmail.setBackground(new Color(40, 167, 69));
 		lineaEmail.add(panelCamposEmail, BorderLayout.CENTER);
 		
 		lblEmail = new JLabel("Email: ", JLabel.RIGHT);
 		panelCamposEmail.add(lblEmail);
 		fixedSize(lblEmail, 75, 20);
 		txtEmail = new JTextField();
+		txtEmail.setBackground(new Color(111, 204, 115)); 
 		panelCamposEmail.add(txtEmail);
 		fixedSize(txtEmail, 270, 20);
 		lblEmailError = new JLabel("El Email es obligatorio", SwingConstants.CENTER);
@@ -167,16 +183,19 @@ public class RegistroView extends JDialog {
 	
 	private JPanel creaLineaTelefono() {
 		JPanel lineaTelefono = new JPanel();
+		lineaTelefono.setBackground(new Color(40, 167, 69));
 		lineaTelefono.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		lineaTelefono.setLayout(new BorderLayout(0, 0));
 		
 		panelCampoTelefono = new JPanel();
+		panelCampoTelefono.setBackground(new Color(40, 167, 69));
 		lineaTelefono.add(panelCampoTelefono, BorderLayout.CENTER);
 		
 		lblTelefono = new JLabel("Telefono: ", JLabel.RIGHT);
 		panelCampoTelefono.add(lblTelefono);
 		fixedSize(lblTelefono, 75, 20);
 		txtTelefono = new JTextField();
+		txtTelefono.setBackground(new Color(111, 204, 115)); 
 		panelCampoTelefono.add(txtTelefono);
 		fixedSize(txtTelefono, 270, 20);
 		
@@ -192,16 +211,19 @@ public class RegistroView extends JDialog {
 
 	private JPanel crearLineaUsuario() {
 		JPanel lineaUsuario = new JPanel();
+		lineaUsuario.setBackground(new Color(40, 167, 69));
 		lineaUsuario.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		lineaUsuario.setLayout(new BorderLayout(0, 0));
 		
 		panelCamposUsuario = new JPanel();
+		panelCamposUsuario.setBackground(new Color(40, 167, 69));
 		lineaUsuario.add(panelCamposUsuario, BorderLayout.CENTER);
 		
 		lblUsuario = new JLabel("Usuario: ", JLabel.RIGHT);
 		panelCamposUsuario.add(lblUsuario);
 		fixedSize(lblUsuario, 75, 20);
 		txtUsuario = new JTextField();
+		txtUsuario.setBackground(new Color(111, 204, 115)); 
 		panelCamposUsuario.add(txtUsuario);
 		fixedSize(txtUsuario, 270, 20);
 		lblUsuarioError = new JLabel("El usuario ya existe", SwingConstants.CENTER);
@@ -214,22 +236,26 @@ public class RegistroView extends JDialog {
 
 	private JPanel crearLineaPassword() {
 		JPanel lineaPassword = new JPanel();
+		lineaPassword.setBackground(new Color(40, 167, 69));
 		lineaPassword.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		lineaPassword.setLayout(new BorderLayout(0, 0));
 		
 		panel = new JPanel();
+		panel.setBackground(new Color(40, 167, 69));
 		lineaPassword.add(panel, BorderLayout.CENTER);
 		
 		lblPassword = new JLabel("Password: ", JLabel.RIGHT);
 		panel.add(lblPassword);
 		fixedSize(lblPassword, 75, 20);
 		txtPassword = new JPasswordField();
+		txtPassword.setBackground(new Color(111, 204, 115)); 
 		panel.add(txtPassword);
 		fixedSize(txtPassword, 100, 20);
 		lblPasswordChk = new JLabel("Otra vez:", JLabel.RIGHT);
 		panel.add(lblPasswordChk);
 		fixedSize(lblPasswordChk, 60, 20);
 		txtPasswordChk = new JPasswordField();
+		txtPasswordChk.setBackground(new Color(111, 204, 115)); 
 		panel.add(txtPasswordChk);
 		fixedSize(txtPasswordChk, 100, 20);
 
@@ -242,16 +268,19 @@ public class RegistroView extends JDialog {
 
 	private JPanel crearLineaFechaNacimiento() {
 		JPanel lineaFechaNacimiento = new JPanel();
+		lineaFechaNacimiento.setBackground(new Color(40, 167, 69));
 		lineaFechaNacimiento.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		lineaFechaNacimiento.setLayout(new BorderLayout(0, 0));
 		
 		panelCamposFechaNacimiento = new JPanel();
+		panelCamposFechaNacimiento.setBackground(new Color(40, 167, 69));
 		lineaFechaNacimiento.add(panelCamposFechaNacimiento, BorderLayout.CENTER);
 		
 		lblFechaNacimiento = new JLabel("Fecha de Nacimiento: ", JLabel.RIGHT);
 		panelCamposFechaNacimiento.add(lblFechaNacimiento);
 		fixedSize(lblFechaNacimiento, 130, 20);
 		txtFechaNacimiento = new JTextField();
+		txtFechaNacimiento.setBackground(new Color(111, 204, 115)); 
 		panelCamposFechaNacimiento.add(txtFechaNacimiento);
 		fixedSize(txtFechaNacimiento, 215, 20);
 		lblFechaNacimientoError = new JLabel("Introduce la fecha de nacimiento", SwingConstants.CENTER);
@@ -264,14 +293,23 @@ public class RegistroView extends JDialog {
 
 	private void crearPanelBotones() {
 		JPanel lineaBotones = new JPanel(); 
+		lineaBotones.setBackground(new Color(40, 167, 69));
 		this.getContentPane().add(lineaBotones, BorderLayout.SOUTH);
 		lineaBotones.setBorder(new EmptyBorder(5, 0, 0, 0));
 		lineaBotones.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		btnRegistrar = new JButton("Registrar");
+		btnRegistrar.setBackground(new Color(0, 128, 0));
+		btnRegistrar.setForeground(Color.BLACK); // Texto blanco para contraste
+		btnRegistrar.setOpaque(true);
+		btnRegistrar.setBorderPainted(false);
 		lineaBotones.add(btnRegistrar);
 		
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBackground(new Color(0, 128, 0));
+		btnCancelar.setForeground(Color.BLACK); // Texto blanco para contraste
+		btnCancelar.setOpaque(true);
+		btnCancelar.setBorderPainted(false);
 		lineaBotones.add(btnCancelar);
 
 		this.crearManejadorBotonRegistrar();

@@ -30,6 +30,7 @@ import dominio.Contacto;
 import dominio.Mensaje;
 
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -40,6 +41,7 @@ public class Chat extends JPanel {
 	
     	
     	private static final long serialVersionUID = 1L;
+    	private JPanel cajaEmoji;
 
         public Chat(Contacto contacto) throws IOException {
        
@@ -69,15 +71,24 @@ public class Chat extends JPanel {
             URL url = new URL(path);
             BufferedImage image = ImageIO.read(url);
             JButton btnNewButton = new JButton(new ImageIcon(image.getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+            btnNewButton.setBackground(new Color(185, 255, 128));
+            btnNewButton.setForeground(Color.BLACK);
+            btnNewButton.setOpaque(true);
+            btnNewButton.setBorderPainted(true);
             bajoChat.add(btnNewButton);
 
             // Campo de texto
             JTextField textField_1 = new JTextField();
+            textField_1.setBackground(new Color(199, 235, 201));
             textField_1.setFont(new Font("Tahoma", Font.PLAIN, 26));
             bajoChat.add(textField_1);
 
             // Botón de enviar
             JButton btnNewButton_1 = new JButton("Sent");
+            btnNewButton_1.setBackground(new Color(185, 255, 128));
+            btnNewButton_1.setForeground(Color.BLACK);
+            btnNewButton_1.setOpaque(true);
+            btnNewButton_1.setBorderPainted(true);
             bajoChat.add(btnNewButton_1);
 
             // ScrollPane
@@ -136,10 +147,34 @@ public class Chat extends JPanel {
             cajaEmoji.add(Box.createRigidArea(new Dimension(40,40)));
             cajaIzq.add(cajaEmoji);
             
-            
-            
-            
             */
+            
+            JPopupMenu emojiPopup = new JPopupMenu();
+            JPanel cajaEmoji = new JPanel();
+            cajaEmoji.setBackground(new Color(40, 167, 69));
+            cajaEmoji.setBorder(new LineBorder(Color.BLACK));
+            cajaEmoji.setLayout(new GridLayout(3, 6));
+            
+            for (int i = 0; i < 18; i++) {
+                JButton emoticono = new JButton();
+                fixSize(emoticono, 40, 40);  // Tamaño de los botones
+                emoticono.setIcon(BubbleText.getEmoji(i));  // Obtiene el emoticón según el índice
+                emoticono.addActionListener(e -> {
+                    // Aquí se puede definir la acción al hacer clic en el emoticón
+                    System.out.println("Emoticón seleccionado: ");
+                    emojiPopup.setVisible(false);
+                });
+                cajaEmoji.add(emoticono);
+            }
+            
+            emojiPopup.add(cajaEmoji);
+            //bajoChat.add(cajaEmoji, BorderLayout.SOUTH);
+            
+            btnNewButton.addActionListener(e -> {
+                // Mostrar el JPopupMenu cerca del botón
+                emojiPopup.show(btnNewButton, btnNewButton.getWidth() / 2, btnNewButton.getHeight());
+            });
+            
         }
         
         private void fixSize(JComponent c, int x, int y) {

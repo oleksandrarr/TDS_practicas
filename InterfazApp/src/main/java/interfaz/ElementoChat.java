@@ -34,9 +34,10 @@ public class ElementoChat extends JPanel{
 		this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 		fixSize(this,300,110);
 		this.setBackground(Color.WHITE);
-		this.setBorder(new TitledBorder(usuario));
+		this.setBorder(new TitledBorder(new LineBorder(Color.BLACK), usuario));
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(199, 235, 201));
 	    panel.setLayout(new BorderLayout());
 	    panel.setPreferredSize(new Dimension(400, 100));
 
@@ -48,11 +49,13 @@ public class ElementoChat extends JPanel{
 
 	            // Crear un JLabel con la imagen
 	    JLabel imageLabel = new JLabel(new ImageIcon(img));
+	    imageLabel.setBackground(new Color(199, 235, 201));
 	    panel.add(imageLabel, BorderLayout.WEST);
 	        
 
 	    //JPanel nombre usuario y último mensaje
 	    JPanel panelDer = new JPanel();
+	    panelDer.setBackground(new Color(199, 235, 201));
 	    panelDer.setLayout(new GridLayout(0, 1, 0, 0));
 	    panelDer.setBorder(new EmptyBorder(15, 15, 15, 15));
 	     

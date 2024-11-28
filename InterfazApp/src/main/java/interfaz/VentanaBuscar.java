@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public class VentanaBuscar {
 
@@ -52,6 +53,10 @@ public class VentanaBuscar {
 		initialize();
 	}
 
+	public void mostrarVentana() {
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -59,7 +64,7 @@ public class VentanaBuscar {
 		frame = new JFrame();
 		frame.setTitle("Buscar");
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		crearPanelBuscar();
 		crearPanelScroll();
@@ -72,10 +77,11 @@ public class VentanaBuscar {
 	    
 	    // Panel con la imagen de lupa
 	    JPanel panelImagen = new JPanel();
+	    panelImagen.setBackground(new Color(40, 167, 69));
 	    panelBuscar.add(panelImagen, BorderLayout.NORTH);
 	    
 	    try {
-	        String path1 = "https://e7.pngegg.com/pngimages/464/384/png-clipart-computer-icons-magnifying-glass-magnifier-symbol-magnifying-glass-text-magnifier.png";
+	        String path1 = "https://png.pngtree.com/png-clipart/20230401/original/pngtree-magnifying-glass-line-icon-png-image_9015864.png";
 	        URL url1 = new URL(path1);
 	        BufferedImage image1 = ImageIO.read(url1);
 	        int width = 40; 
@@ -91,6 +97,7 @@ public class VentanaBuscar {
         
         //Panel con los campos de texto
         JPanel panelCampos = new JPanel();
+        panelCampos.setBackground(new Color(40, 167, 69));
         panelCampos.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelBuscar.add(panelCampos, BorderLayout.SOUTH);
         panelCampos.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Buscar"));
@@ -99,7 +106,7 @@ public class VentanaBuscar {
         gbl_panelCampos.columnWidths = new int[]{60, 100, 60, 100}; 
         gbl_panelCampos.rowHeights = new int[]{0, 0}; 
         gbl_panelCampos.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0}; 
-        gbl_panelCampos.rowWeights = new double[]{0.0, 0.0, 0.0}; 
+        gbl_panelCampos.rowWeights = new double[]{0.0, 0.0}; 
         panelCampos.setLayout(gbl_panelCampos);
         
         //texto
@@ -112,6 +119,7 @@ public class VentanaBuscar {
         panelCampos.add(lblNewLabel_texto, gbc_lblNewLabel_texto);
         
         JTextField textField_texto = new JTextField();
+        textField_texto.setBackground(new Color(199, 235, 201));
         GridBagConstraints gbc_textField_texto = new GridBagConstraints();
         gbc_textField_texto.insets = new Insets(5, 5, 5, 5);
         gbc_textField_texto.fill = GridBagConstraints.HORIZONTAL;
@@ -131,6 +139,7 @@ public class VentanaBuscar {
         panelCampos.add(lblNewLabel_telefono, gbc_lblNewLabel_telefono);
         
         JTextField txtTelefono = new JTextField();
+        txtTelefono.setBackground(new Color(199, 235, 201));
         GridBagConstraints gbc_txtTelefono = new GridBagConstraints();
         gbc_txtTelefono.insets = new Insets(5, 5, 5, 5);
         gbc_txtTelefono.fill = GridBagConstraints.HORIZONTAL;
@@ -149,6 +158,7 @@ public class VentanaBuscar {
         panelCampos.add(lblNewLabel_usuario, gbc_lblNewLabel_usuario);
 
         JTextField textField_usuario = new JTextField();
+        textField_usuario.setBackground(new Color(199, 235, 201));
         GridBagConstraints gbc_textField_usuario = new GridBagConstraints();
         gbc_textField_usuario.insets = new Insets(5, 5, 5, 5);
         gbc_textField_usuario.fill = GridBagConstraints.HORIZONTAL;
@@ -159,6 +169,10 @@ public class VentanaBuscar {
         
         //boton
         JButton btnNewButton_Aceptar = new JButton("Aceptar");
+        btnNewButton_Aceptar.setBackground(new Color(0, 128, 0)); // Verde medio
+        btnNewButton_Aceptar.setForeground(Color.BLACK); // Texto blanco para contraste
+        btnNewButton_Aceptar.setOpaque(true);
+		btnNewButton_Aceptar.setBorderPainted(false);
         GridBagConstraints gbc_btnNewButton_Aceptar = new GridBagConstraints();
         gbc_btnNewButton_Aceptar.insets = new Insets(5, 5, 5, 5);
         gbc_btnNewButton_Aceptar.gridx = 4; 
@@ -170,12 +184,26 @@ public class VentanaBuscar {
 	
 	private void crearPanelScroll() {
 		JPanel panelMensajes = new JPanel();
+		panelMensajes.setBackground(new Color(40, 167, 69));
         panelMensajes.setLayout(new BoxLayout(panelMensajes, BoxLayout.Y_AXIS));
         
         JScrollPane scrollPaneBuscar = new JScrollPane(panelMensajes);
+        scrollPaneBuscar.setBackground(new Color(111, 204, 115));
         scrollPaneBuscar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         frame.getContentPane().add(scrollPaneBuscar, BorderLayout.CENTER);
-		
+        
+        /*
+        // Personalizar la barra de desplazamiento con un color específico
+        scrollPaneBuscar.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                // Cambiar el color del pulgar (parte que se mueve)
+                this.thumbColor = new Color(0, 128, 0); // Color del pulgar
+                // Cambiar el color del fondo de la barra de desplazamiento
+                this.trackColor = new Color(40, 167, 69); // Color del fondo
+            }
+        });
+        */
         
         //Bucle con mensajes
         for (int i=0; i<3; i++) {
@@ -185,6 +213,7 @@ public class VentanaBuscar {
 	
 	private JPanel añadirPanelMensaje(String receptor, String emisor) {
 		JPanel panelMensaje = new JPanel();
+		panelMensaje.setBackground(new Color(111, 204, 115)); 
 		panelMensaje.setBorder(new LineBorder(Color.BLACK, 1));
 	    panelMensaje.setLayout(new GridBagLayout());
 
@@ -209,6 +238,7 @@ public class VentanaBuscar {
 	    
 	    //Mensaje
 	    JTextField txtMensaje = new JTextField(20); 
+	    txtMensaje.setBackground(new Color(199, 235, 201));
 	    gbc.gridx = 0;
 	    gbc.gridy = 1;
 	    gbc.gridwidth = 2;

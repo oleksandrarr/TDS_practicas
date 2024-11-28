@@ -49,6 +49,11 @@ public class VentanaPrincipal {
 	private JPanel pantalla;
 	Controlador controlador = Controlador.INSTANCE;
 	
+	private VentanaContactos ventanaContactos;
+	private VentanaBuscar ventanaBuscar;
+	private PremiumSin premiumSin;
+	private PremiumCon premiumCon;
+	
 
 
 	public void mostrarVentana() {
@@ -92,7 +97,7 @@ public class VentanaPrincipal {
 
 		
 		Contacto contacto = controlador.añadirContactoIndividual("puan", "juan");
-		//Contacto contacto = controlador.INSTANCE.getUsuarioActual().getContactoIndividual(79);
+		//Contacto contacto = controlador.INSTANCE.getUsuarioActual().getContactoIndividual(79);		//IMP
 		if(contacto==null) {
 			System.out.printf("NO HAY/////////LOS CONTACTOS AL EJECUTRAR %d \n",controlador.INSTANCE.getUsuarioActual().getContactos().size());
 		}
@@ -156,7 +161,7 @@ public class VentanaPrincipal {
 		
 		/*--fin menu--*/
 		JPanel cajaArriba = new JPanel();
-		cajaArriba.setBackground(Color.GREEN);
+		cajaArriba.setBackground(new Color(40, 167, 69));
 		cajaArriba.setPreferredSize(new Dimension(700, 80));
 		cajaArriba.setMinimumSize(new Dimension(700, 80));
 		cajaArriba.setMaximumSize(new Dimension(700, 80));
@@ -172,32 +177,43 @@ public class VentanaPrincipal {
 		comboBox.setPreferredSize(new Dimension(200, 30));
 		comboBox.setMinimumSize(new Dimension(200, 30));
 		comboBox.setMaximumSize(new Dimension(200, 30));
+		comboBox.setBackground(new Color(111, 204, 115)); // Verde medio
+		comboBox.setForeground(Color.WHITE); // Texto blanco para contraste
+		comboBox.setOpaque(true);
 		cajaArriba.add(comboBox);
 		
 		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
 		cajaArriba.add(horizontalStrut_1);
 		
-		String path = "https://st.depositphotos.com/1000507/55277/v/380/depositphotos_552772436-stock-illustration-forward-email-arrow-icon.jpg";
+		String path = "https://cdn-icons-png.flaticon.com/512/106/106733.png";
         URL url = new URL(path);
         BufferedImage image = ImageIO.read(url);
         JButton botonPanel = new JButton(new ImageIcon(image.getScaledInstance(40, 25, Image.SCALE_SMOOTH)));
 		botonPanel.setPreferredSize(new Dimension(40, 40));
 		botonPanel.setMinimumSize(new Dimension(40, 40));
 		botonPanel.setMaximumSize(new Dimension(40, 40));
+		botonPanel.setBackground(new Color(0, 128, 0)); // Verde medio
+		botonPanel.setForeground(Color.WHITE); // Texto blanco para contraste
+		botonPanel.setOpaque(true);
+		botonPanel.setBorderPainted(false);
 		cajaArriba.add(botonPanel);
 		
 		Component horizontalStrut_1_2 = Box.createHorizontalStrut(10);
 		cajaArriba.add(horizontalStrut_1_2);
 		
 		
-	
-		String path1 = "https://e7.pngegg.com/pngimages/464/384/png-clipart-computer-icons-magnifying-glass-magnifier-symbol-magnifying-glass-text-magnifier.png";
+		String path1 = "https://png.pngtree.com/png-clipart/20230401/original/pngtree-magnifying-glass-line-icon-png-image_9015864.png";
         URL url1 = new URL(path1);
+        
         BufferedImage image1 = ImageIO.read(url1);
         JButton botonBusqueda = new JButton(new ImageIcon(image1.getScaledInstance(40, 25, Image.SCALE_SMOOTH)));
         botonBusqueda.setPreferredSize(new Dimension(40, 40));
 		botonBusqueda.setMinimumSize(new Dimension(40, 40));
 		botonBusqueda.setMaximumSize(new Dimension(40, 40));
+		botonBusqueda.setBackground(new Color(0, 128, 0));
+		botonBusqueda.setForeground(Color.WHITE); // Texto blanco para contraste
+		botonBusqueda.setOpaque(true);
+		botonBusqueda.setBorderPainted(true);
         cajaArriba.add(botonBusqueda);
 		
 		
@@ -214,6 +230,10 @@ public class VentanaPrincipal {
 	    botonUsuarios.setPreferredSize(new Dimension(100, 40));
 		botonUsuarios.setMinimumSize(new Dimension(100, 40));
 		botonUsuarios.setMaximumSize(new Dimension(200, 40));
+		botonUsuarios.setBackground(new Color(0, 128, 0));
+		botonUsuarios.setForeground(Color.BLACK);
+		botonUsuarios.setOpaque(true);
+		botonUsuarios.setBorderPainted(true);
 	    cajaArriba.add(botonUsuarios);
 		
 		Component horizontalStrut_1_4 = Box.createHorizontalStrut(10);
@@ -230,12 +250,18 @@ public class VentanaPrincipal {
 	    botonPremium.setPreferredSize(new Dimension(100, 40));
 	    botonPremium.setMinimumSize(new Dimension(100, 40));
 	    botonPremium.setMaximumSize(new Dimension(200, 40));
+	    botonPremium.setBackground(new Color(0, 128, 0));
+	    botonPremium.setForeground(Color.BLACK);
+	    botonPremium.setOpaque(true);
+	    botonPremium.setBorderPainted(true);
 	    cajaArriba.add(botonPremium);
 		
 		Component horizontalStrut_1_5 = Box.createHorizontalStrut(20);
 		cajaArriba.add(horizontalStrut_1_5);
 		
 		JLabel lblNewLabel = new JLabel("Pascual Angosto");
+		lblNewLabel.setOpaque(true); // Hace que el JLabel sea opaco
+		lblNewLabel.setBackground(new Color(111, 204, 115)); // Establece el color de fondo
 		cajaArriba.add(lblNewLabel);
 		
 		Component horizontalStrut_2 = Box.createHorizontalStrut(10);
@@ -253,12 +279,12 @@ public class VentanaPrincipal {
 		cajaArriba.add(imagenPerfil);
 		
 		pantalla = new JPanel();
-		pantalla.setBackground(Color.ORANGE);
+		pantalla.setBackground(new Color(40, 167, 69));
 		ventana.getContentPane().add(pantalla, BorderLayout.CENTER);
 		pantalla.setLayout(new BoxLayout(pantalla, BoxLayout.X_AXIS));
 		
 		JPanel cajaIzquierda = new JPanel();
-		cajaIzquierda.setBackground(Color.ORANGE);
+		cajaIzquierda.setBackground(new Color(40, 167, 69));
 		
 		cajaIzquierda.setPreferredSize(new Dimension(320, 700));
 		cajaIzquierda.setMinimumSize(new Dimension(200, 200));
@@ -278,14 +304,18 @@ public class VentanaPrincipal {
 		pantalla.add(chat);
 		
 		personaje = new JLabel("");
-		chat.add(personaje);
+		personaje.setBackground(new Color(111, 204, 115));
 		
 		//Elemento aux= new Elemento("SMV.png","Mujer Maravilla",50,85,85);
 		//cajaIzquierda.add(aux);
 		
 		//Lista de valores
 		lista =new JList<ElementoChat>();
+		lista.setBackground(new Color(111, 204, 115));
+		lista.setBackground(new Color(111, 204, 115));
 		DefaultListModel<ElementoChat> model=new DefaultListModel<ElementoChat>();
+		
+		
 		model.addElement(new ElementoChat("https://cdn-icons-png.flaticon.com/512/3135/3135768.png","Pablo","Hola"));
 		model.addElement(new ElementoChat("https://cdn-icons-png.flaticon.com/512/3135/3135768.png","Jesus","Adios"));
 		model.addElement(new ElementoChat("https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png","Maria","Buenos dias"));
@@ -306,7 +336,61 @@ public class VentanaPrincipal {
 		scroll.setMaximumSize(new Dimension(320,320));
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		cajaIzquierda.add(scroll);
+		
+		//ActionListener boton Contactos
+		botonUsuarios.addActionListener(new ActionListener() {
+	         @Override
+	         public void actionPerformed(ActionEvent e) {
+	             VentanaContactos  ventanaContactos = new  VentanaContactos();
+	             ventanaContactos.mostrarVentana();
+	         }
+	     });
+		
+		//ActionListener boton Buscar
+		botonBusqueda.addActionListener(new ActionListener() {
+	         @Override
+	         public void actionPerformed(ActionEvent e) {
+	             VentanaBuscar  ventanaBuscar = new  VentanaBuscar();
+	             ventanaBuscar.mostrarVentana();
+	         }
+	     });
+		
+		//ActionListener boton Premium
+		botonPremium.addActionListener(new ActionListener() {
+	         @Override
+	         public void actionPerformed(ActionEvent e) {
+	        	 //if usuario premium
+	             PremiumCon premiumCon = null;
+				try {
+					premiumCon = new PremiumCon();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+	             premiumCon.mostrarVentana();
+	             //else if usuario no premium:
+	             PremiumSin  premiumSin = new PremiumSin();
+	             premiumSin.mostrarVentana();
+	         }
+	     });
+		
+		
+		
+
 	}
+	
+	private void cambiarPantallaChat(JPanel nuevoChat) {
+	    BorderLayout layout = (BorderLayout) contenedor.getLayout();
+	    Component componenteActual = layout.getLayoutComponent(BorderLayout.CENTER);
+
+	    if (componenteActual != null) {
+	        contenedor.remove(componenteActual); // Remover el panel actual
+	    }
+
+	    contenedor.add(nuevoChat, BorderLayout.CENTER); // Añadir el nuevo panel
+	    contenedor.revalidate(); // Actualizar la vista
+	    contenedor.repaint(); // Re-pintar la interfaz
+	}
+
 
 
 
