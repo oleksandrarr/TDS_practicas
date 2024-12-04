@@ -103,7 +103,7 @@ public class VentanaPrincipal {
 		//-------------------------------
 		
 		
-		Contacto contacto = controlador.añadirContactoIndividual("puan", "juan");
+		Contacto contacto = controlador.añadirContactoIndividual("juan", "623224");
 		//Contacto contacto = controlador.INSTANCE.getUsuarioActual().getContactoIndividual(79);		//IMP
 		if(contacto==null) {
 			System.out.printf("NO HAY/////////LOS CONTACTOS AL EJECUTRAR %d \n",controlador.INSTANCE.getUsuarioActual().getContactos().size());

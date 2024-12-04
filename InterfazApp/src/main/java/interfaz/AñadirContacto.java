@@ -99,8 +99,9 @@ public class AñadirContacto {
                 public void actionPerformed(ActionEvent e) {
                 	String nombre = textoNombre.getText();
                 	String telefono = textoTelefono.getText();
-                	Contacto contacto = Controlador.INSTANCE.añadirContactoIndividual(nombre, 
-                			Controlador.INSTANCE.getUsuarioActual());
+                	Controlador.INSTANCE.añadirContactoIndividual(nombre, 
+                			telefono);
+                	frame.dispose();
                 }
             });
         

@@ -13,7 +13,7 @@ public class Usuario {
 	private String login;
 	private String password;
 	private String fechaNacimiento;
-	private static String numeroTelefono;
+	private String numeroTelefono;
 	private List<Contacto> contactos;
 
 	

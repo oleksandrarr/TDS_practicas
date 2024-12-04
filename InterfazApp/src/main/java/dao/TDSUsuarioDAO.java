@@ -69,11 +69,14 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	}
 
 	private List<Contacto> obtenerContactos(String contactosIds) throws DAOException {
+		
 		 List<Contacto> contactos = new ArrayList<>();
 		    if (contactosIds != null && !contactosIds.isEmpty()) {
+
 		        String[] idsArray = contactosIds.split(",");
 		        for (String id : idsArray) {
 		            try {
+		            	
 		                int contactoId = Integer.parseInt(id.trim()); // Eliminar espacios en blanco
 		                Contacto contacto = TDSContactoDAO.getInstance().get(contactoId);
 		                if (contacto != null) {
@@ -86,17 +89,19 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 		            }
 		        }
 		    }
+		    
 		    return contactos;
 	}
 
 	private Entidad usuarioToEntidad(Usuario usuario) {
 	    Entidad eUsuario = new Entidad();
 	    eUsuario.setNombre(USUARIO);
-	    
-	    Contacto contacto1 = new ContactoIndividual("yo",usuario);
-	    usuario.añadirContacto(contacto1);
+	   
+	   
 	    StringBuilder contactosIds = new StringBuilder();
+
 	    if (usuario.getContactos() != null && !usuario.getContactos().isEmpty()) {
+	  
 	        for (Contacto contacto : usuario.getContactos()) {
 	            contactosIds.append(contacto.getId()).append(",");
 	        }
@@ -158,9 +163,10 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	    // Actualiza la propiedad 'contactos'
 	    for (Propiedad prop : eUsuario.getPropiedades()) {
 	        if (prop.getNombre().equals(CONTACTO)) {
-	        	System.out.println("ENTRA //222////////\n");
+	        	
 	            prop.setValor(nombresConcatenados.toString());
-	            break;
+	           
+	           
 	        }
 	    }
 	    

@@ -13,18 +13,20 @@ public enum RepositorioUsuarios {
 
 	private HashMap<Integer, Usuario> usuariosPorID;
 	private HashMap<String, Usuario> usuariosPorLogin;
-
+	private HashMap<String, Usuario> usuariosPorTelefono;
 	private RepositorioUsuarios (){
 		usuariosPorID = new HashMap<Integer, Usuario>();
 		usuariosPorLogin = new HashMap<String, Usuario>();
-		
+		usuariosPorTelefono = new HashMap<String, Usuario>();
 		try {
 			factoria = FactoriaDAO.getInstancia();
 			
 			List<Usuario> listausuarios = factoria.getUsuarioDAO().getAll();
 			for (Usuario usuario : listausuarios) {
+				System.out.println("UUUUU"+usuario.getNumeroTelefono());
 				usuariosPorID.put(usuario.getId(), usuario);
 				usuariosPorLogin.put(usuario.getLogin(), usuario);
+				usuariosPorTelefono.put(usuario.getNumeroTelefono(), usuario);
 			}
 		} catch (DAOException eDAO) {
 			   eDAO.printStackTrace();
@@ -43,24 +45,20 @@ public enum RepositorioUsuarios {
 		return usuariosPorID.get(id);
 	}
 	
+	public Usuario findUsuarioPorTelefono(String telefono) {
+		return usuariosPorTelefono.get(telefono);
+	}
+	
 	public void addUsuario(Usuario usuario) {
 		usuariosPorID.put(usuario.getId(), usuario);
 		usuariosPorLogin.put(usuario.getLogin(), usuario);
+		usuariosPorTelefono.put(usuario.getNumeroTelefono(), usuario);
 	}
 	
 	public void removeUsuario(Usuario usuario) {
 		usuariosPorID.remove(usuario.getId());
 		usuariosPorLogin.remove(usuario.getLogin());
-	}
-	
-	public Usuario findUsuarioTelefono(String telefono) {
-		List<Usuario> usuarios = factoria.getUsuarioDAO().getAll();
-		for(Usuario u : usuarios) {
-			if(u.getNumeroTelefono().equals(telefono)) {
-				return u;
-			}
-		}
-		return null;
+		usuariosPorTelefono.remove(usuario.getNumeroTelefono());
 	}
 
 }

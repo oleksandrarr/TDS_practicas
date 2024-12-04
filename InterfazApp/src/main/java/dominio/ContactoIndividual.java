@@ -19,7 +19,7 @@ public class ContactoIndividual extends Contacto {
 	}
 
 	public Usuario getUsuario() {
-		return usuario;
+		return this.usuario;
 	}
 
 	public void setUsuario(Usuario usuario) {

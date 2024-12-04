@@ -83,23 +83,25 @@ public enum Controlador {
 	public void añadirContacto(String nombre, String telefono) {
 		
 	}
-	public ContactoIndividual añadirContactoIndividual(String nombre, String login) {
+	public ContactoIndividual añadirContactoIndividual(String nombre, String telefono) {
 		
-		 Usuario usuarioContacto = RepositorioUsuarios.INSTANCE.findUsuario(login);
+		 Usuario usuarioContacto = RepositorioUsuarios.INSTANCE.findUsuarioPorTelefono(telefono);
 		    if (usuarioContacto == null) {
-		        throw new IllegalArgumentException("El usuario con login " + login + " no existe.");
+		        throw new IllegalArgumentException("El usuario con telefono " + telefono+ " no existe.");
 		 }
-		Contacto contacto = new ContactoIndividual(nombre, RepositorioUsuarios.INSTANCE.findUsuario(login));
+		ContactoIndividual contacto = new ContactoIndividual(nombre, RepositorioUsuarios.INSTANCE.findUsuarioPorTelefono(telefono));
 		
 		usuarioActual.añadirContacto(contacto);
 		ContactoDAO contactoDAO = factoria
 				.getContactoDAO(); 
 		contactoDAO.create(contacto);
+		
 		UsuarioDAO usuarioDAO = factoria
 				.getUsuarioDAO(); 
 		usuarioDAO.update(usuarioActual);
 		System.out.println("añade uncontacot indi \n");
 		
+		System.out.println("CONTACTO CXONTROLADOR"+contacto.getNombre());
 		return (ContactoIndividual)contacto;
 	}
 	
