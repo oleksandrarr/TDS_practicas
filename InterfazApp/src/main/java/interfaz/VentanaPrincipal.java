@@ -55,7 +55,7 @@ public class VentanaPrincipal {
 	private ArrayList<ImageIcon> imagenes;
 	private JPanel pantalla;
 	Controlador controlador = Controlador.INSTANCE;
-	
+	private JComboBox comboBox;
 	private VentanaContactos ventanaContactos;
 	private VentanaBuscar ventanaBuscar;
 	private PremiumSin premiumSin;
@@ -137,7 +137,10 @@ public class VentanaPrincipal {
 		//ButtonGroup grupo=new ButtonGroup();
 		añadirPantalla();	
 		añadirCajaIzquierda();
-		añadirChat();
+		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
+		//list<Contactos>
+		Contacto contacto1 = listaContactos.get(0);
+		añadirChat(contacto1);
         
 		
 		
@@ -268,11 +271,11 @@ public class VentanaPrincipal {
 		Component horizontalStrut_1_1 = Box.createHorizontalStrut(10);
 		cajaArriba.add(horizontalStrut_1_1);
 		
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox();
 		comboBox.setPreferredSize(new Dimension(200, 30));
 		comboBox.setMinimumSize(new Dimension(200, 30));
 		comboBox.setMaximumSize(new Dimension(200, 30));
-		comboBox.setBackground(new Color(111, 204, 115)); // Verde medio
+		comboBox.setBackground(Utilidades.VERDE_LABELS); // Verde medio
 		comboBox.setForeground(Color.WHITE); // Texto blanco para contraste
 		comboBox.setOpaque(true);
 		cajaArriba.add(comboBox);
@@ -285,17 +288,12 @@ public class VentanaPrincipal {
 		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
 		cajaArriba.add(horizontalStrut_1);
 		
+		//boton nuevo chat
 		String path = "https://cdn-icons-png.flaticon.com/512/106/106733.png";
         URL url = new URL(path);
         BufferedImage image = ImageIO.read(url);
         JButton botonPanel = new JButton(new ImageIcon(image.getScaledInstance(40, 25, Image.SCALE_SMOOTH)));
-		botonPanel.setPreferredSize(new Dimension(40, 40));
-		botonPanel.setMinimumSize(new Dimension(40, 40));
-		botonPanel.setMaximumSize(new Dimension(40, 40));
-		botonPanel.setBackground(new Color(0, 128, 0)); // Verde medio
-		botonPanel.setForeground(Color.WHITE); // Texto blanco para contraste
-		botonPanel.setOpaque(true);
-		botonPanel.setBorderPainted(false);
+		Utilidades.crearBoton(botonPanel, 40, 40, 12);
 		cajaArriba.add(botonPanel);
 		
 		Component horizontalStrut_1_2 = Box.createHorizontalStrut(10);
@@ -307,13 +305,7 @@ public class VentanaPrincipal {
         
         BufferedImage image1 = ImageIO.read(url1);
         JButton botonBusqueda = new JButton(new ImageIcon(image1.getScaledInstance(40, 25, Image.SCALE_SMOOTH)));
-        botonBusqueda.setPreferredSize(new Dimension(40, 40));
-		botonBusqueda.setMinimumSize(new Dimension(40, 40));
-		botonBusqueda.setMaximumSize(new Dimension(40, 40));
-		botonBusqueda.setBackground(new Color(0, 128, 0));
-		botonBusqueda.setForeground(Color.WHITE); // Texto blanco para contraste
-		botonBusqueda.setOpaque(true);
-		botonBusqueda.setBorderPainted(true);
+        Utilidades.crearBoton(botonBusqueda, 40, 40, 12);
         cajaArriba.add(botonBusqueda);
 		
 		
@@ -325,15 +317,7 @@ public class VentanaPrincipal {
 	    Image img2 = ImageIO.read(url2).getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 	    ImageIcon image2 = new ImageIcon(img2);  
 	    JButton botonUsuarios = new JButton("Contactos", image2);
-	    botonUsuarios.setHorizontalTextPosition(SwingConstants.RIGHT); // Posicionar el texto a la derecha de la imagen
-	    botonUsuarios.setFont(new Font("Tahoma", Font.PLAIN, 16)); // Opcional, para un estilo de texto
-	    botonUsuarios.setPreferredSize(new Dimension(100, 40));
-		botonUsuarios.setMinimumSize(new Dimension(100, 40));
-		botonUsuarios.setMaximumSize(new Dimension(200, 40));
-		botonUsuarios.setBackground(new Color(0, 128, 0));
-		botonUsuarios.setForeground(Color.BLACK);
-		botonUsuarios.setOpaque(true);
-		botonUsuarios.setBorderPainted(true);
+	    Utilidades.crearBoton(botonUsuarios, 160, 40, 14);
 	    cajaArriba.add(botonUsuarios);
 		
 		Component horizontalStrut_1_4 = Box.createHorizontalStrut(10);
@@ -343,26 +327,21 @@ public class VentanaPrincipal {
 		String path3 = "https://cdn-icons-png.flaticon.com/512/126/126179.png";
 	    URL url3 = new URL(path3);
 	    Image img3 = ImageIO.read(url3).getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+	    //Controlador.INSTANCE.getUsuarioActual().getImagenPerfil();
 	    ImageIcon image3 = new ImageIcon(img3);  
 	    JButton botonPremium = new JButton("Premium", image3);
-	    botonPremium.setHorizontalTextPosition(SwingConstants.RIGHT); // Posicionar el texto a la derecha de la imagen
-	    botonPremium.setFont(new Font("Tahoma", Font.PLAIN, 16)); // Opcional, para un estilo de texto
-	    botonPremium.setPreferredSize(new Dimension(100, 40));
-	    botonPremium.setMinimumSize(new Dimension(100, 40));
-	    botonPremium.setMaximumSize(new Dimension(200, 40));
-	    botonPremium.setBackground(new Color(0, 128, 0));
-	    botonPremium.setForeground(Color.BLACK);
-	    botonPremium.setOpaque(true);
-	    botonPremium.setBorderPainted(true);
+	    Utilidades.crearBoton(botonPremium, 160, 40, 14);
 	    cajaArriba.add(botonPremium);
 		
 		Component horizontalStrut_1_5 = Box.createHorizontalStrut(20);
 		cajaArriba.add(horizontalStrut_1_5);
 		
-		JLabel lblNewLabel = new JLabel("Pascual Angosto");
-		lblNewLabel.setOpaque(true); // Hace que el JLabel sea opaco
-		lblNewLabel.setBackground(new Color(111, 204, 115)); // Establece el color de fondo
-		cajaArriba.add(lblNewLabel);
+		//Nombre del usuario actual
+		String nombre = Controlador.INSTANCE.getUsuarioActual().getNombre();
+		String apellido = Controlador.INSTANCE.getUsuarioActual().getApellidos();
+		JButton botonUsuarioActual = new JButton(nombre+" "+apellido);
+		Utilidades.crearBoton(botonUsuarioActual, 130, 40, 14);
+		cajaArriba.add(botonUsuarioActual);
 		
 		Component horizontalStrut_2 = Box.createHorizontalStrut(10);
 		cajaArriba.add(horizontalStrut_2);
@@ -414,7 +393,27 @@ public class VentanaPrincipal {
 			             premiumSin.mostrarVentana();
 			         }
 			     });
-		
+				
+				
+				//ActionListener boton chat nuevo
+				botonPanel.addActionListener(new ActionListener() {
+			         @Override
+			         public void actionPerformed(ActionEvent e) {
+			        	 String contactoSeleccionado = (String) comboBox.getSelectedItem();
+			        	 Contacto contacto = null;
+			        	 for(Contacto c : Controlador.INSTANCE.getUsuarioActual().getContactos()) {
+			        		 if(contacto.equals(c.toString())) {
+			        			 contacto = c;
+			        		 }
+			        	 }
+			        	 try {
+							añadirChat(contacto);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+			         }
+			     });
 		
 	}
 	
@@ -438,10 +437,8 @@ public class VentanaPrincipal {
 		
 	}
 	
-	private void añadirChat() throws IOException{
-		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
-		//list<Contactos>
-		Contacto contacto = listaContactos.get(0);
+	private void añadirChat(Contacto contacto) throws IOException{
+		
 		chat = new Chat(contacto);
 		chat.setPreferredSize(new Dimension(500, 700));
 		chat.setMinimumSize(new Dimension(500, 700));

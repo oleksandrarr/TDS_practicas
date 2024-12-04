@@ -5,13 +5,17 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -26,9 +30,22 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+import beans.Entidad;
+import beans.Mensaje;
+import controlador.Controlador;
+import dominio.Contacto;
+
 public class VentanaBuscar {
 
 	private JFrame frame;
+	private String mensaje;
+	private String telefono;
+	private String usuario;
+	
+	private JTextField txtTelefono;
+	private JTextField textField_texto;
+	private JTextField textField_usuario;
+	
 
 	/**
 	 * Launch the application.
@@ -77,7 +94,7 @@ public class VentanaBuscar {
 	    
 	    // Panel con la imagen de lupa
 	    JPanel panelImagen = new JPanel();
-	    panelImagen.setBackground(new Color(40, 167, 69));
+	    panelImagen.setBackground(Utilidades.VERDE_FONDO);
 	    panelBuscar.add(panelImagen, BorderLayout.NORTH);
 	    
 	    try {
@@ -97,10 +114,12 @@ public class VentanaBuscar {
         
         //Panel con los campos de texto
         JPanel panelCampos = new JPanel();
-        panelCampos.setBackground(new Color(40, 167, 69));
+        panelCampos.setBackground(Utilidades.VERDE_FONDO);
         panelCampos.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelBuscar.add(panelCampos, BorderLayout.SOUTH);
-        panelCampos.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Buscar"));
+        TitledBorder border = new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Buscar");
+        border.setTitleFont(new Font("Times New Roman", Font.ITALIC, 12));
+        panelCampos.setBorder(border);
         
         GridBagLayout gbl_panelCampos = new GridBagLayout();
         gbl_panelCampos.columnWidths = new int[]{60, 100, 60, 100}; 
@@ -111,6 +130,7 @@ public class VentanaBuscar {
         
         //texto
         JLabel lblNewLabel_texto = new JLabel("Texto:");
+        lblNewLabel_texto.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         GridBagConstraints gbc_lblNewLabel_texto = new GridBagConstraints();
         gbc_lblNewLabel_texto.anchor = GridBagConstraints.WEST;
         gbc_lblNewLabel_texto.insets = new Insets(5, 5, 5, 5);
@@ -118,7 +138,7 @@ public class VentanaBuscar {
         gbc_lblNewLabel_texto.gridy = 0; 
         panelCampos.add(lblNewLabel_texto, gbc_lblNewLabel_texto);
         
-        JTextField textField_texto = new JTextField();
+        textField_texto = new JTextField();
         textField_texto.setBackground(new Color(199, 235, 201));
         GridBagConstraints gbc_textField_texto = new GridBagConstraints();
         gbc_textField_texto.insets = new Insets(5, 5, 5, 5);
@@ -131,6 +151,7 @@ public class VentanaBuscar {
         
         //telefono
         JLabel lblNewLabel_telefono = new JLabel("Teléfono:");
+        lblNewLabel_telefono.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         GridBagConstraints gbc_lblNewLabel_telefono = new GridBagConstraints();
         gbc_lblNewLabel_telefono.anchor = GridBagConstraints.WEST;
         gbc_lblNewLabel_telefono.insets = new Insets(5, 5, 5, 5);
@@ -138,7 +159,7 @@ public class VentanaBuscar {
         gbc_lblNewLabel_telefono.gridy = 1;
         panelCampos.add(lblNewLabel_telefono, gbc_lblNewLabel_telefono);
         
-        JTextField txtTelefono = new JTextField();
+        txtTelefono = new JTextField();
         txtTelefono.setBackground(new Color(199, 235, 201));
         GridBagConstraints gbc_txtTelefono = new GridBagConstraints();
         gbc_txtTelefono.insets = new Insets(5, 5, 5, 5);
@@ -150,6 +171,7 @@ public class VentanaBuscar {
         
         // Usuario
         JLabel lblNewLabel_usuario = new JLabel("Usuario:");
+        lblNewLabel_usuario.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         GridBagConstraints gbc_lblNewLabel_usuario = new GridBagConstraints();
         gbc_lblNewLabel_usuario.anchor = GridBagConstraints.WEST;
         gbc_lblNewLabel_usuario.insets = new Insets(5, 5, 5, 5);
@@ -157,7 +179,7 @@ public class VentanaBuscar {
         gbc_lblNewLabel_usuario.gridy = 1; 
         panelCampos.add(lblNewLabel_usuario, gbc_lblNewLabel_usuario);
 
-        JTextField textField_usuario = new JTextField();
+        textField_usuario = new JTextField();
         textField_usuario.setBackground(new Color(199, 235, 201));
         GridBagConstraints gbc_textField_usuario = new GridBagConstraints();
         gbc_textField_usuario.insets = new Insets(5, 5, 5, 5);
@@ -169,10 +191,7 @@ public class VentanaBuscar {
         
         //boton
         JButton btnNewButton_Aceptar = new JButton("Aceptar");
-        btnNewButton_Aceptar.setBackground(new Color(0, 128, 0)); // Verde medio
-        btnNewButton_Aceptar.setForeground(Color.BLACK); // Texto blanco para contraste
-        btnNewButton_Aceptar.setOpaque(true);
-		btnNewButton_Aceptar.setBorderPainted(false);
+        Utilidades.crearBoton(btnNewButton_Aceptar, 80, 20, 12);
         GridBagConstraints gbc_btnNewButton_Aceptar = new GridBagConstraints();
         gbc_btnNewButton_Aceptar.insets = new Insets(5, 5, 5, 5);
         gbc_btnNewButton_Aceptar.gridx = 4; 
@@ -180,40 +199,56 @@ public class VentanaBuscar {
         gbc_btnNewButton_Aceptar.anchor = GridBagConstraints.WEST;
         panelCampos.add(btnNewButton_Aceptar, gbc_btnNewButton_Aceptar);
         
+        btnNewButton_Aceptar.addActionListener(new ActionListener() {
+	         @Override
+	         public void actionPerformed(ActionEvent e) {
+	        	 String mensaje = textField_texto.getText();
+	        	 String telefono = txtTelefono.getText();
+	        	 String usuario = textField_usuario.getText();
+	        	 
+	        	 String emisor = null;
+	        	 String receptor = null;
+	        	 
+	        	 Contacto contacto = null;
+	        	 List<Contacto> lista = Controlador.INSTANCE.getUsuarioActual().getContactos();
+	        	 for(Contacto c : lista) {
+	        		 if(usuario.equals(c.toString())){
+	        			 contacto = c;
+	        		 }
+	        	 }
+	        	 List<dominio.Mensaje> listaMensajes = Controlador.INSTANCE.getContactoIndividual(contacto.getId()).getListaMensaje();
+	        	 for(dominio.Mensaje m : listaMensajes) {
+	        		 if(mensaje.equals(m.getTexto())) {
+	        			 emisor = m.getEmisor().getNombre();
+	        			 receptor = m.getReceptor().toString();
+	        		 }
+	        	 }
+	        	 
+	        	 añadirPanelMensaje(receptor, emisor, mensaje);
+	         }
+	     });
+        
 	}
 	
 	private void crearPanelScroll() {
 		JPanel panelMensajes = new JPanel();
-		panelMensajes.setBackground(new Color(40, 167, 69));
+		panelMensajes.setBackground(Utilidades.VERDE_CLARO);
         panelMensajes.setLayout(new BoxLayout(panelMensajes, BoxLayout.Y_AXIS));
         
         JScrollPane scrollPaneBuscar = new JScrollPane(panelMensajes);
-        scrollPaneBuscar.setBackground(new Color(111, 204, 115));
+        scrollPaneBuscar.setBackground(Utilidades.VERDE_CLARO);
         scrollPaneBuscar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         frame.getContentPane().add(scrollPaneBuscar, BorderLayout.CENTER);
-        
-        /*
-        // Personalizar la barra de desplazamiento con un color específico
-        scrollPaneBuscar.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-            @Override
-            protected void configureScrollBarColors() {
-                // Cambiar el color del pulgar (parte que se mueve)
-                this.thumbColor = new Color(0, 128, 0); // Color del pulgar
-                // Cambiar el color del fondo de la barra de desplazamiento
-                this.trackColor = new Color(40, 167, 69); // Color del fondo
-            }
-        });
-        */
-        
+     
         //Bucle con mensajes
         for (int i=0; i<3; i++) {
-        	panelMensajes.add(añadirPanelMensaje("Receptor", "Emisor "));
+        	panelMensajes.add(añadirPanelMensaje("Receptor", "Emisor ", "Texto"));
         }
 	}
 	
-	private JPanel añadirPanelMensaje(String receptor, String emisor) {
+	private JPanel añadirPanelMensaje(String receptor, String emisor, String mensaje) {
 		JPanel panelMensaje = new JPanel();
-		panelMensaje.setBackground(new Color(111, 204, 115)); 
+		panelMensaje.setBackground(Utilidades.VERDE_FONDO); 
 		panelMensaje.setBorder(new LineBorder(Color.BLACK, 1));
 	    panelMensaje.setLayout(new GridBagLayout());
 
