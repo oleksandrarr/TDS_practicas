@@ -42,6 +42,9 @@ public abstract class Contacto {
 			return listaMensaje;
 		}
 		
+		public String toString() {
+			return nombre;
+		}
 		
 
 

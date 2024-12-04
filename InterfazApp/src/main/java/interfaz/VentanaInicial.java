@@ -39,8 +39,8 @@ public class VentanaInicial {
 	
 	public void initialize() throws IOException {
 		frmVentanaInicial = new JFrame();
-		frmVentanaInicial.setTitle("AppChat- Ventana Inicio");
-		frmVentanaInicial.getContentPane().setBackground(new Color(40, 167, 69));
+		frmVentanaInicial.setTitle("AppChat");
+		frmVentanaInicial.getContentPane().setBackground(Utilidades.VERDE_FONDO);
 		frmVentanaInicial.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmVentanaInicial.setPreferredSize(new Dimension(800,600));
 		
@@ -53,8 +53,8 @@ public class VentanaInicial {
 		Component verticalStrut_2 = Box.createVerticalStrut(150);
 		frmVentanaInicial.getContentPane().add(verticalStrut_2);
 		
-		JLabel labelApp = new JLabel("Bienvenidos a AppVideo");
-		labelApp.setFont(new Font("Arial", Font.PLAIN, 30));
+		JLabel labelApp = new JLabel("AppChat");
+		labelApp.setFont(new Font("Serif", Font.BOLD, 36));
 		labelApp.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(labelApp);
 		
@@ -68,26 +68,11 @@ public class VentanaInicial {
 	    ImageIcon imagenReg = new ImageIcon(imgReg);  
 	    
 	    JButton botonLogin = new JButton("Login", imgenLogin);
-	    botonLogin.setBackground(new Color(0, 128, 0));
-	    botonLogin.setForeground(Color.BLACK); // Texto blanco para contraste
-	    botonLogin.setOpaque(true);
-	    botonLogin.setBorderPainted(false);
+	    Utilidades.crearBoton(botonLogin, 200, 60, 18);
 	    botonLogin.setAlignmentX(Component.CENTER_ALIGNMENT);
-	    botonLogin
-	    .setFont(new Font("Arial", Font.BOLD, 18));  
-	    botonLogin.setPreferredSize(new Dimension(200,60));
-	    botonLogin.setMaximumSize(new Dimension(200,60));
-	    botonLogin.setMinimumSize(new Dimension(150,400));
 	    
 	    JButton botonRegistro = new JButton("Registrarse", imagenReg);
-	    botonRegistro.setFont(new Font("Arial", Font.BOLD, 18));  
-	    botonRegistro.setPreferredSize(new Dimension(200,60));
-	    botonRegistro.setMaximumSize(new Dimension(200,60));
-	    botonRegistro.setMinimumSize(new Dimension(150,400));
-	    botonRegistro.setBackground(new Color(0, 128, 0));
-	    botonRegistro.setForeground(Color.BLACK); // Texto blanco para contraste
-	    botonRegistro.setOpaque(true);
-	    botonRegistro.setBorderPainted(false);
+	    Utilidades.crearBoton(botonRegistro, 200, 60, 18);
 	    
 	     
 	    Component verticalStrut = Box.createVerticalStrut(50);
