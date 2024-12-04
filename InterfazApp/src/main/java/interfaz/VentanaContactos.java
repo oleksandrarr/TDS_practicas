@@ -2,6 +2,7 @@ package interfaz;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -9,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -23,12 +25,22 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import controlador.Controlador;
+import dominio.Contacto;
+
 public class VentanaContactos {
 
 	private JFrame frame;
-	private DefaultListModel<String> modelContactos;
-    private DefaultListModel<String> modelGrupo;
+	private DefaultListModel<String> modeloLista;
+	private DefaultListModel<String> modeloGrupo;
+    private JList<String> listaContactos;
+    private JList<String> listaContactosGrupo;
     private AñadirContacto añadirContacto;
+    private JPanel panelContactos;
+    private JPanel panelGrupo;
+    private JPanel panelBotones;
+    private JPanel panelSouth;
+    private JPanel panelG;
 
 	/**
 	 * Launch the application.
@@ -67,57 +79,62 @@ public class VentanaContactos {
 		frame.setBounds(100, 100, 500, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout());
-
-		 modelContactos = new DefaultListModel<>();
-		 modelGrupo = new DefaultListModel<>();
 		
-		JPanel panelContactos = new JPanel();
-		panelContactos.setBackground(new Color(40, 167, 69));
+		añadirPanelContactos();
+        añadirPanelGrupo();
+        añadirPanelBotones();
+        añadirPanelSouth();
+	}
+	
+	private void añadirPanelContactos() {
+		panelContactos = new JPanel();
+		panelContactos.setBackground(Utilidades.VERDE_FONDO);
 		panelContactos.setLayout(new BoxLayout(panelContactos, BoxLayout.X_AXIS));
 		panelContactos.setPreferredSize(new Dimension(200, 0));
 		panelContactos.setBorder(new EmptyBorder(10, 10, 10, 10)); 
 	    frame.add(panelContactos, BorderLayout.WEST);
-
-		//Lista de contactos de ejemplo
-        String[] contactos = {"Juan Pérez", "Ana Gómez", "Carlos Ruiz", "Maria López", "Luis Sánchez"};
-        for (String contacto : contactos) {
-            modelContactos.addElement(contacto);
-        }
-        //panelContactos.setLayout(new BoxLayout(panelContactos, BoxLayout.X_AXIS));
-        JList<String> listaContactos = new JList<>(modelContactos);
+	    
+	    modeloLista = new DefaultListModel<>();
+	    List<Contacto> contactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
+	    for(Contacto c : contactos) {
+	    	modeloLista.addElement(c.getNombre());
+	    }
+	    listaContactos = new JList<>(modeloLista);
+	    listaContactos.setBackground(Utilidades.VERDE_CLARO);
         listaContactos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
         
         JScrollPane scrollPaneContactos = new JScrollPane(listaContactos);
-        scrollPaneContactos.setBackground(new Color(111, 204, 115));
+        scrollPaneContactos.setBackground(Utilidades.VERDE_LABELS);
         scrollPaneContactos.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         panelContactos.add(scrollPaneContactos);
-        
-        
-		JPanel panelGrupo = new JPanel();
+	}
+	
+	private void añadirPanelGrupo() {
+		panelGrupo = new JPanel();
         panelGrupo.setLayout(new BoxLayout(panelGrupo, BoxLayout.X_AXIS));
-        panelGrupo.setBackground(new Color(40, 167, 69));
+        panelGrupo.setBackground(Utilidades.VERDE_FONDO);
         panelGrupo.setPreferredSize(new Dimension(200, 0)); 
         panelGrupo.setBorder(new EmptyBorder(10, 10, 10, 10)); 
         frame.add(panelGrupo, BorderLayout.EAST);
         
-        JPanel panelG = new JPanel();
-        panelG.setLayout(new BoxLayout(panelG, BoxLayout.Y_AXIS));
-        JScrollPane scrollPaneGrupo = new JScrollPane(panelG);
-        scrollPaneGrupo.setBackground(new Color(111, 204, 115));
-        scrollPaneGrupo.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        
-        //Lista contactos en el grupo
-        //panelG.setLayout(new BoxLayout(panelG, BoxLayout.X_AXIS));
-        JList<String> listaContactosGrupo = new JList<>(modelGrupo);
+        modeloGrupo = new DefaultListModel<>();
+        listaContactosGrupo = new JList<>(modeloGrupo);
+        listaContactosGrupo.setBackground(Utilidades.VERDE_CLARO);
         listaContactosGrupo.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
         
-        scrollPaneGrupo.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Grupo"));
+        JScrollPane scrollPaneGrupo = new JScrollPane(listaContactosGrupo);
+        scrollPaneGrupo.getViewport().setBackground(Utilidades.VERDE_LABELS);
+        scrollPaneGrupo.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         panelGrupo.add(scrollPaneGrupo);
-        
-        
-		JPanel panelBotones = new JPanel();
+               
+        scrollPaneGrupo.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Grupo"));
+        //panelGrupo.add(scrollPaneGrupo);
+	}
+	
+	private void añadirPanelBotones() {
+		panelBotones = new JPanel();
         panelBotones.setPreferredSize(new Dimension(70, 0)); 
-        panelBotones.setBackground(new Color(40, 167, 69));
+        panelBotones.setBackground(Utilidades.VERDE_FONDO);
         frame.add(panelBotones, BorderLayout.CENTER);
         GridBagLayout gbl_panelBotones = new GridBagLayout();
         gbl_panelBotones.columnWidths = new int[]{30}; 
@@ -127,10 +144,7 @@ public class VentanaContactos {
         panelBotones.setLayout(gbl_panelBotones);
         
         JButton btnNewButton_1 = new JButton("<<");
-        btnNewButton_1.setBackground(new Color(0, 128, 0));
-        btnNewButton_1.setForeground(Color.BLACK); // Texto blanco para contraste
-        btnNewButton_1.setOpaque(true);
-        btnNewButton_1.setBorderPainted(false);
+        Utilidades.crearBoton(btnNewButton_1, 60, 40, 14);
         GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
         gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 0);
         gbc_btnNewButton_1.gridx = 0;
@@ -138,75 +152,67 @@ public class VentanaContactos {
         panelBotones.add(btnNewButton_1, gbc_btnNewButton_1);
         
         JButton btnNewButton = new JButton(">>");
-        btnNewButton.setBackground(new Color(0, 128, 0));
-        btnNewButton.setForeground(Color.BLACK); // Texto blanco para contraste
-        btnNewButton.setOpaque(true);
-        btnNewButton.setBorderPainted(false);
+        Utilidades.crearBoton(btnNewButton, 60, 40, 14);
         GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
         gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
         gbc_btnNewButton.gridx = 0;
         gbc_btnNewButton.gridy = 3;
         panelBotones.add(btnNewButton, gbc_btnNewButton);
         
-      
-		JPanel panelSouth = new JPanel();
-		panelSouth.setBorder(new EmptyBorder(0, 10, 10, 10)); 
-		panelSouth.setBackground(new Color(40, 167, 69));
-        frame.add(panelSouth, BorderLayout.SOUTH);
-        
-        JButton btnNewButton_4 = new JButton("Aceptar");
-        btnNewButton_4.setBackground(new Color(0, 128, 0));
-        btnNewButton_4.setForeground(Color.BLACK); // Texto blanco para contraste
-        btnNewButton_4.setOpaque(true);
-        btnNewButton_4.setBorderPainted(false);
-        panelSouth.add(btnNewButton_4);
-        
-        JButton btnNewButton_2 = new JButton("Añadir Contacto Nuevo");
-        btnNewButton_2.setBackground(new Color(0, 128, 0));
-        btnNewButton_2.setForeground(Color.BLACK); // Texto blanco para contraste
-        btnNewButton_2.setOpaque(true);
-        btnNewButton_2.setBorderPainted(false);
-        panelSouth.add(btnNewButton_2);
-        btnNewButton_2.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        JButton btnNewButton_3 = new JButton("Cancelar");
-        btnNewButton_3.setBackground(new Color(0, 128, 0));
-        btnNewButton_3.setForeground(Color.BLACK); // Texto blanco para contraste
-        btnNewButton_3.setOpaque(true);
-        btnNewButton_3.setBorderPainted(false);
-        panelSouth.add(btnNewButton_3);
-        btnNewButton_3.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        
-        //actionListener << y >>
+      //actionListener >>
         btnNewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             	String contactoSeleccionado = listaContactos.getSelectedValue();
                 if (contactoSeleccionado != null) {
-                    modelContactos.removeElement(contactoSeleccionado);
-                    modelGrupo.addElement(contactoSeleccionado);
+                    modeloLista.removeElement(contactoSeleccionado);
+                    modeloGrupo.addElement(contactoSeleccionado);
+                    //listaContactosGrupo = new JList<>(modeloGrupo);
                     // Actualizamos la vista de ambas listas
                     listaContactos.repaint();
                     listaContactosGrupo.repaint();
                 }
             }
         });
+        
+        //actionListener <<
         
         btnNewButton_1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             	String contactoSeleccionado = listaContactosGrupo.getSelectedValue();
                 if (contactoSeleccionado != null) {
-                    modelGrupo.removeElement(contactoSeleccionado);
-                    modelContactos.addElement(contactoSeleccionado);
+                    modeloGrupo.removeElement(contactoSeleccionado);
+                    modeloLista.addElement(contactoSeleccionado);
+                    //listaContactos = new JList<>(modeloLista);
                     // Actualizamos la vista de ambas listas
                     listaContactos.repaint();
                     listaContactosGrupo.repaint();
                 }
             }
         });
+	}
+	
+	private void añadirPanelSouth() {
+		panelSouth = new JPanel();
+		panelSouth.setBorder(new EmptyBorder(0, 10, 10, 10)); 
+		panelSouth.setBackground(Utilidades.VERDE_FONDO);
+        frame.add(panelSouth, BorderLayout.SOUTH);
         
+        JButton btnNewButton_4 = new JButton("Aceptar");
+        Utilidades.crearBoton(btnNewButton_4, 100, 30, 12);
+        panelSouth.add(btnNewButton_4);
+        
+        JButton btnNewButton_2 = new JButton("Añadir Contacto Nuevo");
+        Utilidades.crearBoton(btnNewButton_2, 170, 30, 12);
+        panelSouth.add(btnNewButton_2);
+        btnNewButton_2.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        JButton btnNewButton_3 = new JButton("Cancelar");
+        Utilidades.crearBoton(btnNewButton_3, 100, 30, 12);
+        panelSouth.add(btnNewButton_3);
+        btnNewButton_3.setVerticalAlignment(SwingConstants.BOTTOM);
+               
         //boton cancelar
         btnNewButton_3.addActionListener(new ActionListener() {
                 @Override
@@ -220,11 +226,23 @@ public class VentanaContactos {
         btnNewButton_2.addActionListener(new ActionListener() {
 	         @Override
 	         public void actionPerformed(ActionEvent e) {
-	             AñadirContacto  añadirContacto = new  AñadirContacto();
+	             AñadirContacto añadirContacto = new  AñadirContacto();
 	             añadirContacto.mostrarVentana();
 	         }
 	     });
         
-        
+        //boton Aceptar
+        /*
+        btnNewButton_4.addActionListener(new ActionListener() {
+	         @Override
+	         public void actionPerformed(ActionEvent e) {
+	             List<Contacto> grupo;
+	             JList<String> nombres = new JList<>(modeloGrupo);
+	             List<Contacto> contactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
+	             
+	             
+	         }
+	     });
+        */
 	}
 }

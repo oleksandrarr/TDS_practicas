@@ -101,7 +101,7 @@ public class VentanaPrincipal {
 	 */
 	private void initialize() throws IOException { //////AÑADO UN CONTACTO///////
 		//-------------------------------
-
+		
 		
 		Contacto contacto = controlador.añadirContactoIndividual("puan", "juan");
 		//Contacto contacto = controlador.INSTANCE.getUsuarioActual().getContactoIndividual(79);		//IMP
@@ -276,7 +276,7 @@ public class VentanaPrincipal {
 		comboBox.setMinimumSize(new Dimension(200, 30));
 		comboBox.setMaximumSize(new Dimension(200, 30));
 		comboBox.setBackground(Utilidades.VERDE_LABELS); // Verde medio
-		comboBox.setForeground(Color.WHITE); // Texto blanco para contraste
+		comboBox.setForeground(Color.BLACK); // Texto blanco para contraste
 		comboBox.setOpaque(true);
 		cajaArriba.add(comboBox);
 		

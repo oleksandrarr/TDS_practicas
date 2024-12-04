@@ -52,5 +52,15 @@ public enum RepositorioUsuarios {
 		usuariosPorID.remove(usuario.getId());
 		usuariosPorLogin.remove(usuario.getLogin());
 	}
+	
+	public Usuario findUsuarioTelefono(String telefono) {
+		List<Usuario> usuarios = factoria.getUsuarioDAO().getAll();
+		for(Usuario u : usuarios) {
+			if(u.getNumeroTelefono().equals(telefono)) {
+				return u;
+			}
+		}
+		return null;
+	}
 
 }

@@ -79,6 +79,10 @@ public enum Controlador {
 	 * 
 	 * CONTACTOS
 	 */
+	
+	public void añadirContacto(String nombre, String telefono) {
+		
+	}
 	public ContactoIndividual añadirContactoIndividual(String nombre, String login) {
 		
 		 Usuario usuarioContacto = RepositorioUsuarios.INSTANCE.findUsuario(login);
