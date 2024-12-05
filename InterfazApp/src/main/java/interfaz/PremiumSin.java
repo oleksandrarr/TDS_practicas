@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.awt.Font;
 
 import javax.swing.Box;
@@ -13,9 +14,12 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
+import controlador.Controlador;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,6 +28,10 @@ import java.awt.FlowLayout;
 public class PremiumSin {
 
     private JFrame frame;
+    private JPanel panelNombre;
+    private JPanel panelBotones;
+    private JPanel panelCentro;
+    
 
     /**
      * Launch the application.
@@ -60,119 +68,81 @@ public class PremiumSin {
         frame.setBounds(100, 100, 450, 300);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setTitle("Premium");
-        frame.setBackground(new Color(40, 167, 69));
+        frame.setBackground(Utilidades.VERDE_FONDO);
         
-        JPanel panelNombre = new JPanel();
+        añadirPanelNombre();
+        añadirPanelBotones();
+        añadirPanelCentro();      
+    }
+    
+    private void añadirPanelNombre() {
+        panelNombre = new JPanel();
         frame.getContentPane().add(panelNombre, BorderLayout.NORTH);
         panelNombre.setLayout(new BoxLayout(panelNombre, BoxLayout.Y_AXIS));
-        panelNombre.setBackground(new Color(40, 167, 69));
-        
-        panelNombre.add(Box.createVerticalStrut(10));
-        
-        Box box = Box.createHorizontalBox(); 
-        box.add(Box.createHorizontalGlue()); 
-        JLabel lblNewLabel = new JLabel("Premium");
-        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        box.add(lblNewLabel); 
-        box.add(Box.createHorizontalGlue()); 
+        panelNombre.setBackground(Utilidades.VERDE_FONDO);
 
-        panelNombre.add(box);
-        
         panelNombre.add(Box.createVerticalStrut(10));
-        
-        JPanel panelBotones = new JPanel();
-        panelBotones.setBackground(new Color(40, 167, 69));
+
+        Box box = Box.createHorizontalBox();
+        box.add(Box.createHorizontalGlue());
+
+        // Título "Premium"
+        JLabel lblTitulo = new JLabel("Premium");
+        lblTitulo.setFont(new Font("Serif", Font.BOLD, 20));
+        box.add(lblTitulo);
+
+        // Botón pequeño y redondo para información
+        JButton infoButton = new JButton("i");
+        infoButton.setFont(new Font("Serif", Font.BOLD, 10));
+        infoButton.setToolTipText("Haz clic para más información");
+        infoButton.setFocusPainted(false);
+        infoButton.setBorderPainted(false);
+        infoButton.setContentAreaFilled(false);
+        infoButton.setOpaque(true);
+        infoButton.setBackground(Color.LIGHT_GRAY);
+        infoButton.setForeground(Color.BLACK);
+        infoButton.setBorder(new LineBorder(Color.DARK_GRAY, 1, true)); // Bordes redondeados
+
+        infoButton.setPreferredSize(new java.awt.Dimension(20, 20)); // Tamaño del botón
+        infoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Mostrar información adicional en un JOptionPane
+                JOptionPane.showMessageDialog(
+                    frame,
+                    "Información sobre el Premium:\n\n"
+                    + "El precio normal es de 15 euros anuales.\n"
+                    + "El descuento de 15% se aplica a los usuarios que habían enviado más de 100 mensajes \n en el último mes.\n"
+                    + "El descuento de 20% se aplica a los usuarios que llevan más de 4 semanas registrados.",
+                    "Información Premium",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        });
+
+        box.add(Box.createHorizontalStrut(5)); // Espacio entre título y botón
+        box.add(infoButton);
+
+        box.add(Box.createHorizontalGlue());
+        panelNombre.add(box);
+
+        panelNombre.add(Box.createVerticalStrut(10));
+    }
+
+    
+    private void añadirPanelBotones() {
+    	panelBotones = new JPanel();
+        panelBotones.setBackground(Utilidades.VERDE_FONDO);
         frame.getContentPane().add(panelBotones, BorderLayout.SOUTH);
         
         JButton btnNewButton = new JButton("Cancelar");
-        btnNewButton.setBackground(new Color(0, 128, 0));
-        btnNewButton.setForeground(Color.BLACK); // Texto blanco para contraste
-        btnNewButton.setOpaque(true);
-        btnNewButton.setBorderPainted(false);
+        Utilidades.crearBoton(btnNewButton, 100, 30, 12);
         panelBotones.add(btnNewButton);
         
         
         JButton btnNewButton_1 = new JButton("Comprar");
-        btnNewButton_1.setBackground(new Color(0, 128, 0));
-        btnNewButton_1.setForeground(Color.BLACK); // Texto blanco para contraste
-        btnNewButton_1.setOpaque(true);
-        btnNewButton_1.setBorderPainted(false);
+        Utilidades.crearBoton(btnNewButton_1, 100, 30, 12);
         panelBotones.add(btnNewButton_1);
-        
-        JPanel panelI = new JPanel();
-        panelI.setBackground(new Color(40, 167, 69));
-        frame.getContentPane().add(panelI, BorderLayout.WEST);
-        
-        JPanel panelD = new JPanel();
-        panelD.setBackground(new Color(40, 167, 69));
-        frame.getContentPane().add(panelD, BorderLayout.EAST);
-        
-        JPanel panelCentro = new JPanel();
-        panelCentro.setBorder(new LineBorder(Color.BLACK));
-        
-        frame.getContentPane().add(panelCentro, BorderLayout.CENTER);
-        panelCentro.setBackground(new Color(111, 204, 115));
-        frame.getContentPane().add(panelCentro, BorderLayout.CENTER);
-        GridBagLayout gbl_panelCentro = new GridBagLayout();
-        gbl_panelCentro.columnWidths = new int[]{75, 175, 200};
-        gbl_panelCentro.rowHeights = new int[]{25,50,50,50,25};
-        gbl_panelCentro.columnWeights = new double[]{Double.MIN_VALUE};
-        gbl_panelCentro.rowWeights = new double[]{Double.MIN_VALUE};
-        panelCentro.setLayout(gbl_panelCentro);
-        
-        JLabel lblNewLabel_1 = new JLabel("Fecha de registro:");
-        lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-        gbc_lblNewLabel_1.anchor = GridBagConstraints.WEST;
-        gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-        gbc_lblNewLabel_1.gridx = 1;
-        gbc_lblNewLabel_1.gridy = 1;
-        panelCentro.add(lblNewLabel_1, gbc_lblNewLabel_1);
-        
-        JLabel lblNewLabel_4 = new JLabel("dd/MM/yyyy");
-        lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
-        gbc_lblNewLabel_4.anchor = GridBagConstraints.WEST;
-        gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 0);
-        gbc_lblNewLabel_4.gridx = 2;
-        gbc_lblNewLabel_4.gridy = 1;
-        panelCentro.add(lblNewLabel_4, gbc_lblNewLabel_4);
-        
-        JLabel lblNewLabel_5 = new JLabel("0");
-        lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
-        gbc_lblNewLabel_5.anchor = GridBagConstraints.WEST;
-        gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 0);
-        gbc_lblNewLabel_5.gridx = 2;
-        gbc_lblNewLabel_5.gridy = 2;
-        panelCentro.add(lblNewLabel_5, gbc_lblNewLabel_5);
-        
-        JLabel lblNewLabel_2 = new JLabel("Mensajes enviados:");
-        lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-        gbc_lblNewLabel_2.anchor = GridBagConstraints.WEST;
-        gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-        gbc_lblNewLabel_2.gridx = 1;
-        gbc_lblNewLabel_2.gridy = 2;
-        panelCentro.add(lblNewLabel_2, gbc_lblNewLabel_2);
-        
-        JLabel lblNewLabel_3 = new JLabel("Descuento disponible:");
-        lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-        gbc_lblNewLabel_3.anchor = GridBagConstraints.WEST;
-        gbc_lblNewLabel_3.insets = new Insets(0, 0, 0, 5);
-        gbc_lblNewLabel_3.gridx = 1;
-        gbc_lblNewLabel_3.gridy = 3;
-        panelCentro.add(lblNewLabel_3, gbc_lblNewLabel_3);
-        
-        JLabel lblNewLabel_6 = new JLabel("Descuento");
-        lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
-        gbc_lblNewLabel_6.anchor = GridBagConstraints.WEST;
-        gbc_lblNewLabel_6.gridx = 2;
-        gbc_lblNewLabel_6.gridy = 3;
-        panelCentro.add(lblNewLabel_6, gbc_lblNewLabel_6);
-        
         
         btnNewButton.addActionListener(new ActionListener() {
 			 @Override
@@ -180,6 +150,87 @@ public class PremiumSin {
 				 frame.dispose();  // Cierra la ventana
 	         }
 	     });
-       
     }
+    
+    private void añadirPanelCentro() {
+    	panelCentro = new JPanel();
+        
+        frame.getContentPane().add(panelCentro, BorderLayout.CENTER);
+        panelCentro.setBackground(Utilidades.VERDE_FONDO);
+        
+        GridBagLayout gbl_panelCentro = new GridBagLayout();
+	     gbl_panelCentro.columnWidths = new int[]{25, 250, 100, 25};
+	     gbl_panelCentro.rowHeights = new int[]{25, 50, 50, 50, 25};
+	     gbl_panelCentro.columnWeights = new double[]{0.0, 1.0, 0.5, 0.0};
+	     gbl_panelCentro.rowWeights = new double[]{0.0, 1.0, 1.0, 1.0, 0.0};
+	     panelCentro.setLayout(gbl_panelCentro);
+	     
+        LocalDate fechaRegistro = Controlador.INSTANCE.getUsuarioActual().getFechaRegistro();
+        
+        JLabel lblNewLabel_1 = new JLabel("Fecha de registro:");
+        lblNewLabel_1.setFont(new Font("Serif", Font.BOLD, 15));
+        GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+        gbc_lblNewLabel_1.anchor = GridBagConstraints.WEST;
+        gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+        gbc_lblNewLabel_1.gridx = 1;
+        gbc_lblNewLabel_1.gridy = 1;
+        panelCentro.add(lblNewLabel_1, gbc_lblNewLabel_1);
+        JLabel lblNewLabel_4 = new JLabel(fechaRegistro.toString());
+        lblNewLabel_4.setFont(new Font("Serif", Font.PLAIN, 13));
+        GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
+        gbc_lblNewLabel_4.anchor = GridBagConstraints.WEST;
+        gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
+        gbc_lblNewLabel_4.gridx = 2;
+        gbc_lblNewLabel_4.gridy = 1;
+        panelCentro.add(lblNewLabel_4, gbc_lblNewLabel_4);
+        
+        JLabel lblNewLabel_2 = new JLabel("Mensajes enviados en el último mes:");
+        lblNewLabel_2.setFont(new Font("Serif", Font.BOLD, 15));
+        GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+        gbc_lblNewLabel_2.anchor = GridBagConstraints.WEST;
+        gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
+        gbc_lblNewLabel_2.gridx = 1;
+        gbc_lblNewLabel_2.gridy = 2;
+        panelCentro.add(lblNewLabel_2, gbc_lblNewLabel_2);
+        
+        //mensajes enviados en el último mes
+        //int mensajes = Controlador.INSTANCE.getUsuarioActual().getMensajesEnviados();
+       // JLabel lblNewLabel_5 = new JLabel(String.valueOf(mensajes));
+        JLabel lblNewLabel_5 = new JLabel("0");
+        lblNewLabel_5.setFont(new Font("Serif", Font.PLAIN, 13));
+        GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
+        gbc_lblNewLabel_5.anchor = GridBagConstraints.WEST;
+        gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 5);
+        gbc_lblNewLabel_5.gridx = 2;
+        gbc_lblNewLabel_5.gridy = 2;
+        panelCentro.add(lblNewLabel_5, gbc_lblNewLabel_5);
+        
+        JLabel lblNewLabel_3 = new JLabel("Descuento disponible:");
+        lblNewLabel_3.setFont(new Font("Serif"+ "", Font.BOLD, 15));
+        GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+        gbc_lblNewLabel_3.anchor = GridBagConstraints.WEST;
+        gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
+        gbc_lblNewLabel_3.gridx = 1;
+        gbc_lblNewLabel_3.gridy = 3;
+        panelCentro.add(lblNewLabel_3, gbc_lblNewLabel_3);
+        
+        //int semanas = LocalDate.now().minusWeeks(fechaRegistro);
+        //calculo del descuento
+        /* 
+         * if (mensajes >= 100){
+         * 		descuento = "Descuento por enviar más de 100 mensajes";
+         * } elif (semanas >= 4){
+         * 		descuento = "Descuento por estar registrado más de 4 semanas";
+         * }
+         */
+        JLabel lblNewLabel_6 = new JLabel("Descuento");
+        lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
+        gbc_lblNewLabel_6.insets = new Insets(0, 0, 5, 5);
+        gbc_lblNewLabel_6.anchor = GridBagConstraints.WEST;
+        gbc_lblNewLabel_6.gridx = 2;
+        gbc_lblNewLabel_6.gridy = 3;
+        panelCentro.add(lblNewLabel_6, gbc_lblNewLabel_6);
+    }
+    
 }

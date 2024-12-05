@@ -1,5 +1,6 @@
 package dominio;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class Usuario {
 	private String fechaNacimiento;
 	private String numeroTelefono;
 	private List<Contacto> contactos;
+	private LocalDate fechaRegistro;	//para premium
 
 	
 
@@ -30,14 +32,17 @@ public class Usuario {
 		this.fechaNacimiento = fechaNacimiento;
 		this.numeroTelefono = numeroTelefono;
 		this.contactos = new ArrayList<Contacto>();
+		this.fechaRegistro = LocalDate.now();
 		
 	}
 	
+	public LocalDate getFechaRegistro() {
+		return fechaRegistro;
+	}
 	
 	public List<Contacto> getContactos() {
 		return contactos;
 	}
-
 
 
 	public void setContactos(List<Contacto> list) {
