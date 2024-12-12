@@ -19,6 +19,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import dominio.Mensaje;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -33,7 +36,7 @@ public class ElementoChat extends JPanel{
 	private String usuario;
 	private String mensaje;
 
-	public ElementoChat(String fileName, String usuario,String mensaje) throws IOException {
+	public ElementoChat(String fileName, String usuario,Mensaje mensaje2) throws IOException {
 		this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 		fixSize(this,300,110);
 		this.setBackground(Color.WHITE);
@@ -68,7 +71,7 @@ public class ElementoChat extends JPanel{
 	    panel.add(panelDer, BorderLayout.CENTER);
 	    contacto.setFont(new Font("Arial", Font.BOLD, 16));
 	     
-	    JLabel ultimoMensaje = new JLabel(mensaje);
+	    JLabel ultimoMensaje = new JLabel(mensaje2.toString());
 	    ultimoMensaje.setBorder(new LineBorder(Color.BLACK,1));
 	    ultimoMensaje.setFont(new Font("Arial", Font.BOLD, 16));
 	    panelDer.add(ultimoMensaje);

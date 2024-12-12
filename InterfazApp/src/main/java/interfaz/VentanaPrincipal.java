@@ -33,6 +33,8 @@ import controlador.Controlador;
 import dominio.Contacto;
 import dominio.ContactoIndividual;
 import dominio.Mensaje;
+import dominio.RepositorioUsuarios;
+import dominio.Usuario;
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
@@ -102,7 +104,7 @@ public class VentanaPrincipal {
 	private void initialize() throws IOException { //////AÑADO UN CONTACTO///////
 		//-------------------------------
 		
-		
+		/*
 		Contacto contacto = controlador.añadirContactoIndividual("juan", "623224");
 		//Contacto contacto = controlador.INSTANCE.getUsuarioActual().getContactoIndividual(79);		//IMP
 		if(contacto==null) {
@@ -120,11 +122,7 @@ public class VentanaPrincipal {
 		controlador.enviarMensaje(contacto, "Hola, ¿cómo estás?", Mensaje.ENVIADO);
 		controlador.enviarMensaje(contacto, "Hola, bien", Mensaje.RECIBIDO);
 		//ContactoIndividual contacto = Controlador.INSTANCE.getContactoIndividual("juan");
-		
-		pantalla2=new Chat(contacto);
-			//pantalla2.setBorder(new TitledBorder(new LineBorder(Color.BLACK), contacto.toString()));
-		
-		//-------------------------------
+		*/
 
 		ventana = new JFrame();
 		ventana.setTitle("AppChat");
@@ -137,74 +135,74 @@ public class VentanaPrincipal {
 		//ButtonGroup grupo=new ButtonGroup();
 		añadirPantalla();	
 		añadirCajaIzquierda();
+		
+		
+		//Contacto contacto = Controlador.INSTANCE.getUsuarioActual().getContactos().get(0);
+		//pantalla2=new Chat(contacto);
 		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
 		//list<Contactos>
 		Contacto contacto1 = listaContactos.get(0);
+		
 		añadirChat(contacto1);
-        
-		
-		
-		//Lista de valores
-		lista =new JList<ElementoChat>();
-		lista.setBackground(new Color(111, 204, 115));
-		lista.setBackground(new Color(111, 204, 115));
-		DefaultListModel<ElementoChat> model=new DefaultListModel<ElementoChat>();
-		
-		//como debería estar:
-		/*
-		DefaultListModel<String> lista = new DefaultListModel<String>();
-		List<ContactoIndividual> contactos = Controlador.getUnicaInstancia().getUsuarioActual().getContactosIndividuales();
-		for (ContactoIndividual c : contactos){
-			if(c.getListaMensajes().size() == 0){
-				lista.addElement(c.getNombre());
-		 */
-		
-		model.addElement(new ElementoChat("https://cdn-icons-png.flaticon.com/512/3135/3135768.png","Pablo","Hola"));
-		model.addElement(new ElementoChat("https://cdn-icons-png.flaticon.com/512/3135/3135768.png","Jesus","Adios"));
-		model.addElement(new ElementoChat("https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png","Maria","Buenos dias"));
-		model.addElement(new ElementoChat("https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png","Paula","Hola"));
-		lista.setModel(model);
-		lista.setCellRenderer(new ElementoListRenderer());
-		
-		//para cambiar el chat
-		lista.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		        if (e.getClickCount() == 2) { // Detectar doble clic
-		            int selectedIndex = lista.getSelectedIndex();
-		            if (selectedIndex != -1) { // Verificar que hay un elemento seleccionado
-		                // Obtener el elemento seleccionado (ElementoChat)
-		                ElementoChat elementoSeleccionado = lista.getModel().getElementAt(selectedIndex);
-
-		                // Buscar el contacto correspondiente al nombre del elemento
-		                Contacto contacto = buscarContactoPorNombre(elementoSeleccionado.getNombre());
-
-		                if (contacto != null) {
-		                    // Crear el panel de chat y mostrarlo
-		                    JPanel nuevoChat = null;
-							try {
-								nuevoChat = new Chat(contacto);
-							} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} // Crear el panel de chat con el contacto
-		                    cambiarPantallaChat(nuevoChat); // Cambiar la pantalla principal al nuevo chat
-		                } else {
-		                    JOptionPane.showMessageDialog(null, "Contacto no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
-		                }
-		            }
-		        }
-		    }
-		});
-		
-		JScrollPane scroll=new JScrollPane(lista);
-		scroll.setMinimumSize(new Dimension(320,320));
-		scroll.setMaximumSize(new Dimension(320,320));
-		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		cajaIzquierda.add(scroll);
+		añadirListaContactos();
 	}
 	
 	
+	public void añadirListaContactos() throws IOException {
+		//Lista de contactos
+				lista =new JList<ElementoChat>();
+				DefaultListModel<ElementoChat> model=new DefaultListModel<ElementoChat>();
+				List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();	
+				for(Contacto contacto : listaContactos) {
+					model.addElement(new ElementoChat(contacto.getImagen(), contacto.getNombre(), contacto.getListaMensaje().getLast()));
+				}
+				
+				/*
+				model.addElement(new ElementoChat("https://cdn-icons-png.flaticon.com/512/3135/3135768.png","Pablo","Hola"));
+				model.addElement(new ElementoChat("https://cdn-icons-png.flaticon.com/512/3135/3135768.png","Jesus","Adios"));
+				model.addElement(new ElementoChat("https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png","Maria","Buenos dias"));
+				model.addElement(new ElementoChat("https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png","Paula","Hola"));
+				*/
+				lista.setModel(model);
+				lista.setCellRenderer(new ElementoListRenderer());
+				
+				//para cambiar el chat
+				lista.addMouseListener(new MouseAdapter() {
+				    @Override
+				    public void mouseClicked(MouseEvent e) {
+				        if (e.getClickCount() == 2) { // Detectar doble clic
+				            int selectedIndex = lista.getSelectedIndex();
+				            if (selectedIndex != -1) { // Verificar que hay un elemento seleccionado
+				                // Obtener el elemento seleccionado (ElementoChat)
+				                ElementoChat elementoSeleccionado = lista.getModel().getElementAt(selectedIndex);
+
+				                // Buscar el contacto correspondiente al nombre del elemento
+				                Contacto contacto = buscarContactoPorNombre(elementoSeleccionado.getNombre());
+
+				                if (contacto != null) {
+				                    // Crear el panel de chat y mostrarlo
+				                    JPanel nuevoChat = null;
+									try {
+										nuevoChat = new Chat(contacto);
+									} catch (IOException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									} // Crear el panel de chat con el contacto
+				                    cambiarPantallaChat(nuevoChat); // Cambiar la pantalla principal al nuevo chat
+				                } else {
+				                    JOptionPane.showMessageDialog(null, "Contacto no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+				                }
+				            }
+				        }
+				    }
+				});
+				
+				JScrollPane scroll=new JScrollPane(lista);
+				scroll.setMinimumSize(new Dimension(320,320));
+				scroll.setMaximumSize(new Dimension(320,320));
+				scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+				cajaIzquierda.add(scroll);
+	}
 	
 	
 	private void añadirMenuBar() {

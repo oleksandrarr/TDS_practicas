@@ -40,6 +40,10 @@ public class Usuario {
 		return fechaRegistro;
 	}
 	
+	public void setFechaRegistro(LocalDate fecha) {
+	this.fechaRegistro = fecha;
+	}
+	
 	public List<Contacto> getContactos() {
 		return contactos;
 	}

@@ -3,17 +3,20 @@ package dominio;
 import java.util.ArrayList;
 import java.util.List;
 
+import controlador.Controlador;
+
 public abstract class Contacto {
 	protected int id;
 	protected String nombre;
 	protected List<Mensaje> listaMensaje;
 	protected String tipoContacto;
+	protected String imagen;
 	 
 
 	    public String getTipoContacto() {
 		return tipoContacto;
 	}
-
+	    
 	public void setTipoContacto(String tipoContacto) {
 		this.tipoContacto = tipoContacto;
 	}
@@ -21,6 +24,7 @@ public abstract class Contacto {
 		public Contacto(String nombre) {
 	        this.nombre = nombre;
 	        this.listaMensaje = new ArrayList<Mensaje>();
+	        this.imagen = Controlador.INSTANCE.getContactoIndividual(id).getImagen();
 	        this.id = 0;
 	    }
 
@@ -49,4 +53,8 @@ public abstract class Contacto {
 
 
 		public abstract boolean registrarMensaje(Mensaje mensaje);
+
+		public String getImagen() {
+			return imagen;
+		}
 }
