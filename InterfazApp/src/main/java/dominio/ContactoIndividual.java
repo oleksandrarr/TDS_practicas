@@ -1,30 +1,28 @@
 package dominio;
 
+import java.util.List;
 
 public class ContactoIndividual extends Contacto {
-	private Usuario usuario;
+	private int usuario;
 	
 	
-	public ContactoIndividual(String nombre, Usuario usuario) {
+	public ContactoIndividual(String nombre, int idUsuario) {
 		super(nombre);
-		this.usuario = usuario;
+		this.usuario = idUsuario;
 		this.tipoContacto = "Individual";
 		
 	}
 
-	public boolean registrarMensaje(Mensaje mensaje) {
-		this.listaMensaje.add(mensaje);
-		return true;
-		
-	}
+	
 
-	public Usuario getUsuario() {
+	public int getUsuario() {
 		return this.usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(int usuario) {
 		this.usuario = usuario;
 	}
+
 	
 	
 	

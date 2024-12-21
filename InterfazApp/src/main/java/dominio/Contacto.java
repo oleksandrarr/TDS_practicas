@@ -1,7 +1,9 @@
 package dominio;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import controlador.Controlador;
 
@@ -10,7 +12,7 @@ public abstract class Contacto {
 	protected String nombre;
 	protected List<Mensaje> listaMensaje;
 	protected String tipoContacto;
-	protected String imagen;
+	protected URL imagen;
 	 
 
 	    public String getTipoContacto() {
@@ -24,7 +26,6 @@ public abstract class Contacto {
 		public Contacto(String nombre) {
 	        this.nombre = nombre;
 	        this.listaMensaje = new ArrayList<Mensaje>();
-	        this.imagen = Controlador.INSTANCE.getContactoIndividual(id).getImagen();
 	        this.id = 0;
 	    }
 
@@ -32,6 +33,10 @@ public abstract class Contacto {
 			return id;
 		}
 
+
+		public void setListaMensaje(List<Mensaje> listaMensaje) {
+			this.listaMensaje = listaMensaje;
+		}
 
 		public void setId(int id) {
 			this.id = id;
@@ -42,19 +47,28 @@ public abstract class Contacto {
 		}
 
 
-		public List<Mensaje> getListaMensaje() {
-			return listaMensaje;
-		}
+	    public  List<Mensaje> getListaMensaje() {
+	    	System.out.println("va a devolver"+listaMensaje.size());
+	        return listaMensaje;
+	    }
+	    
+	    public Optional<Mensaje> getUltimoMensaje(){
+	    	if(listaMensaje == null || listaMensaje.isEmpty()) {
+	    		return Optional.empty();
+	    	}else {
+	    		return Optional.of(listaMensaje.getLast());
+	    	}
+	    }
 		
 		public String toString() {
 			return nombre;
 		}
 		
 
-
-		public abstract boolean registrarMensaje(Mensaje mensaje);
-
-		public String getImagen() {
-			return imagen;
+	
+		public  boolean registrarMensaje(Mensaje mensaje) {
+			System.out.println("VA A REGISTRA444444444444444444444444444444R");
+			return listaMensaje.add(mensaje);
 		}
+
 }

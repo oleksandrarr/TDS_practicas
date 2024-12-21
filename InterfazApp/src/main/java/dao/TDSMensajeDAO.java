@@ -33,36 +33,32 @@ public final class TDSMensajeDAO implements MensajeDAO {
     }
 
     private Mensaje entidadToMensaje(Entidad eMensaje) throws DAOException {
-        
+    
         String texto = servPersistencia.recuperarPropiedadEntidad(eMensaje, TEXTO);
         String emoticono = servPersistencia.recuperarPropiedadEntidad(eMensaje, EMOTICONO);
         String telefonoReceptor = servPersistencia.recuperarPropiedadEntidad(eMensaje, TELEFONO_RECEPTOR);
         String fechaHoraEnvio = servPersistencia.recuperarPropiedadEntidad(eMensaje, FECHA_HORA_ENVIO);
         
-        
+
         LocalDateTime fechaHora = LocalDateTime.parse(fechaHoraEnvio);
         int tipo = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eMensaje, TIPO));
-        //Recuperamos el usuario que emitio el mensaje
+        //Recuperamos el id del usuario que emitio el mensaje
         int idUsuario = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eMensaje, USUARIO));
-        UsuarioDAO usuarioDAO;
-		
-		usuarioDAO = FactoriaDAO.getInstancia().getUsuarioDAO();
-		Usuario usuario = usuarioDAO.get(idUsuario);
-		
-        
+       
+
         //Recuperamos el contacto al que se le envió el mensaje
-        int idContacto = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eMensaje, CONTACTO));
-        ContactoDAO contactoDAO = FactoriaDAO.getInstancia().getContactoDAO();
-        Contacto contacto = contactoDAO.get(idContacto);
-        
+        int contacto = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eMensaje, CONTACTO));
+
+      
         //La clase Mensaje tiene dos constructores, mensaje de texto y con emoticono
         if (texto != null && !texto.isEmpty()) {
-            return new Mensaje(texto, usuario, contacto, fechaHora,tipo);
+        
+            return new Mensaje(texto, idUsuario, contacto, fechaHora,tipo);
         } else if (emoticono != null && !emoticono.isEmpty()) {  
             int emoticonon = Integer.parseInt(emoticono);  
-            return new Mensaje(emoticonon, usuario, contacto, fechaHora,tipo);
+            return new Mensaje(emoticonon, idUsuario, contacto, fechaHora,tipo);
         }
-
+   
         return null;  // Si no es ninguno de los dos, devolver null
     }
 
@@ -74,8 +70,8 @@ public final class TDSMensajeDAO implements MensajeDAO {
         List<Propiedad> propiedades = new ArrayList<>();
         propiedades.add(new Propiedad(TEXTO, mensaje.getTexto()));
         propiedades.add(new Propiedad(EMOTICONO, Integer.toString(mensaje.getEmoticono())));
-        propiedades.add(new Propiedad(USUARIO, Integer.toString(mensaje.getEmisor().getId())));
-        propiedades.add(new Propiedad(TELEFONO_RECEPTOR, mensaje.getTelefonoReceptor()));
+        propiedades.add(new Propiedad(USUARIO, Integer.toString(mensaje.getEmisor())));
+        propiedades.add(new Propiedad(CONTACTO, String.valueOf(mensaje.getReceptor())));
         propiedades.add(new Propiedad(FECHA_HORA_ENVIO, mensaje.getFechaHoraEnvio().toString()));
         propiedades.add(new Propiedad(TIPO, Integer.toString(mensaje.getTipoMensaje())));
         eMensaje.setPropiedades(propiedades);
@@ -87,7 +83,8 @@ public final class TDSMensajeDAO implements MensajeDAO {
 
         Entidad eMensaje = this.mensajeToEntidad(mensaje);
         eMensaje = servPersistencia.registrarEntidad(eMensaje);
-        mensaje.setId(eMensaje.getId()); 
+        mensaje.setId(eMensaje.getId());
+        
     }
 
     @Override
@@ -102,10 +99,12 @@ public final class TDSMensajeDAO implements MensajeDAO {
 
         Entidad eMensaje = servPersistencia.recuperarEntidad(id);
         try {
+        	
 			return entidadToMensaje(eMensaje);
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
+
         return null;
     }
 

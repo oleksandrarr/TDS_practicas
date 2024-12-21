@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.awt.Component;
 
 import javax.swing.border.TitledBorder;
@@ -141,9 +142,11 @@ public class VentanaPrincipal {
 		//pantalla2=new Chat(contacto);
 		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
 		//list<Contactos>
+		if(listaContactos.size()>0) {
 		Contacto contacto1 = listaContactos.get(0);
 		
 		añadirChat(contacto1);
+		}
 		añadirListaContactos();
 	}
 	
@@ -153,9 +156,20 @@ public class VentanaPrincipal {
 				lista =new JList<ElementoChat>();
 				DefaultListModel<ElementoChat> model=new DefaultListModel<ElementoChat>();
 				List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();	
+				
 				for(Contacto contacto : listaContactos) {
-					model.addElement(new ElementoChat(contacto.getImagen(), contacto.getNombre(), contacto.getListaMensaje().getLast()));
+					System.out.println("El usuario "+contacto.getNombre()+" tieesafwrtrwt"+contacto.getListaMensaje().size());
+					contacto.getUltimoMensaje().ifPresent(ultimoMensaje -> 
+					{
+						try {
+							model.addElement(new ElementoChat("https://cdn-icons-png.flaticon.com/512/3135/3135768.png",contacto.getNombre(), Optional.of(ultimoMensaje)));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					});
 				}
+				
 				
 				/*
 				model.addElement(new ElementoChat("https://cdn-icons-png.flaticon.com/512/3135/3135768.png","Pablo","Hola"));

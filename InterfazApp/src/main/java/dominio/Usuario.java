@@ -36,6 +36,7 @@ public class Usuario {
 		
 	}
 	
+	
 	public LocalDate getFechaRegistro() {
 		return fechaRegistro;
 	}
@@ -121,7 +122,7 @@ public class Usuario {
 		boolean valor = false;
 		for(Contacto c: contactos) {
 			if(c instanceof ContactoIndividual) {
-				if(((ContactoIndividual) c).getUsuario()==usuario) {
+				if(((ContactoIndividual) c).getUsuario()==usuario.getId()) {
 					valor=true;
 				}
 			}
@@ -145,7 +146,8 @@ public class Usuario {
 
 	public ContactoIndividual getContactoIndividual(int id) {
 	    for (Contacto c : contactos) {
-	        if (c != null && c.getId()==id) {
+	    	ContactoIndividual ci = (ContactoIndividual)c;
+	        if (c != null && ci.getUsuario()==id) {
 	            return (ContactoIndividual) c;
 	        }
 	    }

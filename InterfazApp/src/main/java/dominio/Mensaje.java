@@ -12,25 +12,24 @@ public class Mensaje {
 	int id;
 	private String texto;
 	private int emoticono;
-    private Usuario emisor;
+    private int emisor;
     private String telefonoReceptor;
-    private Contacto receptor;
+    private int receptor;
     private LocalDateTime fechaHoraEnvio;
     private int tipoMensaje;
 
     
     //Constructor mensaje de texto
-    public Mensaje(String texto, Usuario usuario, Contacto contacto,LocalDateTime fechaHoraEnvio, int tipoMensaje) {
-		
+    public Mensaje(String texto, int idUsuario, int contacto,LocalDateTime fechaHoraEnvio, int tipoMensaje) {
 		this.texto = texto;
-		this.emisor = usuario;
+		this.emisor = idUsuario;
 		this.receptor = contacto;
 		this.fechaHoraEnvio = fechaHoraEnvio;
 		this.tipoMensaje = tipoMensaje;
 	}
     
     //Constructor mensaje emotcono
-    public Mensaje(int emoticono,Usuario usuario, Contacto contacto, LocalDateTime fechaHoraEnvio, int tipoMensaje) {
+    public Mensaje(int emoticono,int usuario, int contacto, LocalDateTime fechaHoraEnvio, int tipoMensaje) {
 		
 		this.emoticono = emoticono;
 		this.emisor = usuario;
@@ -39,7 +38,7 @@ public class Mensaje {
 		this.tipoMensaje = tipoMensaje;
 	}
     
-    public Mensaje(String texto, Usuario usuario, String telefonoReceptor,LocalDateTime fechaHoraEnvio, int tipoMensaje) {
+    public Mensaje(String texto, int usuario, String telefonoReceptor,LocalDateTime fechaHoraEnvio, int tipoMensaje) {
 		
 		this.texto = texto;
 		this.emisor = usuario;
@@ -48,7 +47,7 @@ public class Mensaje {
 		this.tipoMensaje = tipoMensaje;
 	}
 
-    public Mensaje(int emoticono,Usuario usuario, String telefonoReceptor, LocalDateTime fechaHoraEnvio, int tipoMensaje) {
+    public Mensaje(int emoticono,int usuario, String telefonoReceptor, LocalDateTime fechaHoraEnvio, int tipoMensaje) {
 		
 		this.emoticono = emoticono;
 		this.emisor = usuario;
@@ -89,11 +88,11 @@ public class Mensaje {
 		this.emoticono = emoticono;
 	}
 
-	public Usuario getEmisor() {
+	public int getEmisor() {
 		return emisor;
 	}
 
-	public void setEmisor(Usuario emisor) {
+	public void setEmisor(int emisor) {
 		this.emisor = emisor;
 	}
 
@@ -105,11 +104,11 @@ public class Mensaje {
 		this.telefonoReceptor = telefonoReceptor;
 	}
 
-	public Contacto getReceptor() {
+	public int getReceptor() {
 		return receptor;
 	}
 
-	public void setReceptor(Contacto receptor) {
+	public void setReceptor(int receptor) {
 		this.receptor = receptor;
 	}
 

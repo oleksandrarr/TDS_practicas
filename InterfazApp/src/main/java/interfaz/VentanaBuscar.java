@@ -219,8 +219,8 @@ public class VentanaBuscar {
 	        	 List<dominio.Mensaje> listaMensajes = Controlador.INSTANCE.getContactoIndividual(contacto.getId()).getListaMensaje();
 	        	 for(dominio.Mensaje m : listaMensajes) {
 	        		 if(mensaje.equals(m.getTexto())) {
-	        			 emisor = m.getEmisor().getNombre();
-	        			 receptor = m.getReceptor().toString();
+	        			 emisor = Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre();
+	        			 receptor = Controlador.INSTANCE.getContactoPorId(m.getReceptor()).getNombre();
 	        		 }
 	        	 }
 	        	 

@@ -1,6 +1,7 @@
 package dao;
 
 import tds.driver.FactoriaServicioPersistencia;
+import dominio.Mensaje;
 import tds.driver.ServicioPersistencia;
 import dominio.Contacto;
 import dominio.ContactoIndividual;
@@ -23,7 +24,7 @@ public final class TDSContactoDAO implements ContactoDAO {
     private static final String TIPO_CONTACTO = "tipo";  // Propiedad para determinar el tipo de contacto
     private static final String USUARIO = "usuario";     // ID del usuario
     private static final String CONTACTOS_GRUPO = "contactos";  // Lista de contactos en el grupo
-
+    private static final String MENSAJES = "mensajes";
   
     public TDSContactoDAO() {
         servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
@@ -51,20 +52,22 @@ public final class TDSContactoDAO implements ContactoDAO {
         return null;  
     }
     
+   
+    
   
     private Contacto entidadToContacto(Entidad eContacto) throws DAOException {
         
         String nombre = servPersistencia.recuperarPropiedadEntidad(eContacto, NOMBRE);
         String tipoContacto = servPersistencia.recuperarPropiedadEntidad(eContacto, TIPO_CONTACTO);
-
         
         
      
         if ("Individual".equals(tipoContacto)) {
             int idUsuario = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eContacto, USUARIO));
-            UsuarioDAO usuarioDAO = FactoriaDAO.getInstancia().getUsuarioDAO();
-            Usuario usuario = usuarioDAO.get(idUsuario);
-            ContactoIndividual contacto = new ContactoIndividual(nombre, usuario);
+            
+            ContactoIndividual contacto = new ContactoIndividual(nombre, idUsuario);
+            contacto.setListaMensaje(obtenerMensajes(servPersistencia.recuperarPropiedadEntidad(eContacto,MENSAJES)));
+            System.out.println(servPersistencia.recuperarPropiedadEntidad(eContacto,MENSAJES)+"////////888888///////////");
             contacto.setId(eContacto.getId());
             return contacto;
         } 
@@ -79,7 +82,31 @@ public final class TDSContactoDAO implements ContactoDAO {
         return null;  
     }
 
-
+    private List<Mensaje> obtenerMensajes(String mensajesIds) throws DAOException {
+        List<Mensaje> mensajes = new ArrayList<>();
+       
+        System.out.println("Viene a recuperalfsafjsdf"+mensajesIds);
+        if (mensajesIds != null && !mensajesIds.isEmpty()) {
+        	System.out.println("Viene a recuperalfsafjsdf2222222222");
+            String[] idsArray = mensajesIds.split(",");
+            for (String id : idsArray) {
+                try {
+                	System.out.println(id);
+                	MensajeDAO mensajeDAO = FactoriaDAO.getInstancia().getMensajeDAO();
+                    Mensaje mensaje = mensajeDAO.get(Integer.parseInt(id));  // Recuperar cada mensaje por su ID
+                    if (mensaje != null) {
+                    	
+                        mensajes.add(mensaje);
+                    }
+                } catch (NumberFormatException e) {
+                    // Manejo de error si el ID no es válido
+                    System.err.println("Error al convertir el ID de con2tacto: " + id);
+                }
+            }
+        }
+        return mensajes;
+    }
+    
     private List<Contacto> obtenerContactosDelGrupo(Entidad eGrupo) throws DAOException {
         List<Contacto> contactos = new ArrayList<>();
         String contactosIds = servPersistencia.recuperarPropiedadEntidad(eGrupo, CONTACTOS_GRUPO);
@@ -102,20 +129,38 @@ public final class TDSContactoDAO implements ContactoDAO {
     }
     
     private Entidad contactoToEntidad(Contacto contacto) throws DAOException {
-        
-    	
+
         Entidad eContacto = new Entidad();
         eContacto.setNombre(CONTACTO);
-
+        
+        StringBuilder mensajesIds = new StringBuilder();
+        System.out.println("CONTACTTTTTT"+contacto+contacto.getListaMensaje().size());
+        if (contacto.getListaMensaje() != null && !contacto.getListaMensaje().isEmpty()) {
+        	  
+	        for (Mensaje m : contacto.getListaMensaje()) {
+	            mensajesIds.append(m.getId()).append(",");
+	        }
+	        // Elimina la última coma
+	        if (mensajesIds.length() > 0) {
+	        	mensajesIds.deleteCharAt(mensajesIds.length() - 1);
+	        }
+	    }
+       
+        
+       
+        
+        System.out.println("888///(888////////888//"+mensajesIds);
         // Establecemos las propiedade del contacto
         //(eContacto, NOMBRE, contacto.getNombre());
      
         // Si el contacto es de tipo 'ContactoIndividual'
         if (contacto instanceof ContactoIndividual) {
+        	System.out.println("CREA CONTACTO INDIVIDAK");
         	  eContacto.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
         		        new Propiedad(NOMBRE, contacto.getNombre()),
-        		        new Propiedad(USUARIO, String.valueOf(((ContactoIndividual) contacto).getUsuario().getId())),
-        		        new Propiedad(TIPO_CONTACTO,contacto.getTipoContacto())
+        		        new Propiedad(USUARIO, String.valueOf(contacto.getId())),
+        		        new Propiedad(TIPO_CONTACTO,contacto.getTipoContacto()),
+        		        new Propiedad(MENSAJES,mensajesIds.toString())
         		    )));
 
             
@@ -138,24 +183,27 @@ public final class TDSContactoDAO implements ContactoDAO {
             // Establecemos esta lista de contactos en la propiedad CONTACTOS_GRUPO
             servPersistencia.anadirPropiedadEntidad(eContacto, CONTACTOS_GRUPO, contactosIds.toString());
         }
-
+        
+        
+     
         // Devolvemos la entidad preparada para ser persistida
+         
+        
         return eContacto;
     }
    
     @Override
     public void create(Contacto contacto) {
-    	Entidad eContacto;
+    	
 		try {
-			eContacto = this.contactoToEntidad(contacto);
+			Entidad eContacto = this.contactoToEntidad(contacto);
 			eContacto = servPersistencia.registrarEntidad(eContacto);
 			contacto.setId(eContacto.getId());
 		} catch (DAOException e) {
 			
 			e.printStackTrace();
 		}
-    	
-		
+	
 	}
 
 	public boolean delete(Usuario usuario) {
@@ -181,6 +229,33 @@ public final class TDSContactoDAO implements ContactoDAO {
         }
         return false; // Si no se pudo eliminar
     }
+    
+    public void update(Contacto contacto) {
+	    Entidad eContacto = servPersistencia.recuperarEntidad(contacto.getId());
+	
+	    // Verifica que el usuario tenga contactos
+	    StringBuilder MensajesConcatenados = new StringBuilder();
+	    for (Mensaje m : contacto.getListaMensaje()) {
+	    	System.out.println("LISIRISEWTWRTR"+contacto.getListaMensaje().size());
+	        if (MensajesConcatenados.length() > 0) {
+	            MensajesConcatenados.append(",");
+	        }
+	        MensajesConcatenados.append(m.getId());
+	    }
+	    
+
+	    // Actualiza la propiedad 'contactos'
+	    for (Propiedad prop : eContacto.getPropiedades()) {
+	        if (prop.getNombre().equals(MENSAJES)) {
+	        	System.out.println("MENSAJEESS  :::::"+MensajesConcatenados.toString());
+	            prop.setValor(MensajesConcatenados.toString());
+	            servPersistencia.modificarPropiedad(prop);
+	           
+	        }
+	    }
+	    
+	   
+	}
 
     @Override
     public List<Contacto> getAll() {

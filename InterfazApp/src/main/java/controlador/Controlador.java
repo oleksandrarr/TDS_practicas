@@ -4,6 +4,7 @@ import dao.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import dao.DAOException;
 import dao.FactoriaDAO;
@@ -33,6 +34,15 @@ public enum Controlador {
 
 	public Usuario getUsuarioActual() {
 		return usuarioActual;
+	}
+	
+	public Usuario getUsuarioPorId(int id) {
+		return RepositorioUsuarios.INSTANCE.findUsuario(id);
+	}
+	
+	public Contacto getContactoPorId(int id) {
+		ContactoDAO contacto = null;
+		return contacto.get(id);
 	}
 
 	public boolean esUsuarioRegistrado(String login) {
@@ -89,7 +99,7 @@ public enum Controlador {
 		    if (usuarioContacto == null) {
 		        throw new IllegalArgumentException("El usuario con telefono " + telefono+ " no existe.");
 		 }
-		ContactoIndividual contacto = new ContactoIndividual(nombre, RepositorioUsuarios.INSTANCE.findUsuarioPorTelefono(telefono));
+		ContactoIndividual contacto = new ContactoIndividual(nombre, RepositorioUsuarios.INSTANCE.findUsuarioPorTelefono(telefono).getId());
 		
 		usuarioActual.añadirContacto(contacto);
 		ContactoDAO contactoDAO = factoria
@@ -100,8 +110,7 @@ public enum Controlador {
 				.getUsuarioDAO(); 
 		usuarioDAO.update(usuarioActual);
 		System.out.println("añade uncontacot indi \n");
-		
-		System.out.println("CONTACTO CXONTROLADOR"+contacto.getNombre());
+
 		return (ContactoIndividual)contacto;
 	}
 	
@@ -119,20 +128,51 @@ public enum Controlador {
 	//Envios de mensaje
 	//Enviar Mensaje de tipo texto a Contacto registrado
 	public boolean enviarMensaje(Contacto contacto, String texto, int tipo) {
-		Mensaje mensaje = new Mensaje(texto, usuarioActual, contacto,LocalDateTime.now(),tipo );
+		Mensaje mensaje = new Mensaje(texto, usuarioActual.getId(), contacto.getId(),LocalDateTime.now(),tipo );
 		contacto.registrarMensaje(mensaje);
+		MensajeDAO mensajeDAO = factoria
+			.getMensajeDAO(); 
+		mensajeDAO.registrar(mensaje);
+		ContactoDAO contactoDAO = factoria.getContactoDAO();
+		contactoDAO.update(contacto);
+		
+		int tipo2;
+		if (tipo==1)
+			tipo2 = 0;
+		else
+			tipo2 = 1;
+		Mensaje mensaje2 = new Mensaje(texto, usuarioActual.getId(), contacto.getId(),LocalDateTime.now(), tipo2);
+		ContactoIndividual c = (ContactoIndividual)contacto;
+		ContactoIndividual contactoUsuarioActual = new ContactoIndividual(usuarioActual.getNumeroTelefono(),usuarioActual.getId());
+		RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario()).añadirContacto(contactoUsuarioActual);
+		contactoDAO.create( contactoUsuarioActual);
+		System.out.println("823478942347834"+RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario()).getContactos().size());
+		UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
+		usuarioDAO.update(RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario()));
+		if(RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario()).getContactoIndividual(usuarioActual.getId()) !=null) {
+			System.out.println("ENTRA////////////////////////////");
+			contactoUsuarioActual.registrarMensaje(mensaje2);
+			mensajeDAO.registrar(mensaje2);
+			System.out.println("contacoofaefr"+contactoUsuarioActual.getId());
+			contactoDAO.update(contactoUsuarioActual);
+			
+		}
+		
 		return true;
 	}
 	
+	
 	//Enviar Mensaje de tipo emoticono a Contacto registrado
 	public boolean enviarMensaje(Contacto contacto, int emoticono,int tipo) {
-		Mensaje mensaje = new Mensaje(emoticono, usuarioActual, contacto,LocalDateTime.now(),tipo );
+		Mensaje mensaje = new Mensaje(emoticono, usuarioActual.getId(), contacto.getId(),LocalDateTime.now(),tipo );
 		contacto.registrarMensaje(mensaje);
 		return true;
 	}
 	
 	//Enviar Mensaje de tipo texto a número de teléfono
+	/*
 	public boolean enviarMensaje(String telefonoContacto, String texto,int tipo) {
+		System.out.println("Entra al metod2222o//////////////");
 		Mensaje mensaje = new Mensaje(texto, usuarioActual, telefonoContacto,LocalDateTime.now(),tipo );
 		return true;
 	}
@@ -142,7 +182,7 @@ public enum Controlador {
 		Mensaje mensaje = new Mensaje(emoticono, usuarioActual, telefonoContacto,LocalDateTime.now(),tipo );
 		return true;
 	}
-	
+	*/
 	public List<Mensaje> obtenerMensajes(Contacto contacto) {
 		 if (contacto == null) {
 		        throw new IllegalArgumentException("El contacto proporcionado no existe");

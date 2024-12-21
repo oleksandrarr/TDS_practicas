@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -36,7 +37,7 @@ public class ElementoChat extends JPanel{
 	private String usuario;
 	private String mensaje;
 
-	public ElementoChat(String fileName, String usuario,Mensaje mensaje2) throws IOException {
+	public ElementoChat(String fileName, String usuario,Optional<Mensaje> optional) throws IOException {
 		this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 		fixSize(this,300,110);
 		this.setBackground(Color.WHITE);
@@ -70,11 +71,12 @@ public class ElementoChat extends JPanel{
 	    panelDer.add(contacto);
 	    panel.add(panelDer, BorderLayout.CENTER);
 	    contacto.setFont(new Font("Arial", Font.BOLD, 16));
-	     
-	    JLabel ultimoMensaje = new JLabel(mensaje2.toString());
-	    ultimoMensaje.setBorder(new LineBorder(Color.BLACK,1));
-	    ultimoMensaje.setFont(new Font("Arial", Font.BOLD, 16));
-	    panelDer.add(ultimoMensaje);
+	    
+	    
+		    JLabel ultimoMensaje = new JLabel(optional.toString());
+		    ultimoMensaje.setBorder(new LineBorder(Color.BLACK,1));
+		    ultimoMensaje.setFont(new Font("Arial", Font.BOLD, 16));
+		    panelDer.add(ultimoMensaje);
 	    
 	  
 
