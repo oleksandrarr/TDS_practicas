@@ -102,6 +102,8 @@ public class AñadirContacto {
                 	Controlador.INSTANCE.añadirContactoIndividual(nombre, 
                 			telefono);
                 	frame.dispose();
+                	frame.revalidate();
+                	frame.repaint();
                 }
             });
         
@@ -163,6 +165,8 @@ public class AñadirContacto {
         gbc_textoTelefono.weightx = 1.0; // Asigna peso para expansión horizontal
         gbc_textoTelefono.fill = GridBagConstraints.HORIZONTAL; // Llenar horizontalmente
         panelCentro.add(textoTelefono, gbc_textoTelefono);
+        
+        
 	}
 	
 	

@@ -109,7 +109,7 @@ public enum Controlador {
 		UsuarioDAO usuarioDAO = factoria
 				.getUsuarioDAO(); 
 		usuarioDAO.update(usuarioActual);
-		System.out.println("añade uncontacot indi \n");
+		
 
 		return (ContactoIndividual)contacto;
 	}
@@ -146,16 +146,12 @@ public enum Controlador {
 		ContactoIndividual contactoUsuarioActual = new ContactoIndividual(usuarioActual.getNumeroTelefono(),usuarioActual.getId());
 		RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario()).añadirContacto(contactoUsuarioActual);
 		contactoDAO.create( contactoUsuarioActual);
-		System.out.println("823478942347834"+RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario()).getContactos().size());
 		UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
 		usuarioDAO.update(RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario()));
 		if(RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario()).getContactoIndividual(usuarioActual.getId()) !=null) {
-			System.out.println("ENTRA////////////////////////////");
 			contactoUsuarioActual.registrarMensaje(mensaje2);
 			mensajeDAO.registrar(mensaje2);
-			System.out.println("contacoofaefr"+contactoUsuarioActual.getId());
 			contactoDAO.update(contactoUsuarioActual);
-			
 		}
 		
 		return true;
@@ -195,5 +191,14 @@ public enum Controlador {
 	}
 
 
-	
+	public Contacto getContactoPorNombre(String nombre) {
+		for(Contacto c: usuarioActual.getContactos()) {
+			if(c.getNombre().equals(nombre)) {
+				System.out.println("HA ENCONTADO");
+				return c;
+			}
+		}
+		
+		return null;
+	}
 }

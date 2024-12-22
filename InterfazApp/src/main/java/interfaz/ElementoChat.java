@@ -42,7 +42,7 @@ public class ElementoChat extends JPanel{
 		fixSize(this,300,110);
 		this.setBackground(Color.WHITE);
 		this.setBorder(new TitledBorder(new LineBorder(Color.BLACK), usuario));
-		
+		this.usuario=usuario;
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(199, 235, 201));
 	    panel.setLayout(new BorderLayout());

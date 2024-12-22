@@ -67,7 +67,6 @@ public final class TDSContactoDAO implements ContactoDAO {
             
             ContactoIndividual contacto = new ContactoIndividual(nombre, idUsuario);
             contacto.setListaMensaje(obtenerMensajes(servPersistencia.recuperarPropiedadEntidad(eContacto,MENSAJES)));
-            System.out.println(servPersistencia.recuperarPropiedadEntidad(eContacto,MENSAJES)+"////////888888///////////");
             contacto.setId(eContacto.getId());
             return contacto;
         } 
@@ -85,9 +84,9 @@ public final class TDSContactoDAO implements ContactoDAO {
     private List<Mensaje> obtenerMensajes(String mensajesIds) throws DAOException {
         List<Mensaje> mensajes = new ArrayList<>();
        
-        System.out.println("Viene a recuperalfsafjsdf"+mensajesIds);
+        
         if (mensajesIds != null && !mensajesIds.isEmpty()) {
-        	System.out.println("Viene a recuperalfsafjsdf2222222222");
+        	
             String[] idsArray = mensajesIds.split(",");
             for (String id : idsArray) {
                 try {
@@ -134,7 +133,7 @@ public final class TDSContactoDAO implements ContactoDAO {
         eContacto.setNombre(CONTACTO);
         
         StringBuilder mensajesIds = new StringBuilder();
-        System.out.println("CONTACTTTTTT"+contacto+contacto.getListaMensaje().size());
+       
         if (contacto.getListaMensaje() != null && !contacto.getListaMensaje().isEmpty()) {
         	  
 	        for (Mensaje m : contacto.getListaMensaje()) {
@@ -146,10 +145,7 @@ public final class TDSContactoDAO implements ContactoDAO {
 	        }
 	    }
        
-        
-       
-        
-        System.out.println("888///(888////////888//"+mensajesIds);
+    
         // Establecemos las propiedade del contacto
         //(eContacto, NOMBRE, contacto.getNombre());
      
@@ -236,7 +232,7 @@ public final class TDSContactoDAO implements ContactoDAO {
 	    // Verifica que el usuario tenga contactos
 	    StringBuilder MensajesConcatenados = new StringBuilder();
 	    for (Mensaje m : contacto.getListaMensaje()) {
-	    	System.out.println("LISIRISEWTWRTR"+contacto.getListaMensaje().size());
+	    	
 	        if (MensajesConcatenados.length() > 0) {
 	            MensajesConcatenados.append(",");
 	        }
@@ -247,7 +243,7 @@ public final class TDSContactoDAO implements ContactoDAO {
 	    // Actualiza la propiedad 'contactos'
 	    for (Propiedad prop : eContacto.getPropiedades()) {
 	        if (prop.getNombre().equals(MENSAJES)) {
-	        	System.out.println("MENSAJEESS  :::::"+MensajesConcatenados.toString());
+	        	
 	            prop.setValor(MensajesConcatenados.toString());
 	            servPersistencia.modificarPropiedad(prop);
 	           

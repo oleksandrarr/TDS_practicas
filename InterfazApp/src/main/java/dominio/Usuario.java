@@ -131,7 +131,7 @@ public class Usuario {
 	}
 	
 	public void setContacto(List<Contacto> contactos) {
-		System.out.println("añadidos los contactos");
+	
 		this.contactos=contactos;
 	}
 	

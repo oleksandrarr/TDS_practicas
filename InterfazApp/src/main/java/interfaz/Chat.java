@@ -108,8 +108,6 @@ public class Chat extends JPanel {
 			LocalDateTime hora = LocalDateTime.now();
 			
 			List<Mensaje> mensajes = Controlador.INSTANCE.obtenerMensajes(contacto);
-			System.out.printf("Se añade%s\n",mensajes.size());
-			System.out.printf("Se añade%s\n",contacto.getNombre());
 	 		 for (Mensaje m : mensajes) {
 	 			 BubbleText burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE, Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre()+hora.format(soloHora), m.getTipoMensaje(), 11);
 	             chat.add(burbuja); 

@@ -67,7 +67,7 @@ public abstract class Contacto {
 
 	
 		public  boolean registrarMensaje(Mensaje mensaje) {
-			System.out.println("VA A REGISTRA444444444444444444444444444444R");
+		
 			return listaMensaje.add(mensaje);
 		}
 

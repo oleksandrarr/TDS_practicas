@@ -191,18 +191,19 @@ public class VentanaPrincipal {
 				                ElementoChat elementoSeleccionado = lista.getModel().getElementAt(selectedIndex);
 
 				                // Buscar el contacto correspondiente al nombre del elemento
-				                Contacto contacto = buscarContactoPorNombre(elementoSeleccionado.getNombre());
+				                Contacto contacto = Controlador.INSTANCE.getContactoPorNombre(elementoSeleccionado.getNombre());
+				            
 
 				                if (contacto != null) {
-				                    // Crear el panel de chat y mostrarlo
-				                    JPanel nuevoChat = null;
 									try {
-										nuevoChat = new Chat(contacto);
+										//JPanel nuevoChat= new Chat(contacto);
+										//cambiarPantallaChat(nuevoChat);
+										cambiarPantallaChat(contacto);
 									} catch (IOException e1) {
-										// TODO Auto-generated catch block
+									
 										e1.printStackTrace();
 									} // Crear el panel de chat con el contacto
-				                    cambiarPantallaChat(nuevoChat); // Cambiar la pantalla principal al nuevo chat
+				                  
 				                } else {
 				                    JOptionPane.showMessageDialog(null, "Contacto no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
 				                }
@@ -450,7 +451,6 @@ public class VentanaPrincipal {
 	}
 	
 	private void añadirChat(Contacto contacto) throws IOException{
-		
 		chat = new Chat(contacto);
 		chat.setPreferredSize(new Dimension(500, 700));
 		chat.setMinimumSize(new Dimension(500, 700));
@@ -458,28 +458,20 @@ public class VentanaPrincipal {
 		pantalla.add(chat);
 	}
 	
-	private void cambiarPantallaChat(JPanel nuevoChat) {
-	    BorderLayout layout = (BorderLayout) contenedor.getLayout();
-	    Component componenteActual = layout.getLayoutComponent(BorderLayout.CENTER);
-
-	    if (componenteActual != null) {
-	        contenedor.remove(componenteActual); // Remover el panel actual
+	private void cambiarPantallaChat(Contacto contacto) throws IOException {
+	    
+		
+	    if (chat != null) {
+	       pantalla.remove(chat); 
 	    }
-
-	    contenedor.add(nuevoChat, BorderLayout.CENTER); // Añadir el nuevo panel
-	    contenedor.revalidate(); // Actualizar la vista
-	    contenedor.repaint(); // Re-pintar la interfaz
+	    añadirChat(contacto);
+	    pantalla.revalidate(); // Actualizar la vista
+	    pantalla.repaint(); // Re-pintar la interfaz
+	    
 	}
 	
 	
-	private Contacto buscarContactoPorNombre(String nombre) {
-	    for (Contacto contacto : Controlador.INSTANCE.obtenerContactos()) {
-	        if (contacto.getNombre().equals(nombre)) {
-	            return contacto;
-	        }
-	    }
-	    return null; // Si no se encuentra el contacto
-	}
+	
 
 
 
