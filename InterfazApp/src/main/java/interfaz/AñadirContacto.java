@@ -17,6 +17,8 @@ import dominio.Contacto;
 import dominio.ContactoIndividual;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -30,6 +32,7 @@ public class AñadirContacto {
 	private JPanel panelCentro;
 	private  JTextField textoNombre;
 	private JTextField textoTelefono;
+	private Runnable onContactoAñadido; // Callback
 
 	/**
 	 * Launch the application.
@@ -53,7 +56,11 @@ public class AñadirContacto {
 	public AñadirContacto() {
 		initialize();
 	}
-
+	
+	 public AñadirContacto(Runnable onContactoAñadido) {
+	        this.onContactoAñadido = onContactoAñadido;
+	        initialize();
+	    }
 	public void mostrarVentana() {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
@@ -99,9 +106,22 @@ public class AñadirContacto {
                 public void actionPerformed(ActionEvent e) {
                 	String nombre = textoNombre.getText();
                 	String telefono = textoTelefono.getText();
-                	Controlador.INSTANCE.añadirContactoIndividual(nombre, 
+                	ContactoIndividual c = Controlador.INSTANCE.añadirContactoIndividual(nombre, 
                 			telefono);
-                	frame.dispose();
+                	if(c==null) {
+                		 JOptionPane.showMessageDialog(frame, 
+                                 "Ya hay un contacto registrado con este teléfono.", 
+                                 "Error", 
+                                 JOptionPane.ERROR_MESSAGE);
+                	}
+                	else {
+                		
+                		 if (onContactoAñadido != null) {
+                             onContactoAñadido.run();
+                         }
+                		frame.dispose();
+                	}
+                	
                 	frame.revalidate();
                 	frame.repaint();
                 }

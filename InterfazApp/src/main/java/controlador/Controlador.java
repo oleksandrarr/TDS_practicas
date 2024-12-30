@@ -99,6 +99,9 @@ public enum Controlador {
 		    if (usuarioContacto == null) {
 		        throw new IllegalArgumentException("El usuario con telefono " + telefono+ " no existe.");
 		 }
+		    if(usuarioActual.getContactoIndividual(usuarioContacto.getId())!=null) {
+		    	return null;
+		    }
 		ContactoIndividual contacto = new ContactoIndividual(nombre, RepositorioUsuarios.INSTANCE.findUsuarioPorTelefono(telefono).getId());
 		
 		usuarioActual.añadirContacto(contacto);
@@ -127,44 +130,79 @@ public enum Controlador {
 	}
 	//Envios de mensaje
 	//Enviar Mensaje de tipo texto a Contacto registrado
-	public boolean enviarMensaje(Contacto contacto, String texto, int tipo) {
-		Mensaje mensaje = new Mensaje(texto, usuarioActual.getId(), contacto.getId(),LocalDateTime.now(),tipo );
-		contacto.registrarMensaje(mensaje);
-		MensajeDAO mensajeDAO = factoria
-			.getMensajeDAO(); 
-		mensajeDAO.registrar(mensaje);
-		ContactoDAO contactoDAO = factoria.getContactoDAO();
-		contactoDAO.update(contacto);
-		
-		int tipo2;
-		if (tipo==1)
-			tipo2 = 0;
-		else
-			tipo2 = 1;
-		Mensaje mensaje2 = new Mensaje(texto, usuarioActual.getId(), contacto.getId(),LocalDateTime.now(), tipo2);
-		ContactoIndividual c = (ContactoIndividual)contacto;
-		ContactoIndividual contactoUsuarioActual = new ContactoIndividual(usuarioActual.getNumeroTelefono(),usuarioActual.getId());
-		RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario()).añadirContacto(contactoUsuarioActual);
-		contactoDAO.create( contactoUsuarioActual);
-		UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
-		usuarioDAO.update(RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario()));
-		if(RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario()).getContactoIndividual(usuarioActual.getId()) !=null) {
-			contactoUsuarioActual.registrarMensaje(mensaje2);
-			mensajeDAO.registrar(mensaje2);
-			contactoDAO.update(contactoUsuarioActual);
-		}
-		
-		return true;
+	public boolean enviarMensaje(Contacto contacto, String texto, int tipo) throws DAOException {
+	    // Validaciones iniciales
+	    if (usuarioActual == null) {
+	        throw new IllegalStateException("No hay un usuario autenticado. Inicie sesión primero.");
+	    }
+
+	    if (contacto == null) {
+	        throw new IllegalArgumentException("El contacto proporcionado es nulo.");
+	    }
+
+	    if (texto == null || texto.isEmpty()) {
+	        throw new IllegalArgumentException("El texto del mensaje no puede ser nulo o vacío.");
+	    }
+
+	    // Crear el mensaje
+	    Mensaje mensaje = new Mensaje(texto, usuarioActual.getId(), contacto.getId(), LocalDateTime.now(), tipo);
+	    
+
+	    MensajeDAO mensajeDAO = factoria.getMensajeDAO();
+	    mensajeDAO.registrar(mensaje);
+	   
+	    //Registro el mensaje en la lista del contacto
+	    contacto.registrarMensaje(mensaje);
+	    
+	    // Actualizo el contacto
+	    ContactoDAO contactoDAO = factoria.getContactoDAO();
+	    
+
+	    // Lógica para registrar el mensaje en ambos contactos
+	    int tipo2 = (tipo == 1) ? 0 : 1;
+	    Mensaje mensaje2 = new Mensaje(texto, usuarioActual.getId(), contacto.getId(), LocalDateTime.now(), tipo2);
+	    ContactoIndividual c = (ContactoIndividual) contacto;
+	    
+
+	    // Asegurar que el usuario existe
+	    Usuario usuarioEncontrado = RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario());
+	    if (usuarioEncontrado == null) {
+	        throw new IllegalArgumentException("No se encontró el usuario asociado al contacto.");
+	    }
+
+	    
+	    UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
+	    
+	    if (usuarioEncontrado.getContactoIndividual(usuarioActual.getId()) != null) {
+	    	usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).registrarMensaje(mensaje2);
+	        mensajeDAO.registrar(mensaje2);
+	        contactoDAO.update(usuarioEncontrado.getContactoIndividual(usuarioActual.getId()));
+	        usuarioDAO.update(usuarioEncontrado);
+	        contactoDAO.update(contacto);
+	        
+	    } else {
+	    	ContactoIndividual contactoUsuarioActual = new ContactoIndividual(usuarioActual.getNumeroTelefono(), usuarioActual.getId());
+	    	contactoDAO.create(contactoUsuarioActual);
+	        usuarioEncontrado.añadirContacto(contactoUsuarioActual);
+	        contactoUsuarioActual.registrarMensaje(mensaje2);
+	        mensajeDAO.registrar(mensaje2);
+	        contactoDAO.update(contactoUsuarioActual);
+	        usuarioDAO.update(usuarioEncontrado);
+	        contactoDAO.update(contacto);
+	    }
+
+	    return true;
 	}
+
 	
 	
-	//Enviar Mensaje de tipo emoticono a Contacto registrado
+	/*
 	public boolean enviarMensaje(Contacto contacto, int emoticono,int tipo) {
 		Mensaje mensaje = new Mensaje(emoticono, usuarioActual.getId(), contacto.getId(),LocalDateTime.now(),tipo );
 		contacto.registrarMensaje(mensaje);
 		return true;
 	}
-	
+	*/
 	//Enviar Mensaje de tipo texto a número de teléfono
 	/*
 	public boolean enviarMensaje(String telefonoContacto, String texto,int tipo) {

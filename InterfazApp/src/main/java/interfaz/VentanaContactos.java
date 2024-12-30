@@ -224,12 +224,20 @@ public class VentanaContactos {
         
       //Action listener Añadir Contacto
         btnNewButton_2.addActionListener(new ActionListener() {
-	         @Override
-	         public void actionPerformed(ActionEvent e) {
-	             AñadirContacto añadirContacto = new  AñadirContacto();
-	             añadirContacto.mostrarVentana();
-	         }
-	     });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AñadirContacto añadirContacto = new AñadirContacto(() -> {
+                    // Actualizar la lista de contactos
+                    modeloLista.clear();
+                    List<Contacto> contactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
+                    for (Contacto c : contactos) {
+                        modeloLista.addElement(c.getNombre());
+                    }
+                    listaContactos.repaint(); // Refrescar la vista
+                });
+                añadirContacto.mostrarVentana();
+            }
+        });
         
         //boton Aceptar
         /*

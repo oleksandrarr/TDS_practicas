@@ -146,12 +146,13 @@ public class Usuario {
 
 	public ContactoIndividual getContactoIndividual(int id) {
 	    for (Contacto c : contactos) {
-	    	ContactoIndividual ci = (ContactoIndividual)c;
-	        if (c != null && ci.getUsuario()==id) {
-	            return (ContactoIndividual) c;
+	        if (c instanceof ContactoIndividual) { // Verifica el tipo antes de hacer el casting
+	            ContactoIndividual ci = (ContactoIndividual) c;
+	            if (ci.getUsuario() == id) { // Si getUsuario devuelve un int, esto está bien
+	                return ci;
+	            }
 	        }
 	    }
-	  
 	    return null; // Devuelve null si no encuentra el contacto
 	}
 

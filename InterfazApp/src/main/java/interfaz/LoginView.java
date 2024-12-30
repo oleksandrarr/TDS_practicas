@@ -29,6 +29,7 @@ public class LoginView {
 	private JFrame frmLogin;
 	private JTextField textUsuario;
 	private JPasswordField textPassword;
+    private Runnable onLoginSuccess;
 
 	/**
 	 * Create the application.
@@ -36,7 +37,13 @@ public class LoginView {
 	public LoginView() {
 		initialize();
 	}
+	
 
+    public LoginView(Runnable onLoginSuccess) {
+        this.onLoginSuccess = onLoginSuccess;
+        initialize();
+    }
+    
 	public void mostrarVentana() {
 		frmLogin.setLocationRelativeTo(null);
 		frmLogin.setVisible(true);
@@ -196,6 +203,9 @@ public class LoginView {
 						principal = new VentanaPrincipal();
 						principal.mostrarVentana();
 						frmLogin.dispose();
+						if (onLoginSuccess != null) {
+                            onLoginSuccess.run();
+                        }
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}

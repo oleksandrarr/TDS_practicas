@@ -94,7 +94,7 @@ public class VentanaInicial {
 	         @Override
 	         public void actionPerformed(ActionEvent e) {
 	             // Instanciar y mostrar la pantalla de LoginView
-	             LoginView loginView = new LoginView();
+	        	 LoginView loginView = new LoginView(() -> frmVentanaInicial.dispose());
 	             loginView.mostrarVentana();
 
 	             // Opcional: ocultar o cerrar la ventana actual

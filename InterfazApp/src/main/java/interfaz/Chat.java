@@ -26,6 +26,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import controlador.Controlador;
+import dao.DAOException;
 import dominio.Contacto;
 import dominio.Mensaje;
 
@@ -44,7 +45,7 @@ public class Chat extends JPanel {
     	private JPanel cajaEmoji;
 
         public Chat(Contacto contacto) throws IOException {
-       
+        	Controlador controlador = Controlador.INSTANCE;
         	BubbleText.noZoom();
             
             this.setLayout(new BorderLayout());
@@ -109,26 +110,14 @@ public class Chat extends JPanel {
 			
 			List<Mensaje> mensajes = Controlador.INSTANCE.obtenerMensajes(contacto);
 	 		 for (Mensaje m : mensajes) {
-	 			 BubbleText burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE, Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre()+hora.format(soloHora), m.getTipoMensaje(), 11);
+	 			 BubbleText burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE, Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre()
+	 					 +m.getFechaHoraEnvio().format(soloHora), m.getTipoMensaje(), 11);
 	             chat.add(burbuja); 
 	             chat.scrollRectToVisible(new Rectangle(0,640+burbuja.getHeight(),1,1));
 	             System.out.println("Se añade");
 	         }
 	 		 
-	 		/*
-	        BubbleText bubbleText = new BubbleText(chat, "Hola grupo", Color.WHITE, "Pascual "+hora.format(soloHora), BubbleText.SENT, 11);
-            chat.add(bubbleText);
-            chat.add(new BubbleText(chat, "Hola grupo", Color.WHITE, "Pablo "+hora.format(soloHora), 1, 11));
-            chat.add(new BubbleText(chat, "Hola grupo", Color.WHITE, "Pablo "+hora.format(soloHora), BubbleText.RECEIVED, 11));
-            chat.add(new BubbleText(chat, 0, Color.WHITE, "Pablo "+hora.format(soloHora), BubbleText.RECEIVED, 11));
-            chat.add(new BubbleText(chat, 3, Color.WHITE, "Pablo "+hora.format(soloHora), BubbleText.RECEIVED, 11));
-            chat.add(new BubbleText(chat, 1, Color.WHITE, "Pablo "+hora.format(soloHora), BubbleText.RECEIVED, 11));
-            chat.add(new BubbleText(chat, "Hola grupo", Color.WHITE, "Pablo "+hora.format(soloHora), BubbleText.RECEIVED, 11));
-            chat.add(new BubbleText(chat, "Hola grupo", Color.WHITE, "Pablo"+hora.format(soloHora), BubbleText.RECEIVED, 11));
-            BubbleText mensaje2 = new BubbleText(chat, "Hola grupo", Color.WHITE, "Pascual "+hora.format(soloHora), BubbleText.SENT, 11);
-            chat.add(bubbleText);
-            */
-           
+	 		
             repaint();
             revalidate();
             //Para tabla de emoticonos
@@ -172,6 +161,42 @@ public class Chat extends JPanel {
                 // Mostrar el JPopupMenu cerca del botón
                 emojiPopup.show(btnNewButton, btnNewButton.getWidth() / 2, btnNewButton.getHeight());
             });
+            
+            System.out.println("//////(////////(8888//////"+contacto.getId());
+            //Action listener para enviar Mensaje
+            //	public boolean enviarMensaje(Contacto contacto, String texto, int tipo) {
+            btnNewButton_1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String mensaje = textField_1.getText(); // Obtener texto del campo
+                    if (!mensaje.trim().isEmpty()) { // Verificar que no esté vacío
+                    	System.out.println("EL MENSAJE TIENE EL TEXTO"+mensaje);
+                        try {
+                        	Controlador.INSTANCE.enviarMensaje(contacto, mensaje, Mensaje.ENVIADO);
+						} catch (DAOException e1) {
+							e1.printStackTrace();
+						} // Llamar al método con el texto
+                        textField_1.setText(""); // Limpiar el campo después de enviar
+
+                        // Crear una nueva burbuja para mostrar el mensaje en el área de chat
+                        
+                        LocalDateTime hora = LocalDateTime.now();
+                       
+                        BubbleText burbuja = new BubbleText(chat, mensaje.toString(), Color.WHITE, "Tú " + hora.format(soloHora),Mensaje.ENVIADO, 11);
+                        chat.add(burbuja); // Añadir la burbuja al panel de chat
+
+                        // Desplazar la vista hacia el final
+                        chat.scrollRectToVisible(new Rectangle(0, chat.getHeight(), 1, 1));
+                        // Refrescar la interfaz gráfica
+                        chat.revalidate();
+                        chat.repaint();
+                 
+                    }
+                }
+
+				
+            });
+
             
         }
         

@@ -86,23 +86,25 @@ public final class TDSContactoDAO implements ContactoDAO {
        
         
         if (mensajesIds != null && !mensajesIds.isEmpty()) {
-        	
             String[] idsArray = mensajesIds.split(",");
             for (String id : idsArray) {
-                try {
-                	System.out.println(id);
-                	MensajeDAO mensajeDAO = FactoriaDAO.getInstancia().getMensajeDAO();
-                    Mensaje mensaje = mensajeDAO.get(Integer.parseInt(id));  // Recuperar cada mensaje por su ID
-                    if (mensaje != null) {
-                    	
-                        mensajes.add(mensaje);
+                if (id != null && !id.trim().isEmpty()) {  // Ignorar IDs vacíos
+                    try {
+                    	int idNumerico = Integer.parseInt(id.trim()); // Convertir ID a entero
+                        if (idNumerico != 0) { // Verificar que no sea 0
+	                        MensajeDAO mensajeDAO = FactoriaDAO.getInstancia().getMensajeDAO();
+	                        Mensaje mensaje = mensajeDAO.get(Integer.parseInt(id.trim())); // Convertir ID
+	                        if (mensaje != null) {
+	                            mensajes.add(mensaje);
+	                        }
+                        }
+                    } catch (NumberFormatException e) {
+                        System.err.println("Error al convertir el ID del mensaje: " + id);
                     }
-                } catch (NumberFormatException e) {
-                    // Manejo de error si el ID no es válido
-                    System.err.println("Error al convertir el ID de con2tacto: " + id);
                 }
             }
         }
+
         return mensajes;
     }
     
@@ -154,7 +156,7 @@ public final class TDSContactoDAO implements ContactoDAO {
         	System.out.println("CREA CONTACTO INDIVIDAK");
         	  eContacto.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
         		        new Propiedad(NOMBRE, contacto.getNombre()),
-        		        new Propiedad(USUARIO, String.valueOf(contacto.getId())),
+        		        new Propiedad(USUARIO, String.valueOf(((ContactoIndividual) contacto).getUsuario())),
         		        new Propiedad(TIPO_CONTACTO,contacto.getTipoContacto()),
         		        new Propiedad(MENSAJES,mensajesIds.toString())
         		    )));
@@ -227,31 +229,46 @@ public final class TDSContactoDAO implements ContactoDAO {
     }
     
     public void update(Contacto contacto) {
-	    Entidad eContacto = servPersistencia.recuperarEntidad(contacto.getId());
-	
-	    // Verifica que el usuario tenga contactos
-	    StringBuilder MensajesConcatenados = new StringBuilder();
-	    for (Mensaje m : contacto.getListaMensaje()) {
-	    	
-	        if (MensajesConcatenados.length() > 0) {
-	            MensajesConcatenados.append(",");
-	        }
-	        MensajesConcatenados.append(m.getId());
-	    }
-	    
+        Entidad eContacto = servPersistencia.recuperarEntidad(contacto.getId());
 
-	    // Actualiza la propiedad 'contactos'
-	    for (Propiedad prop : eContacto.getPropiedades()) {
-	        if (prop.getNombre().equals(MENSAJES)) {
-	        	
-	            prop.setValor(MensajesConcatenados.toString());
-	            servPersistencia.modificarPropiedad(prop);
-	           
-	        }
-	    }
-	    
-	   
-	}
+        // Recupera los mensajes existentes de la entidad
+        String mensajesExistentes = servPersistencia.recuperarPropiedadEntidad(eContacto, MENSAJES);
+        List<String> listaMensajesExistentes = new ArrayList<>();
+
+        if (mensajesExistentes != null && !mensajesExistentes.isEmpty()) {
+            listaMensajesExistentes.addAll(List.of(mensajesExistentes.split(",")));
+        }
+
+        // Agrega los nuevos mensajes a la lista sin duplicados
+        for (Mensaje m : contacto.getListaMensaje()) {
+            String idMensaje = String.valueOf(m.getId());
+            if (!listaMensajesExistentes.contains(idMensaje)) {
+                listaMensajesExistentes.add(idMensaje);
+            }
+        }
+
+        // Construye la nueva cadena de mensajes concatenados
+        StringBuilder mensajesConcatenados = new StringBuilder();
+        for (String mensajeId : listaMensajesExistentes) {
+            if (mensajeId != null && !mensajeId.trim().isEmpty()) {  // Validar ID
+                if (mensajesConcatenados.length() > 0) {
+                    mensajesConcatenados.append(",");
+                }
+                mensajesConcatenados.append(mensajeId.trim());
+            }
+        }
+
+
+        // Actualiza la propiedad 'MENSAJES'
+        for (Propiedad prop : eContacto.getPropiedades()) {
+            if (prop.getNombre().equals(MENSAJES)) {
+                prop.setValor(mensajesConcatenados.toString());
+                servPersistencia.modificarPropiedad(prop);
+                break;
+            }
+        }
+    }
+
 
     @Override
     public List<Contacto> getAll() {

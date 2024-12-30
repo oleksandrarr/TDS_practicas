@@ -3,6 +3,7 @@ package controlador;
 import java.time.LocalDate;
 import java.util.List;
 
+import dao.DAOException;
 import dominio.Contacto;
 import dominio.ContactoIndividual;
 import dominio.Mensaje;
@@ -11,7 +12,7 @@ import dominio.Mensaje;
 import dominio.Usuario;
 
 public class CargarAppChat {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws DAOException {
 		 
 		Controlador controlador = Controlador.INSTANCE;
 		
@@ -42,11 +43,20 @@ public class CargarAppChat {
 		Controlador.INSTANCE.enviarMensaje(contacto1, "Ho3la!", 0);
 		Controlador.INSTANCE.enviarMensaje(contacto3, "Hola. Qué tal?", 0);
 		Controlador.INSTANCE.enviarMensaje(contacto3, "Hola. Qué tal?", 1);
-	    
-	    
+		Controlador.INSTANCE.enviarMensaje(contacto1, "Hola. Qué tal?", 1);
+		Controlador.INSTANCE.enviarMensaje(contacto1, "Hola. Qué tal?", 1);
+		Controlador.INSTANCE.enviarMensaje(contacto1, "Hola. Qué tal?", 1);
+		Controlador.INSTANCE.enviarMensaje(contacto1, "Hola. Qué tal?", 1);
+		Controlador.INSTANCE.enviarMensaje(contacto1, "Hola. Qué tal?", 1);
+		Controlador.INSTANCE.enviarMensaje(contacto1, "Hola. Qué tal?", 1);
+		Controlador.INSTANCE.enviarMensaje(contacto1, "Hola.322342 Qué tal?", 1);
 	   
-	   
-	   
+		List<Mensaje> mensajes = controlador.obtenerMensajes(contacto1);
+		for (Mensaje mensaje : mensajes) {
+		    System.out.println("Mensaje: " + mensaje.getTexto() 
+		        + ", Fecha: " + mensaje.getFechaHoraEnvio() 
+		        + ", Emisor: " + mensaje.getEmisor());
+		}
 	 
 	    
 	  
