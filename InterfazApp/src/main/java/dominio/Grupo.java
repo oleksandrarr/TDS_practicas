@@ -40,5 +40,9 @@ public class Grupo extends Contacto{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public String getNombre() {
+		return this.nombre;
+	}
 
 }

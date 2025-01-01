@@ -42,9 +42,7 @@ public abstract class Contacto {
 			this.id = id;
 		}
 
-	    public String getNombre() {
-			return nombre;
-		}
+	    
 
 
 	    public  List<Mensaje> getListaMensaje() {
@@ -70,5 +68,6 @@ public abstract class Contacto {
 		
 			return listaMensaje.add(mensaje);
 		}
-
+		
+		public abstract String getNombre();
 }

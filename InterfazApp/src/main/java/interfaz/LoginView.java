@@ -199,7 +199,7 @@ public class LoginView {
 				if (login) {
 					VentanaPrincipal principal;
 					try {
-						System.out.println("Entra bien");
+						
 						principal = new VentanaPrincipal();
 						principal.mostrarVentana();
 						frmLogin.dispose();

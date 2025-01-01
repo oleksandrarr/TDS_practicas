@@ -220,6 +220,7 @@ public class VentanaBuscar {
 	        	 for(dominio.Mensaje m : listaMensajes) {
 	        		 if(mensaje.equals(m.getTexto())) {
 	        			 emisor = Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre();
+	        			 
 	        			 receptor = Controlador.INSTANCE.getContactoPorId(m.getReceptor()).getNombre();
 	        		 }
 	        	 }

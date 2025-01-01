@@ -13,6 +13,7 @@ import dao.UsuarioDAO;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public final class TDSContactoDAO implements ContactoDAO {
 
@@ -25,6 +26,7 @@ public final class TDSContactoDAO implements ContactoDAO {
     private static final String USUARIO = "usuario";     // ID del usuario
     private static final String CONTACTOS_GRUPO = "contactos";  // Lista de contactos en el grupo
     private static final String MENSAJES = "mensajes";
+    private static final String TELEFONO = "numeroTelefono";
   
     public TDSContactoDAO() {
         servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
@@ -63,9 +65,10 @@ public final class TDSContactoDAO implements ContactoDAO {
         
      
         if ("Individual".equals(tipoContacto)) {
+        	
             int idUsuario = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eContacto, USUARIO));
-            
-            ContactoIndividual contacto = new ContactoIndividual(nombre, idUsuario);
+            String numeroTelefono = servPersistencia.recuperarPropiedadEntidad(eContacto, TELEFONO);
+            ContactoIndividual contacto = new ContactoIndividual(Optional.ofNullable(nombre).orElse(null), idUsuario,numeroTelefono);
             contacto.setListaMensaje(obtenerMensajes(servPersistencia.recuperarPropiedadEntidad(eContacto,MENSAJES)));
             contacto.setId(eContacto.getId());
             return contacto;
@@ -155,10 +158,11 @@ public final class TDSContactoDAO implements ContactoDAO {
         if (contacto instanceof ContactoIndividual) {
         	System.out.println("CREA CONTACTO INDIVIDAK");
         	  eContacto.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
-        		        new Propiedad(NOMBRE, contacto.getNombre()),
+        		        new Propiedad(NOMBRE, ((ContactoIndividual)contacto).getNombreOptional().orElse(null)),
         		        new Propiedad(USUARIO, String.valueOf(((ContactoIndividual) contacto).getUsuario())),
         		        new Propiedad(TIPO_CONTACTO,contacto.getTipoContacto()),
-        		        new Propiedad(MENSAJES,mensajesIds.toString())
+        		        new Propiedad(MENSAJES,mensajesIds.toString()),
+        		        new Propiedad(TELEFONO, ((ContactoIndividual)contacto).getNumeroTelefono())
         		    )));
 
             
@@ -229,9 +233,10 @@ public final class TDSContactoDAO implements ContactoDAO {
     }
     
     public void update(Contacto contacto) {
+        // Recupera la entidad asociada al contacto
         Entidad eContacto = servPersistencia.recuperarEntidad(contacto.getId());
 
-        // Recupera los mensajes existentes de la entidad
+        // Actualizar la lista de mensajes
         String mensajesExistentes = servPersistencia.recuperarPropiedadEntidad(eContacto, MENSAJES);
         List<String> listaMensajesExistentes = new ArrayList<>();
 
@@ -239,7 +244,7 @@ public final class TDSContactoDAO implements ContactoDAO {
             listaMensajesExistentes.addAll(List.of(mensajesExistentes.split(",")));
         }
 
-        // Agrega los nuevos mensajes a la lista sin duplicados
+        // Agregar nuevos mensajes si no están ya en la lista
         for (Mensaje m : contacto.getListaMensaje()) {
             String idMensaje = String.valueOf(m.getId());
             if (!listaMensajesExistentes.contains(idMensaje)) {
@@ -247,27 +252,34 @@ public final class TDSContactoDAO implements ContactoDAO {
             }
         }
 
-        // Construye la nueva cadena de mensajes concatenados
-        StringBuilder mensajesConcatenados = new StringBuilder();
-        for (String mensajeId : listaMensajesExistentes) {
-            if (mensajeId != null && !mensajeId.trim().isEmpty()) {  // Validar ID
-                if (mensajesConcatenados.length() > 0) {
-                    mensajesConcatenados.append(",");
-                }
-                mensajesConcatenados.append(mensajeId.trim());
-            }
-        }
+        // Construir la nueva cadena de mensajes concatenados
+        String mensajesConcatenados = String.join(",", listaMensajesExistentes);
 
-
-        // Actualiza la propiedad 'MENSAJES'
+        // Actualizar las propiedades de la entidad
         for (Propiedad prop : eContacto.getPropiedades()) {
+            // Actualizar mensajes
             if (prop.getNombre().equals(MENSAJES)) {
-                prop.setValor(mensajesConcatenados.toString());
+                prop.setValor(mensajesConcatenados);
                 servPersistencia.modificarPropiedad(prop);
-                break;
+            }
+
+            // Actualizar el nombre (sin modificar el teléfono)
+            if (contacto instanceof ContactoIndividual) {
+                ContactoIndividual contactoInd = (ContactoIndividual) contacto;
+
+                if (prop.getNombre().equals(NOMBRE)) {
+                    // Actualizar el nombre si existe
+                    String nuevoNombre = contactoInd.getNombreOptional().orElse("");
+                    if (!nuevoNombre.isEmpty()) {
+                        prop.setValor(nuevoNombre);
+                        servPersistencia.modificarPropiedad(prop);
+                    }
+                }
             }
         }
     }
+
+
 
 
     @Override

@@ -58,11 +58,6 @@ public class ElementoConversacion extends JPanel{
  		chat.setMinimumSize(new Dimension(300, 400));
  		chat.setMaximumSize(new Dimension(700, 700));
  		
- 		
-         
- 		
-        
-
 
          // Panel inferior (bajo el chat)
          JPanel bajoChat = new JPanel();

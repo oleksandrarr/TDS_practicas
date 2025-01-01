@@ -102,7 +102,7 @@ public enum Controlador {
 		    if(usuarioActual.getContactoIndividual(usuarioContacto.getId())!=null) {
 		    	return null;
 		    }
-		ContactoIndividual contacto = new ContactoIndividual(nombre, RepositorioUsuarios.INSTANCE.findUsuarioPorTelefono(telefono).getId());
+		ContactoIndividual contacto = new ContactoIndividual(nombre, RepositorioUsuarios.INSTANCE.findUsuarioPorTelefono(telefono).getId(),telefono);
 		
 		usuarioActual.añadirContacto(contacto);
 		ContactoDAO contactoDAO = factoria
@@ -181,7 +181,8 @@ public enum Controlador {
 	        contactoDAO.update(contacto);
 	        
 	    } else {
-	    	ContactoIndividual contactoUsuarioActual = new ContactoIndividual(usuarioActual.getNumeroTelefono(), usuarioActual.getId());
+	    	ContactoIndividual contactoUsuarioActual = new ContactoIndividual(usuarioActual.getNumeroTelefono(), 
+	    			usuarioActual.getId(),usuarioActual.getNumeroTelefono());
 	    	contactoDAO.create(contactoUsuarioActual);
 	        usuarioEncontrado.añadirContacto(contactoUsuarioActual);
 	        contactoUsuarioActual.registrarMensaje(mensaje2);
@@ -227,16 +228,29 @@ public enum Controlador {
 	public List<Contacto> obtenerContactos(){
 		return factoria.getContactoDAO().getAll();
 	}
+	
+	//public boolean esContactoSinNombre()
 
 
-	public Contacto getContactoPorNombre(String nombre) {
+	public ContactoIndividual getContactoPorTelefono(String telefono) {
 		for(Contacto c: usuarioActual.getContactos()) {
-			if(c.getNombre().equals(nombre)) {
+			if(((ContactoIndividual)c).getNumeroTelefono().equals(telefono)) {
 				System.out.println("HA ENCONTADO");
-				return c;
+				return (ContactoIndividual)c;
 			}
 		}
 		
 		return null;
 	}
+
+	public void modificarContacto(String nombre, String tel) {
+		ContactoIndividual contacto = getContactoPorTelefono(tel);
+		System.out.println("nombre");
+		contacto.setNombreOptiona(nombre);
+		System.out.println("///////////"+contacto.getNombreOptional());
+		ContactoDAO contactoDAO = factoria.getContactoDAO();
+		contactoDAO.update(contacto);
+		
+	}
+	
 }
