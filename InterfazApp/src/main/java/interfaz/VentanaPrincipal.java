@@ -139,17 +139,19 @@ public class VentanaPrincipal {
 
 	    // Obtener contactos del usuario actual
 	    List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
-
+	    //////QUITAR CODIGO QUE SOBRA////
 	    // Agregar contactos al modelo
 	    for (Contacto contacto : listaContactos) {
-	        if (contacto instanceof ContactoIndividual) {
-	            ContactoIndividual c = (ContactoIndividual) contacto;
-	            String nombre = c.getNombreOptional().orElse(c.getNumeroTelefono());
-	            model.addElement(new ElementoChat(nombre, c.getNumeroTelefono(),this));
-	        } else if (contacto instanceof Grupo) {
-	            Grupo g = (Grupo) contacto;
-	            model.addElement(new ElementoChat(g.getNombre(), "Grupo",this));
-	        }
+	    	if(Controlador.INSTANCE.obtenerMensajes(contacto)!=null) {
+		        if (contacto instanceof ContactoIndividual) {
+		            //ContactoIndividual c = (ContactoIndividual) contacto;
+		            //String nombre = c.getNombreOptional().orElse(c.getNumeroTelefono());
+		            model.addElement(new ElementoChat(contacto,this));
+		        } else if (contacto instanceof Grupo) {
+		            //Grupo g = (Grupo) contacto;
+		            model.addElement(new ElementoChat(contacto,this));
+		        }
+	    	}
 	    }
 
 	    // Crear la lista visual
@@ -166,11 +168,17 @@ public class VentanaPrincipal {
 	                ElementoChat elemento = lista.getModel().getElementAt(index);
 	                Rectangle cellBounds = lista.getCellBounds(index, index);
 	                Point pointInCell = new Point(e.getX() - cellBounds.x, e.getY() - cellBounds.y);
-
 	                JButton boton = elemento.getBotonNombre();
 	                if (boton != null && boton.getBounds().contains(pointInCell)) {
 	                    boton.doClick(); // Simula el clic
 	                }
+	                try {
+						cambiarPantallaChat(Controlador.INSTANCE.getContactoPorTelefono(elemento.getTelefono()));
+					} catch (IOException e1) {
+						
+						e1.printStackTrace();
+					}
+	                
 	            }
 	        }
 	    });
@@ -442,14 +450,16 @@ public class VentanaPrincipal {
 	    // Vuelve a cargar los contactos
 	    List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
 	    for (Contacto contacto : listaContactos) {
-	        if (contacto instanceof ContactoIndividual) {
-	            ContactoIndividual c = (ContactoIndividual) contacto;
-	            String nombre = c.getNombreOptional().orElse(c.getNumeroTelefono());
-	            model.addElement(new ElementoChat(nombre, c.getNumeroTelefono(),this));
-	        } else if (contacto instanceof Grupo) {
-	            Grupo g = (Grupo) contacto;
-	            model.addElement(new ElementoChat(g.getNombre(), "Grupo",this));
-	        }
+	    	if(Controlador.INSTANCE.obtenerMensajes(contacto)!=null) {
+		        if (contacto instanceof ContactoIndividual) {
+		            //ContactoIndividual c = (ContactoIndividual) contacto;
+		            //String nombre = c.getNombreOptional().orElse(c.getNumeroTelefono());
+		            model.addElement(new ElementoChat(contacto,this));
+		        } else if (contacto instanceof Grupo) {
+		            //Grupo g = (Grupo) contacto;
+		            model.addElement(new ElementoChat(contacto,this));
+		        }
+	    	}
 	    }
 
 	    // Refresca la lista

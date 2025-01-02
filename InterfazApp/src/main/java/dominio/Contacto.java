@@ -69,5 +69,11 @@ public abstract class Contacto {
 			return listaMensaje.add(mensaje);
 		}
 		
-		public abstract String getNombre();
+		public String getNombre() {
+		        return nombre; // Proporciona un comportamiento genérico para todas las subclases
+		}
+		
+		public void setNombre(String nombre) {
+			this.nombre=nombre;
+		}
 }

@@ -6,11 +6,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JList;
+
 import dao.DAOException;
 import dao.FactoriaDAO;
 import dominio.Usuario;
 import dominio.Contacto;
 import dominio.ContactoIndividual;
+import dominio.Grupo;
 import dominio.Mensaje;
 import dominio.RepositorioUsuarios;
 
@@ -90,9 +93,7 @@ public enum Controlador {
 	 * CONTACTOS
 	 */
 	
-	public void añadirContacto(String nombre, String telefono) {
-		
-	}
+	
 	public ContactoIndividual añadirContactoIndividual(String nombre, String telefono) {
 		
 		 Usuario usuarioContacto = RepositorioUsuarios.INSTANCE.findUsuarioPorTelefono(telefono);
@@ -234,7 +235,7 @@ public enum Controlador {
 
 	public ContactoIndividual getContactoPorTelefono(String telefono) {
 		for(Contacto c: usuarioActual.getContactos()) {
-			if(((ContactoIndividual)c).getNumeroTelefono().equals(telefono)) {
+			if(c instanceof ContactoIndividual && ((ContactoIndividual)c).getNumeroTelefono().equals(telefono)) {
 				System.out.println("HA ENCONTADO");
 				return (ContactoIndividual)c;
 			}
@@ -251,6 +252,26 @@ public enum Controlador {
 		ContactoDAO contactoDAO = factoria.getContactoDAO();
 		contactoDAO.update(contacto);
 		
+	}
+
+	public void añadirGrupo(List<ContactoIndividual> contactos,String nombre) {
+		
+		Grupo grupo = new Grupo(nombre);
+		grupo.setNombre(nombre);
+		System.out.println("contactosssssssssssss"+contactos.size()+grupo.getNombre());
+		grupo.setContactos(contactos);
+		
+		
+		usuarioActual.añadirContacto(grupo);
+		ContactoDAO contactoDAO = factoria
+				.getContactoDAO(); 
+		contactoDAO.create(grupo);
+		
+		UsuarioDAO usuarioDAO = factoria
+				.getUsuarioDAO(); 
+		usuarioDAO.update(usuarioActual);
+		
+
 	}
 	
 }

@@ -75,8 +75,11 @@ public final class TDSContactoDAO implements ContactoDAO {
         } 
        
         else if ("Grupo".equals(tipoContacto)) {
-            List<Contacto> contactos = obtenerContactosDelGrupo(eContacto);
+        	String contactosIds = servPersistencia.recuperarPropiedadEntidad(eContacto, CONTACTOS_GRUPO);
+            List<ContactoIndividual> contactos = obtenerContactosDelGrupo(eContacto);
             Grupo grupo = new Grupo(nombre);
+            grupo.setContactos(contactos);
+            System.out.println("///////////////dsdfsdf"+grupo.getNombre()+grupo.getContactos().size());
             grupo.setId(eContacto.getId());
             return grupo;
         }
@@ -111,16 +114,17 @@ public final class TDSContactoDAO implements ContactoDAO {
         return mensajes;
     }
     
-    private List<Contacto> obtenerContactosDelGrupo(Entidad eGrupo) throws DAOException {
-        List<Contacto> contactos = new ArrayList<>();
+    private List<ContactoIndividual> obtenerContactosDelGrupo(Entidad eGrupo) throws DAOException {
+        List<ContactoIndividual> contactos = new ArrayList<>();
         String contactosIds = servPersistencia.recuperarPropiedadEntidad(eGrupo, CONTACTOS_GRUPO);
-        
+      
         if (contactosIds != null && !contactosIds.isEmpty()) {
             String[] idsArray = contactosIds.split(",");
             for (String id : idsArray) {
                 try {
-                    Contacto contacto = get(Integer.parseInt(id));  // Recuperar cada contacto por su ID
+                    ContactoIndividual contacto = (ContactoIndividual) get(Integer.parseInt(id));  // Recuperar cada contacto por su ID
                     if (contacto != null) {
+                    	
                         contactos.add(contacto);
                     }
                 } catch (NumberFormatException e) {
@@ -156,7 +160,7 @@ public final class TDSContactoDAO implements ContactoDAO {
      
         // Si el contacto es de tipo 'ContactoIndividual'
         if (contacto instanceof ContactoIndividual) {
-        	System.out.println("CREA CONTACTO INDIVIDAK");
+        	
         	  eContacto.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
         		        new Propiedad(NOMBRE, ((ContactoIndividual)contacto).getNombreOptional().orElse(null)),
         		        new Propiedad(USUARIO, String.valueOf(((ContactoIndividual) contacto).getUsuario())),
@@ -170,20 +174,23 @@ public final class TDSContactoDAO implements ContactoDAO {
         } 
         // Si el contacto es de tipo 'Grupo'
         else if (contacto instanceof Grupo) {
-            Grupo grupo = (Grupo) contacto;
-            servPersistencia.anadirPropiedadEntidad(eContacto, TIPO_CONTACTO, "Grupo");
-
+           //Grupo grupo = (Grupo) contacto;
+            //servPersistencia.anadirPropiedadEntidad(eContacto, TIPO_CONTACTO, "Grupo");
+            //System.out.println("wsfhsdjkfhsdkfkjsdfjsdhfd//"+grupo.getNombre());
             // Guardamos los IDs de los contactos dentro del grupo en una cadena separada por comas
             StringBuilder contactosIds = new StringBuilder();
-            for (Contacto c : grupo.getContactos()) {
+            for (Contacto c : ((Grupo)contacto).getContactos()) {
                 if (contactosIds.length() > 0) {
                     contactosIds.append(",");
                 }
                 contactosIds.append(c.getId());
             }
-
-            // Establecemos esta lista de contactos en la propiedad CONTACTOS_GRUPO
-            servPersistencia.anadirPropiedadEntidad(eContacto, CONTACTOS_GRUPO, contactosIds.toString());
+            System.out.println("888888"+contacto.getNombre());
+            eContacto.setPropiedades(new ArrayList<>(Arrays.asList(
+                    new Propiedad(NOMBRE, contacto.getNombre()),
+                    new Propiedad(TIPO_CONTACTO, "Grupo"),
+                    new Propiedad(CONTACTOS_GRUPO, contactosIds.toString())
+                )));
         }
         
         

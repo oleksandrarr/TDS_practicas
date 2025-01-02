@@ -137,6 +137,7 @@ public class Usuario {
 	
 	public void añadirContacto(Contacto contacto) {
 	    if (contacto != null) {
+	    	System.out.println("Se añadeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 	        contactos.add(contacto);
 	    } else {
 	        System.out.println("Intentando añadir un contacto nulo");

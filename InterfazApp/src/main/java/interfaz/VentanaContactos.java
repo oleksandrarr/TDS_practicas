@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -27,6 +28,9 @@ import javax.swing.border.TitledBorder;
 
 import controlador.Controlador;
 import dominio.Contacto;
+import dominio.ContactoIndividual;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
 public class VentanaContactos {
 
@@ -92,12 +96,19 @@ public class VentanaContactos {
 		panelContactos.setLayout(new BoxLayout(panelContactos, BoxLayout.X_AXIS));
 		panelContactos.setPreferredSize(new Dimension(200, 0));
 		panelContactos.setBorder(new EmptyBorder(10, 10, 10, 10)); 
-	    frame.add(panelContactos, BorderLayout.WEST);
+	    frame.getContentPane().add(panelContactos, BorderLayout.WEST);
 	    
 	    modeloLista = new DefaultListModel<>();
 	    List<Contacto> contactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
 	    for(Contacto c : contactos) {
-	    	modeloLista.addElement(c.getNombre());
+	    	
+	    	if(c instanceof ContactoIndividual) {
+	    		modeloLista.addElement(((ContactoIndividual)c).getNombreOptional().orElse(((ContactoIndividual)c).getNumeroTelefono()));
+	    	}else {
+	    		System.out.println("POR AQUIIIIIIIIIIIIIIIIIIIIII"+c.getNombre());
+	    		modeloLista.addElement(c.getNombre());
+	    	}
+	    	
 	    }
 	    listaContactos = new JList<>(modeloLista);
 	    listaContactos.setBackground(Utilidades.VERDE_CLARO);
@@ -115,7 +126,7 @@ public class VentanaContactos {
         panelGrupo.setBackground(Utilidades.VERDE_FONDO);
         panelGrupo.setPreferredSize(new Dimension(200, 0)); 
         panelGrupo.setBorder(new EmptyBorder(10, 10, 10, 10)); 
-        frame.add(panelGrupo, BorderLayout.EAST);
+        frame.getContentPane().add(panelGrupo, BorderLayout.EAST);
         
         modeloGrupo = new DefaultListModel<>();
         listaContactosGrupo = new JList<>(modeloGrupo);
@@ -135,7 +146,7 @@ public class VentanaContactos {
 		panelBotones = new JPanel();
         panelBotones.setPreferredSize(new Dimension(70, 0)); 
         panelBotones.setBackground(Utilidades.VERDE_FONDO);
-        frame.add(panelBotones, BorderLayout.CENTER);
+        frame.getContentPane().add(panelBotones, BorderLayout.CENTER);
         GridBagLayout gbl_panelBotones = new GridBagLayout();
         gbl_panelBotones.columnWidths = new int[]{30}; 
         gbl_panelBotones.rowHeights = new int[]{50, 50, 50, 50, 50, 50}; 
@@ -197,29 +208,13 @@ public class VentanaContactos {
 		panelSouth = new JPanel();
 		panelSouth.setBorder(new EmptyBorder(0, 10, 10, 10)); 
 		panelSouth.setBackground(Utilidades.VERDE_FONDO);
-        frame.add(panelSouth, BorderLayout.SOUTH);
-        
-        JButton btnNewButton_4 = new JButton("Aceptar");
-        Utilidades.crearBoton(btnNewButton_4, 100, 30, 12);
-        panelSouth.add(btnNewButton_4);
+        frame.getContentPane().add(panelSouth, BorderLayout.SOUTH);
+        panelSouth.setLayout(new GridLayout(0, 4, 0, 0));
         
         JButton btnNewButton_2 = new JButton("Añadir Contacto Nuevo");
         Utilidades.crearBoton(btnNewButton_2, 170, 30, 12);
         panelSouth.add(btnNewButton_2);
         btnNewButton_2.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        JButton btnNewButton_3 = new JButton("Cancelar");
-        Utilidades.crearBoton(btnNewButton_3, 100, 30, 12);
-        panelSouth.add(btnNewButton_3);
-        btnNewButton_3.setVerticalAlignment(SwingConstants.BOTTOM);
-               
-        //boton cancelar
-        btnNewButton_3.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    frame.dispose(); // Cerrar la ventana
-                }
-            });
         
         
       //Action listener Añadir Contacto
@@ -238,6 +233,39 @@ public class VentanaContactos {
                 añadirContacto.mostrarVentana();
             }
         });
+        
+        JButton btnNewButton_4 = new JButton("Aceptar");
+        Utilidades.crearBoton(btnNewButton_4, 100, 30, 12);
+        panelSouth.add(btnNewButton_4);
+        
+        JButton btnNewButton_3 = new JButton("Cancelar");
+        Utilidades.crearBoton(btnNewButton_3, 100, 30, 12);
+        panelSouth.add(btnNewButton_3);
+        btnNewButton_3.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        JButton btnNewButton_5 = new JButton("Añadir Grupo");
+        btnNewButton_5.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		List<Contacto> contactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
+        		List<ContactoIndividual> listaC = new ArrayList();
+        		for(Contacto c:contactos) {
+        			if(c instanceof ContactoIndividual) {
+        				listaC.add((ContactoIndividual) c);
+        			}
+        		}
+				AñadirGrupo ventanaGrupo = new AñadirGrupo(listaC);
+        		ventanaGrupo.mostrarVentana();
+        	}
+        });
+        panelSouth.add(btnNewButton_5);
+        
+        //boton cancelar
+        btnNewButton_3.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+             frame.dispose(); // Cerrar la ventana
+         }
+            });
         
         //boton Aceptar
         /*

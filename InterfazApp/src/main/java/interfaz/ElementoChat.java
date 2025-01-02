@@ -18,14 +18,16 @@ public class ElementoChat extends JPanel {
     private JButton botonNombre;
     private JPanel panelFoto;
 
-    public ElementoChat(String nombre, String numero,VentanaPrincipal ventanaPrincipal) {
-    	Contacto contacto = Controlador.INSTANCE.getContactoPorTelefono(numero);
-        this.nombre = nombre;
+    public ElementoChat(Contacto contacto,VentanaPrincipal ventanaPrincipal) {
+
         if(contacto instanceof ContactoIndividual) {
         	this.telefono = ((ContactoIndividual)contacto).getNumeroTelefono();
+        	
         }
         
+        //Ya hemos comprobado que los contactos que se pasan tiene mas de un mensaje
         this.ultimoMensaje= Controlador.INSTANCE.obtenerMensajes(contacto).getLast().getTexto();
+        
         // Configurar el layout del panel principal
         this.setLayout(new BorderLayout(10, 10));
         this.setBackground(new Color(40, 167, 69)); // Fondo verde
@@ -71,7 +73,7 @@ public class ElementoChat extends JPanel {
 
         // Crear el botón "+"
         if(contacto instanceof ContactoIndividual) {
-        	System.out.println("///////////////////33333eee"+((ContactoIndividual)contacto).getNombreOptional());
+        	
         	if (((ContactoIndividual)contacto).getNombreOptional().isPresent() && ((ContactoIndividual)contacto)
         			.getNombreOptional().get().equals(((ContactoIndividual)contacto).getNumeroTelefono())) {
 	        botonNombre = new JButton("+");
@@ -92,6 +94,8 @@ public class ElementoChat extends JPanel {
         // Agregar componentes al panel principal
         add(panelFoto, BorderLayout.WEST); // Foto a la izquierda
         add(panelTexto, BorderLayout.CENTER); // Texto en el centro
+        
+      
         
         
     }
@@ -134,7 +138,7 @@ public class ElementoChat extends JPanel {
             }
         }
     }
-    
+   
     public void actualizarContacto(String nuevoNombre, String nuevoTelefono) {
         this.nombre = nuevoNombre;
         this.telefono = nuevoTelefono;

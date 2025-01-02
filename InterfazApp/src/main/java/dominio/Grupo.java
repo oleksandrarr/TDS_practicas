@@ -10,7 +10,10 @@ public class Grupo extends Contacto{
 	private URL imagen;
 	
 	public Grupo(String nombre) {
-		super(nombre);
+		super(nombre != null ? nombre : "Sin nombre"); // Valor por defecto si es nulo
+	    if (nombre == null || nombre.trim().isEmpty()) {
+	        throw new IllegalArgumentException("El nombre del grupo no puede estar vacío.");
+	    }
 		this.integrantes = new ArrayList<ContactoIndividual>();
 		this.tipoContacto = "Grupo";
 		
@@ -41,8 +44,5 @@ public class Grupo extends Contacto{
 		return null;
 	}
 	
-	public String getNombre() {
-		return this.nombre;
-	}
-
+	
 }
