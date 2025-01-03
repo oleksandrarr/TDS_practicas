@@ -79,7 +79,8 @@ public final class TDSContactoDAO implements ContactoDAO {
             List<ContactoIndividual> contactos = obtenerContactosDelGrupo(eContacto);
             Grupo grupo = new Grupo(nombre);
             grupo.setContactos(contactos);
-            System.out.println("///////////////dsdfsdf"+grupo.getNombre()+grupo.getContactos().size());
+            String mensajesIds = servPersistencia.recuperarPropiedadEntidad(eContacto, MENSAJES);
+            grupo.setListaMensaje(obtenerMensajes(mensajesIds));
             grupo.setId(eContacto.getId());
             return grupo;
         }
@@ -137,12 +138,10 @@ public final class TDSContactoDAO implements ContactoDAO {
     }
     
     private Entidad contactoToEntidad(Contacto contacto) throws DAOException {
-
+    	StringBuilder mensajesIds = new StringBuilder();
         Entidad eContacto = new Entidad();
         eContacto.setNombre(CONTACTO);
-        
-        StringBuilder mensajesIds = new StringBuilder();
-       
+    
         if (contacto.getListaMensaje() != null && !contacto.getListaMensaje().isEmpty()) {
         	  
 	        for (Mensaje m : contacto.getListaMensaje()) {
@@ -151,6 +150,14 @@ public final class TDSContactoDAO implements ContactoDAO {
 	        // Elimina la última coma
 	        if (mensajesIds.length() > 0) {
 	        	mensajesIds.deleteCharAt(mensajesIds.length() - 1);
+	        }
+	        
+	        StringBuilder contactosIds = new StringBuilder();
+	        for (Contacto c : ((Grupo) contacto).getContactos()) {
+	            if (contactosIds.length() > 0) {
+	                contactosIds.append(",");
+	            }
+	            contactosIds.append(c.getId());
 	        }
 	    }
        
@@ -172,12 +179,8 @@ public final class TDSContactoDAO implements ContactoDAO {
             
             
         } 
-        // Si el contacto es de tipo 'Grupo'
+        // Si el contacto es de tipo Grupo
         else if (contacto instanceof Grupo) {
-           //Grupo grupo = (Grupo) contacto;
-            //servPersistencia.anadirPropiedadEntidad(eContacto, TIPO_CONTACTO, "Grupo");
-            //System.out.println("wsfhsdjkfhsdkfkjsdfjsdhfd//"+grupo.getNombre());
-            // Guardamos los IDs de los contactos dentro del grupo en una cadena separada por comas
             StringBuilder contactosIds = new StringBuilder();
             for (Contacto c : ((Grupo)contacto).getContactos()) {
                 if (contactosIds.length() > 0) {
@@ -185,10 +188,11 @@ public final class TDSContactoDAO implements ContactoDAO {
                 }
                 contactosIds.append(c.getId());
             }
-            System.out.println("888888"+contacto.getNombre());
+    
             eContacto.setPropiedades(new ArrayList<>(Arrays.asList(
                     new Propiedad(NOMBRE, contacto.getNombre()),
                     new Propiedad(TIPO_CONTACTO, "Grupo"),
+                    new Propiedad(MENSAJES,mensajesIds.toString()),
                     new Propiedad(CONTACTOS_GRUPO, contactosIds.toString())
                 )));
         }
@@ -252,14 +256,16 @@ public final class TDSContactoDAO implements ContactoDAO {
         }
 
         // Agregar nuevos mensajes si no están ya en la lista
-        for (Mensaje m : contacto.getListaMensaje()) {
-            String idMensaje = String.valueOf(m.getId());
-            if (!listaMensajesExistentes.contains(idMensaje)) {
-                listaMensajesExistentes.add(idMensaje);
-            }
+        if(contacto.getListaMensaje()!=null) {
+	        for (Mensaje m : contacto.getListaMensaje()) {
+	            String idMensaje = String.valueOf(m.getId());
+	            if (!listaMensajesExistentes.contains(idMensaje)) {
+	                listaMensajesExistentes.add(idMensaje);
+	            }
+	        }
         }
 
-        // Construir la nueva cadena de mensajes concatenados
+        
         String mensajesConcatenados = String.join(",", listaMensajesExistentes);
 
         // Actualizar las propiedades de la entidad
@@ -282,7 +288,16 @@ public final class TDSContactoDAO implements ContactoDAO {
                         servPersistencia.modificarPropiedad(prop);
                     }
                 }
+            }else {
+            	 Grupo contactoGru = (Grupo) contacto;
+
+                 if (prop.getNombre().equals(NOMBRE)) {
+                     // Actualizar el nombre si existe
+                         prop.setValor(contactoGru.getNombre());
+                         servPersistencia.modificarPropiedad(prop);
+                 }
             }
+            
         }
     }
 

@@ -45,7 +45,7 @@ public abstract class Contacto {
 	    
 
 
-	    public  List<Mensaje> getListaMensaje() {
+	    public List<Mensaje> getListaMensaje() {
 	    	System.out.println("va a devolver"+listaMensaje.size());
 	        return listaMensaje;
 	    }
@@ -64,10 +64,7 @@ public abstract class Contacto {
 		
 
 	
-		public  boolean registrarMensaje(Mensaje mensaje) {
-		
-			return listaMensaje.add(mensaje);
-		}
+		public  abstract boolean registrarMensaje(Mensaje mensaje);
 		
 		public String getNombre() {
 		        return nombre; // Proporciona un comportamiento genérico para todas las subclases

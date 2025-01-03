@@ -142,6 +142,7 @@ public class VentanaPrincipal {
 	    //////QUITAR CODIGO QUE SOBRA////
 	    // Agregar contactos al modelo
 	    for (Contacto contacto : listaContactos) {
+	    	System.out.println("asdkasdfhndskjhnfksdfsdjkfsjkd/(/////"+contacto.getTipoContacto()+contacto.getListaMensaje().size());
 	    	if(Controlador.INSTANCE.obtenerMensajes(contacto)!=null) {
 		        if (contacto instanceof ContactoIndividual) {
 		            //ContactoIndividual c = (ContactoIndividual) contacto;
@@ -149,6 +150,7 @@ public class VentanaPrincipal {
 		            model.addElement(new ElementoChat(contacto,this));
 		        } else if (contacto instanceof Grupo) {
 		            //Grupo g = (Grupo) contacto;
+		        	System.out.println("///////////////////77aaaaaaaaaaaaaa//////////////////"+contacto.getNombre());
 		            model.addElement(new ElementoChat(contacto,this));
 		        }
 	    	}
@@ -173,7 +175,9 @@ public class VentanaPrincipal {
 	                    boton.doClick(); // Simula el clic
 	                }
 	                try {
-						cambiarPantallaChat(Controlador.INSTANCE.getContactoPorTelefono(elemento.getTelefono()));
+	                	//Esta primera linea solo sirve para CI
+						//cambiarPantallaChat(Controlador.INSTANCE.getContactoPorTelefono(elemento.getTelefono()));
+						cambiarPantallaChat(Controlador.INSTANCE.getContactoPorId(elemento.getIdContacto()));
 					} catch (IOException e1) {
 						
 						e1.printStackTrace();
@@ -272,6 +276,33 @@ public class VentanaPrincipal {
 		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
 		cajaArriba.add(horizontalStrut_1);
 		
+		//ActionListener para seleccionar contacto al que enviar Mensaje
+		comboBox.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Obtener el elemento seleccionado
+		        String contactoSeleccionado = (String) comboBox.getSelectedItem();
+		        
+		        // Buscar el contacto en la lista de contactos del usuario
+		        Contacto contacto = null;
+		        for (Contacto c : Controlador.INSTANCE.getUsuarioActual().getContactos()) {
+		            if (c.toString().equals(contactoSeleccionado)) {
+		                contacto = c;
+		                break;
+		            }
+		        }
+
+		        // Cambiar al chat correspondiente si se encuentra el contacto
+		        if (contacto != null) {
+		            try {
+		                cambiarPantallaChat(contacto);
+		            } catch (IOException ex) {
+		                ex.printStackTrace();
+		            }
+		        }
+		    }
+		});
+		
 		//boton nuevo chat
 		String path = "https://cdn-icons-png.flaticon.com/512/106/106733.png";
         URL url = new URL(path);
@@ -346,7 +377,7 @@ public class VentanaPrincipal {
 				botonUsuarios.addActionListener(new ActionListener() {
 			         @Override
 			         public void actionPerformed(ActionEvent e) {
-			             VentanaContactos  ventanaContactos = new  VentanaContactos();
+			        	 VentanaContactos ventanaContactos = new VentanaContactos(VentanaPrincipal.this);
 			             ventanaContactos.mostrarVentana();
 			         }
 			     });

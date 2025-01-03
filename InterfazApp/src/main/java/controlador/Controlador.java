@@ -43,9 +43,9 @@ public enum Controlador {
 		return RepositorioUsuarios.INSTANCE.findUsuario(id);
 	}
 	
-	public Contacto getContactoPorId(int id) {
-		ContactoDAO contacto = null;
-		return contacto.get(id);
+	public Contacto getContactoPorId(int contactoId) {
+		ContactoDAO c = factoria.getContactoDAO();
+		return c.get(contactoId);
 	}
 
 	public boolean esUsuarioRegistrado(String login) {
@@ -147,52 +147,58 @@ public enum Controlador {
 
 	    // Crear el mensaje
 	    Mensaje mensaje = new Mensaje(texto, usuarioActual.getId(), contacto.getId(), LocalDateTime.now(), tipo);
-	    
-
+	    contacto.registrarMensaje(mensaje);
 	    MensajeDAO mensajeDAO = factoria.getMensajeDAO();
 	    mensajeDAO.registrar(mensaje);
-	   
-	    //Registro el mensaje en la lista del contacto
-	    contacto.registrarMensaje(mensaje);
-	    
-	    // Actualizo el contacto
 	    ContactoDAO contactoDAO = factoria.getContactoDAO();
-	    
+	    contactoDAO.update(contacto);
 
-	    // Lógica para registrar el mensaje en ambos contactos
-	    int tipo2 = (tipo == 1) ? 0 : 1;
-	    Mensaje mensaje2 = new Mensaje(texto, usuarioActual.getId(), contacto.getId(), LocalDateTime.now(), tipo2);
-	    ContactoIndividual c = (ContactoIndividual) contacto;
-	    
 
-	    // Asegurar que el usuario existe
-	    Usuario usuarioEncontrado = RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario());
-	    if (usuarioEncontrado == null) {
-	        throw new IllegalArgumentException("No se encontró el usuario asociado al contacto.");
+	    
+	    if(contacto instanceof ContactoIndividual) {
+		    ContactoIndividual c = (ContactoIndividual) contacto;
+		    
+		    int tipo2 = (tipo == 1) ? 0 : 1;
+		    Mensaje mensaje2 = new Mensaje(texto, usuarioActual.getId(), contacto.getId(), LocalDateTime.now(), tipo2);
+		    // Asegurar que el usuario existe
+		    Usuario usuarioEncontrado = RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario());
+		    if (usuarioEncontrado == null) {
+		        throw new IllegalArgumentException("No se encontró el usuario asociado al contacto.");
+		    }
+	
+		    
+		    UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
+		    
+		    if (usuarioEncontrado.getContactoIndividual(usuarioActual.getId()) != null) {
+		    	usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).registrarMensaje(mensaje2);
+		        mensajeDAO.registrar(mensaje2);
+		        contactoDAO.update(usuarioEncontrado.getContactoIndividual(usuarioActual.getId()));
+		        usuarioDAO.update(usuarioEncontrado);
+		        contactoDAO.update(contacto);
+		        
+		    } else {
+		    	
+		    	ContactoIndividual contactoUsuarioActual = new ContactoIndividual(usuarioActual.getNumeroTelefono(), 
+		    			usuarioActual.getId(),usuarioActual.getNumeroTelefono());
+		    	contactoDAO.create(contactoUsuarioActual);
+		        usuarioEncontrado.añadirContacto(contactoUsuarioActual);
+		        contactoUsuarioActual.registrarMensaje(mensaje2);
+		        mensajeDAO.registrar(mensaje2);
+		        contactoDAO.update(contactoUsuarioActual);
+		        usuarioDAO.update(usuarioEncontrado);
+		        contactoDAO.update(contacto);
+		    }
+	    }else {
+	    	Grupo g = (Grupo)contacto;
+	    	
+	    	for(ContactoIndividual c: g.getContactos()) {
+	    		System.out.println("/////MUEMBRO"+((ContactoIndividual)c).getNombreOptional());
+			    enviarMensaje(c,mensaje.getTexto(),tipo);
+	    	}
+	    	
+	    	
+	    	
 	    }
-
-	    
-	    UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
-	    
-	    if (usuarioEncontrado.getContactoIndividual(usuarioActual.getId()) != null) {
-	    	usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).registrarMensaje(mensaje2);
-	        mensajeDAO.registrar(mensaje2);
-	        contactoDAO.update(usuarioEncontrado.getContactoIndividual(usuarioActual.getId()));
-	        usuarioDAO.update(usuarioEncontrado);
-	        contactoDAO.update(contacto);
-	        
-	    } else {
-	    	ContactoIndividual contactoUsuarioActual = new ContactoIndividual(usuarioActual.getNumeroTelefono(), 
-	    			usuarioActual.getId(),usuarioActual.getNumeroTelefono());
-	    	contactoDAO.create(contactoUsuarioActual);
-	        usuarioEncontrado.añadirContacto(contactoUsuarioActual);
-	        contactoUsuarioActual.registrarMensaje(mensaje2);
-	        mensajeDAO.registrar(mensaje2);
-	        contactoDAO.update(contactoUsuarioActual);
-	        usuarioDAO.update(usuarioEncontrado);
-	        contactoDAO.update(contacto);
-	    }
-
 	    return true;
 	}
 
@@ -230,13 +236,11 @@ public enum Controlador {
 		return factoria.getContactoDAO().getAll();
 	}
 	
-	//public boolean esContactoSinNombre()
 
 
 	public ContactoIndividual getContactoPorTelefono(String telefono) {
 		for(Contacto c: usuarioActual.getContactos()) {
 			if(c instanceof ContactoIndividual && ((ContactoIndividual)c).getNumeroTelefono().equals(telefono)) {
-				System.out.println("HA ENCONTADO");
 				return (ContactoIndividual)c;
 			}
 		}
@@ -248,7 +252,6 @@ public enum Controlador {
 		ContactoIndividual contacto = getContactoPorTelefono(tel);
 		System.out.println("nombre");
 		contacto.setNombreOptiona(nombre);
-		System.out.println("///////////"+contacto.getNombreOptional());
 		ContactoDAO contactoDAO = factoria.getContactoDAO();
 		contactoDAO.update(contacto);
 		
@@ -258,9 +261,8 @@ public enum Controlador {
 		
 		Grupo grupo = new Grupo(nombre);
 		grupo.setNombre(nombre);
-		System.out.println("contactosssssssssssss"+contactos.size()+grupo.getNombre());
 		grupo.setContactos(contactos);
-		
+		System.out.println("sfsdjfhsdjkfhsdjkf"+contactos.size());
 		
 		usuarioActual.añadirContacto(grupo);
 		ContactoDAO contactoDAO = factoria

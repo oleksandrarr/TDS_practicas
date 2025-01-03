@@ -35,40 +35,43 @@ import java.awt.GridLayout;
 public class VentanaContactos {
 
 	private JFrame frame;
-	private DefaultListModel<String> modeloLista;
-	private DefaultListModel<String> modeloGrupo;
-    private JList<String> listaContactos;
-    private JList<String> listaContactosGrupo;
+	private DefaultListModel<Contacto> modeloLista;
+	private DefaultListModel<Contacto> modeloGrupo;
+    private JList<Contacto> listaContactos;
+    private JList<Contacto> listaContactosGrupo;
+    private List<Contacto> listaGrupo;
     private AñadirContacto añadirContacto;
     private JPanel panelContactos;
     private JPanel panelGrupo;
     private JPanel panelBotones;
     private JPanel panelSouth;
     private JPanel panelG;
+	private VentanaPrincipal ventanaPrincipal;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaContactos window = new VentanaContactos();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
+                    VentanaContactos window = new VentanaContactos(ventanaPrincipal); // Pasar la referencia
+                    window.frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
 	/**
 	 * Create the application.
 	 */
-	public VentanaContactos() {
-		initialize();
-	}
-	
+	 public VentanaContactos(VentanaPrincipal ventanaPrincipal) {
+	        this.ventanaPrincipal = ventanaPrincipal; // Inicializar la referencia
+	        initialize();
+	    }
 	public void mostrarVentana() {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
@@ -103,10 +106,10 @@ public class VentanaContactos {
 	    for(Contacto c : contactos) {
 	    	
 	    	if(c instanceof ContactoIndividual) {
-	    		modeloLista.addElement(((ContactoIndividual)c).getNombreOptional().orElse(((ContactoIndividual)c).getNumeroTelefono()));
+	    		modeloLista.addElement(c);
 	    	}else {
-	    		System.out.println("POR AQUIIIIIIIIIIIIIIIIIIIIII"+c.getNombre());
-	    		modeloLista.addElement(c.getNombre());
+	    		
+	    		modeloLista.addElement(c);
 	    	}
 	    	
 	    }
@@ -174,10 +177,11 @@ public class VentanaContactos {
         btnNewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	String contactoSeleccionado = listaContactos.getSelectedValue();
+            	Contacto contactoSeleccionado = listaContactos.getSelectedValue();
                 if (contactoSeleccionado != null) {
                     modeloLista.removeElement(contactoSeleccionado);
                     modeloGrupo.addElement(contactoSeleccionado);
+                   
                     //listaContactosGrupo = new JList<>(modeloGrupo);
                     // Actualizamos la vista de ambas listas
                     listaContactos.repaint();
@@ -191,7 +195,7 @@ public class VentanaContactos {
         btnNewButton_1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	String contactoSeleccionado = listaContactosGrupo.getSelectedValue();
+            	Contacto contactoSeleccionado = listaContactosGrupo.getSelectedValue();
                 if (contactoSeleccionado != null) {
                     modeloGrupo.removeElement(contactoSeleccionado);
                     modeloLista.addElement(contactoSeleccionado);
@@ -226,7 +230,7 @@ public class VentanaContactos {
                     modeloLista.clear();
                     List<Contacto> contactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
                     for (Contacto c : contactos) {
-                        modeloLista.addElement(c.getNombre());
+                        modeloLista.addElement(c);
                     }
                     listaContactos.repaint(); // Refrescar la vista
                 });
@@ -245,17 +249,24 @@ public class VentanaContactos {
         
         JButton btnNewButton_5 = new JButton("Añadir Grupo");
         btnNewButton_5.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		List<Contacto> contactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
-        		List<ContactoIndividual> listaC = new ArrayList();
-        		for(Contacto c:contactos) {
-        			if(c instanceof ContactoIndividual) {
-        				listaC.add((ContactoIndividual) c);
-        			}
-        		}
-				AñadirGrupo ventanaGrupo = new AñadirGrupo(listaC);
-        		ventanaGrupo.mostrarVentana();
-        	}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Crear una lista para almacenar los contactos del grupo
+                List<ContactoIndividual> listaGrupo = new ArrayList<>();
+                
+                // Iterar sobre el modelo del grupo (panel derecho)
+                for (int i = 0; i < modeloGrupo.size(); i++) {
+                    Contacto contacto = modeloGrupo.getElementAt(i);
+                    if (contacto instanceof ContactoIndividual) {
+                        listaGrupo.add((ContactoIndividual) contacto);
+                    }
+                }
+                
+                // Pasar la lista de contactos al constructor de AñadirGrupo
+                AñadirGrupo ventanaGrupo = new AñadirGrupo(listaGrupo,ventanaPrincipal);
+                ventanaGrupo.mostrarVentana();
+                
+            }
         });
         panelSouth.add(btnNewButton_5);
         

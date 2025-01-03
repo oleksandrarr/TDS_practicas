@@ -23,9 +23,7 @@ public class Grupo extends Contacto{
 	@Override
 	public boolean registrarMensaje(Mensaje mensaje) {
 		this.listaMensaje.add(mensaje);
-		for(ContactoIndividual c: integrantes) { //Recorre todos los contactos individuales del grupo y les envia un mensaje
-			c.registrarMensaje(mensaje);
-		}
+		
 		return true;
 	}
 
@@ -38,11 +36,7 @@ public class Grupo extends Contacto{
 		
 	}
 
-	@Override
-	public List<Mensaje> getListaMensaje() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 	
 }

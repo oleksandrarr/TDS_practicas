@@ -24,13 +24,15 @@ public class AñadirGrupo {
     private JTextField nombreGrupoField;
     private List<ContactoIndividual> contactos;
     private String nombreGrupo;
+    private VentanaPrincipal ventanaPrincipal;
     
     /**
      * Constructor para inicializar la GUI de Añadir Grupo.
+     * @param ventanaPrincipal 
      */
-    public AñadirGrupo(List<ContactoIndividual> contactos) {
-        initialize( contactos);
-        
+    public AñadirGrupo(List<ContactoIndividual> contactos, VentanaPrincipal ventanaPrincipal) {
+        initialize(contactos,ventanaPrincipal);
+       
     }
 
     /**
@@ -44,7 +46,8 @@ public class AñadirGrupo {
     /**
      * Inicializa el contenido de la ventana.
      */
-    private void initialize(List<ContactoIndividual> contactos) {
+    private void initialize(List<ContactoIndividual> contactos,VentanaPrincipal ventanaPrincipal) {
+    	this.ventanaPrincipal=ventanaPrincipal;
         frame = new JFrame("Añadir Grupo");
         frame.setBounds(100, 100, 400, 200);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -82,7 +85,10 @@ public class AñadirGrupo {
                 } else {
                     System.out.println("El nombre del grupo no puede estar vacío.");
                 }
+                
+                ventanaPrincipal.actualizarListaContactos();
             }
+            
         });
         panelBotones.add(btnAceptar);
 

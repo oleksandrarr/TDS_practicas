@@ -10,6 +10,7 @@ import javax.swing.border.LineBorder;
 import controlador.Controlador;
 import dominio.Contacto;
 import dominio.ContactoIndividual;
+import dominio.Grupo;
 
 public class ElementoChat extends JPanel {
     private String nombre;
@@ -17,17 +18,21 @@ public class ElementoChat extends JPanel {
     private String ultimoMensaje;
     private JButton botonNombre;
     private JPanel panelFoto;
-
+    private int idContacto;
     public ElementoChat(Contacto contacto,VentanaPrincipal ventanaPrincipal) {
 
         if(contacto instanceof ContactoIndividual) {
         	this.telefono = ((ContactoIndividual)contacto).getNumeroTelefono();
-        	
+        	this.nombre = ((ContactoIndividual)contacto).getNombreOptional().orElse(this.telefono);
+        }else {
+        	this.nombre = ((Grupo)contacto).getNombre();
         }
         
-        //Ya hemos comprobado que los contactos que se pasan tiene mas de un mensaje
-        this.ultimoMensaje= Controlador.INSTANCE.obtenerMensajes(contacto).getLast().getTexto();
-        
+        this.idContacto=contacto.getId();
+        if (Controlador.INSTANCE.obtenerMensajes(contacto) != null &&
+        			 !Controlador.INSTANCE.obtenerMensajes(contacto).isEmpty()) { // La lista no es null y no está vacía
+            this.ultimoMensaje = Controlador.INSTANCE.obtenerMensajes(contacto).getLast().getTexto(); // Obtener el último mensaje
+        }
         // Configurar el layout del panel principal
         this.setLayout(new BorderLayout(10, 10));
         this.setBackground(new Color(40, 167, 69)); // Fondo verde
@@ -99,7 +104,9 @@ public class ElementoChat extends JPanel {
         
         
     }
-
+    public int getIdContacto() {
+    	return idContacto;
+    }
     public String getNombre() {
         return nombre;
     }

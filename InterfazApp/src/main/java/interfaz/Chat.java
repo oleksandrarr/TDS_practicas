@@ -109,6 +109,7 @@ public class Chat extends JPanel {
 			LocalDateTime hora = LocalDateTime.now();
 			
 			List<Mensaje> mensajes = Controlador.INSTANCE.obtenerMensajes(contacto);
+			if(mensajes!=null) {
 	 		 for (Mensaje m : mensajes) {
 	 			 BubbleText burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE, Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre()
 	 					 +m.getFechaHoraEnvio().format(soloHora), m.getTipoMensaje(), 11);
@@ -116,6 +117,7 @@ public class Chat extends JPanel {
 	             chat.scrollRectToVisible(new Rectangle(0,640+burbuja.getHeight(),1,1));
 	             System.out.println("Se añade");
 	         }
+			}
 	 		 
 	 		
             repaint();
@@ -162,7 +164,7 @@ public class Chat extends JPanel {
                 emojiPopup.show(btnNewButton, btnNewButton.getWidth() / 2, btnNewButton.getHeight());
             });
             
-            System.out.println("//////(////////(8888//////"+contacto.getId());
+            
             //Action listener para enviar Mensaje
             //	public boolean enviarMensaje(Contacto contacto, String texto, int tipo) {
             btnNewButton_1.addActionListener(new ActionListener() {
@@ -170,7 +172,7 @@ public class Chat extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     String mensaje = textField_1.getText(); // Obtener texto del campo
                     if (!mensaje.trim().isEmpty()) { // Verificar que no esté vacío
-                    	System.out.println("EL MENSAJE TIENE EL TEXTO"+mensaje);
+                    
                         try {
                         	Controlador.INSTANCE.enviarMensaje(contacto, mensaje, Mensaje.ENVIADO);
 						} catch (DAOException e1) {

@@ -54,6 +54,13 @@ public class ContactoIndividual extends Contacto {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+	@Override
+	public boolean registrarMensaje(Mensaje mensaje) {
+		return this.listaMensaje.add(mensaje);
+	}
 	
 	
 
