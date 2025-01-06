@@ -15,7 +15,7 @@ public class Utilidades {
     
     // Método para configurar los botones
     public static void crearBoton(JButton boton, int minDimension, int maxDimension, int tamano) {
-    	boton.setFont(new Font("Times New Roman", Font.BOLD, tamano));
+    	boton.setFont(new Font("Arial", Font.BOLD, tamano));
         boton.setBackground(VERDE_BOTONES); 
         boton.setForeground(Color.BLACK); 
         boton.setOpaque(true);
