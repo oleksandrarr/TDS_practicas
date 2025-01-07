@@ -50,7 +50,7 @@ public class ElementoChat extends JPanel {
 
         // Cargar la imagen desde la URL
         try {
-            URL url = new URL("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png");
+            URL url = contacto.getImagen();
             Image img = ImageIO.read(url).getScaledInstance(60, 60, Image.SCALE_SMOOTH);
             ImagenCircular imagenCircular = new ImagenCircular(img);
             imagenCircular.setPreferredSize(new Dimension(60, 60));

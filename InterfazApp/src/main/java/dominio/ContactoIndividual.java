@@ -1,7 +1,11 @@
 package dominio;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
+
+import controlador.Controlador;
+import dao.FactoriaDAO;
 
 public class ContactoIndividual extends Contacto {
 	private int usuario;
@@ -61,7 +65,24 @@ public class ContactoIndividual extends Contacto {
 	public boolean registrarMensaje(Mensaje mensaje) {
 		return this.listaMensaje.add(mensaje);
 	}
+
+
+
+	@Override
+	public URL getImagen() {
+		return this.imagen;
+	}
 	
-	
+
+	public void setImagen(URL imagen) {
+		this.imagen=imagen;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return this.getNombreOptional().orElse(numeroTelefono);
+	}
 
 }

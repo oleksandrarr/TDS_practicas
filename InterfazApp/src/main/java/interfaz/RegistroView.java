@@ -8,6 +8,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -67,6 +69,12 @@ public class RegistroView extends JDialog {
 	private JPanel panelCampoTelefono;
 	
 	
+	//Campos para imagen
+	private JLabel lblUrl;
+	private JTextField txtUrl;
+	private JLabel lblUrlError;
+	private JPanel panelCampoUrl;
+	
 	public RegistroView(JFrame owner){
 		super(owner, "Registro Usuario", true);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -99,6 +107,7 @@ public class RegistroView extends JDialog {
 		datosPersonales.add(crearLineaPassword());
 		datosPersonales.add(crearLineaFechaNacimiento());
 		datosPersonales.add(creaLineaTelefono());
+		datosPersonales.add(creaLineaUrl());
 		this.crearPanelBotones();
 
 		this.ocultarErrores();
@@ -302,6 +311,35 @@ public class RegistroView extends JDialog {
 		
 		return lineaFechaNacimiento;
 	}
+	
+	private JPanel creaLineaUrl() {
+	    JPanel lineaUrl = new JPanel();
+	    lineaUrl.setBackground(Utilidades.VERDE_FONDO);
+	    lineaUrl.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+	    lineaUrl.setLayout(new BorderLayout(0, 0));
+	    
+	    panelCampoUrl = new JPanel();
+	    panelCampoUrl.setBackground(Utilidades.VERDE_FONDO);
+	    lineaUrl.add(panelCampoUrl, BorderLayout.CENTER);
+	    
+	    lblUrl = new JLabel("URL: ", JLabel.RIGHT);
+	    lblUrl.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+	    panelCampoUrl.add(lblUrl);
+	    fixedSize(lblUrl, 75, 20);
+	    
+	    txtUrl = new JTextField();
+	    txtUrl.setBackground(Utilidades.VERDE_LABELS);
+	    panelCampoUrl.add(txtUrl);
+	    fixedSize(txtUrl, 270, 20);
+	    
+	    lblUrlError = new JLabel("La URL es obligatoria o inválida", SwingConstants.CENTER);
+	    lineaUrl.add(lblUrlError, BorderLayout.SOUTH);
+	    fixedSize(lblUrlError, 255, 15);
+	    lblUrlError.setForeground(Color.RED);
+	    lblUrlError.setVisible(false);
+	    
+	    return lineaUrl;
+	}
 
 	private void crearPanelBotones() {
 		JPanel lineaBotones = new JPanel(); 
@@ -337,6 +375,15 @@ public class RegistroView extends JDialog {
 				OK = checkFields();
 				if (OK) {
 					boolean registrado = false;
+					//Convierto el string proporcionado a una URL
+					 URL url = null;
+					try {
+						url = new URL(txtUrl.getText());
+					} catch (MalformedURLException e1) {
+						
+						e1.printStackTrace();
+					}
+					
 					registrado = Controlador.INSTANCE.registrarUsuario(
 							txtNombre.getText(),
 							txtApellidos.getText(), 
@@ -344,8 +391,8 @@ public class RegistroView extends JDialog {
 							txtUsuario.getText(),
 							txtTelefono.getText(),
 							new String(txtPassword.getPassword()), 
-							txtFechaNacimiento.getText()
-					);
+							txtFechaNacimiento.getText(),
+							url);
 					if (registrado) {
 						JOptionPane.showMessageDialog(RegistroView.this, "Usuario registrado correctamente.", "Registro",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -410,6 +457,12 @@ public class RegistroView extends JDialog {
 			lblUsuario.setForeground(Color.RED);
 			txtUsuario.setBorder(BorderFactory.createLineBorder(Color.RED));
 			salida = false;
+		}
+		if (txtUrl.getText().trim().isEmpty() || !esUrlValida(txtUrl.getText())) {
+		    lblUrlError.setVisible(true);
+		    lblUrl.setForeground(Color.RED);
+		    txtUrl.setBorder(BorderFactory.createLineBorder(Color.RED));
+		    salida = false;
 		}
 		String password = new String(txtPassword.getPassword());
 		String password2 = new String(txtPasswordChk.getPassword());
@@ -488,7 +541,17 @@ public class RegistroView extends JDialog {
 		lblPasswordChk.setForeground(Color.BLACK);
 		lblFechaNacimiento.setForeground(Color.BLACK);
 	}
-
+	
+	
+	//Comprueba si la URL proporcionado es valida:
+	private boolean esUrlValida(String url) {
+	    try {
+	        new java.net.URL(url);
+	        return true;
+	    } catch (Exception e) {
+	        return false;
+	    }
+	}
 	/**
 	 * Fija el tamaño de un componente
 	 */

@@ -13,6 +13,7 @@ import dominio.ContactoIndividual;
 import dominio.Usuario;
 import beans.Entidad;
 import beans.Propiedad;
+import java.net.URL;
 
 /**
  * 
@@ -30,7 +31,7 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	private static final String FECHA_NACIMIENTO = "fechaNacimiento";
 	private static final String TELEFONO_USUARIO = "numeroUsuario";
 	private static final String CONTACTO = "contactos";
-
+	private static final String IMAGEN = "imagen";
 	private ServicioPersistencia servPersistencia;
 	private SimpleDateFormat dateFormat;
 
@@ -49,9 +50,17 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 		String fechaNacimiento = servPersistencia.recuperarPropiedadEntidad(eUsuario, FECHA_NACIMIENTO);
 		String numeroUsuario = servPersistencia.recuperarPropiedadEntidad(eUsuario, TELEFONO_USUARIO);
 		String contactosIds = servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTO);
-		
-		
-		Usuario usuario = new Usuario(nombre, apellidos, email, login,numeroUsuario, password, fechaNacimiento);
+		String urlImagen = servPersistencia.recuperarPropiedadEntidad(eUsuario, IMAGEN); // Recuperar la URL
+		URL imagenPerfil = null;
+		    try {
+		       
+		        if (urlImagen != null && !urlImagen.isEmpty()) {
+		            imagenPerfil = new URL(urlImagen);
+		        }
+		    } catch (Exception e) {
+		        System.err.println("Error al convertir la URL de la imagen de perfil: " + e.getMessage());
+		    }
+		Usuario usuario = new Usuario(nombre, apellidos, email, login,numeroUsuario, password, fechaNacimiento,imagenPerfil);
 		usuario.setId(eUsuario.getId());
 		
 		List<Contacto> contactos;
@@ -121,6 +130,7 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	        new Propiedad(TELEFONO_USUARIO, usuario.getNumeroTelefono()),
 	        new Propiedad(PASSWORD, usuario.getPassword()),
 	        new Propiedad(FECHA_NACIMIENTO, usuario.getFechaNacimiento().toString()),
+	        new Propiedad(IMAGEN,usuario.getImagenPerfil().toString()),
 	        new Propiedad(CONTACTO, contactosIds.toString())  // Aquí se registra la propiedad 'contactos'
 	    )));
 
@@ -186,6 +196,8 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	            prop.setValor(usuario.getNumeroTelefono());
 	        } else if (prop.getNombre().equals(FECHA_NACIMIENTO)) {
 	            prop.setValor(usuario.getFechaNacimiento());
+	        }else if (prop.getNombre().equals(IMAGEN)) {
+	            prop.setValor(usuario.getImagenPerfil().toString());
 	        }
 
 	        // Guarda la propiedad modificada

@@ -142,7 +142,7 @@ public class VentanaPrincipal {
 	    //////QUITAR CODIGO QUE SOBRA////
 	    // Agregar contactos al modelo
 	    for (Contacto contacto : listaContactos) {
-	    	System.out.println("asdkasdfhndskjhnfksdfsdjkfsjkd/(/////"+contacto.getTipoContacto()+contacto.getListaMensaje().size());
+	    	
 	    	if(Controlador.INSTANCE.obtenerMensajes(contacto)!=null) {
 		        if (contacto instanceof ContactoIndividual) {
 		            //ContactoIndividual c = (ContactoIndividual) contacto;
@@ -150,7 +150,7 @@ public class VentanaPrincipal {
 		            model.addElement(new ElementoChat(contacto,this));
 		        } else if (contacto instanceof Grupo) {
 		            //Grupo g = (Grupo) contacto;
-		        	System.out.println("///////////////////77aaaaaaaaaaaaaa//////////////////"+contacto.getNombre());
+		        	
 		            model.addElement(new ElementoChat(contacto,this));
 		        }
 	    	}
@@ -269,8 +269,8 @@ public class VentanaPrincipal {
 		cajaArriba.add(comboBox);
 		
 		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
-		for(Contacto c : listaContactos) {
-			comboBox.addItem(c.toString());
+		for(Contacto c : listaContactos) {		
+			comboBox.addItem(c);
 		}
 		
 		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
@@ -281,25 +281,27 @@ public class VentanaPrincipal {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
 		        // Obtener el elemento seleccionado
-		        String contactoSeleccionado = (String) comboBox.getSelectedItem();
+		        //String contactoSeleccionado = (String) comboBox.getSelectedItem();
 		        
 		        // Buscar el contacto en la lista de contactos del usuario
-		        Contacto contacto = null;
+		        
+		        Contacto contactoSeleccionado = (Contacto) comboBox.getSelectedItem();
+		        /*
 		        for (Contacto c : Controlador.INSTANCE.getUsuarioActual().getContactos()) {
 		            if (c.toString().equals(contactoSeleccionado)) {
 		                contacto = c;
 		                break;
 		            }
 		        }
-
+	*/
 		        // Cambiar al chat correspondiente si se encuentra el contacto
-		        if (contacto != null) {
+		        /*if (contacto != null) {
 		            try {
 		                cambiarPantallaChat(contacto);
 		            } catch (IOException ex) {
 		                ex.printStackTrace();
 		            }
-		        }
+		        }*/
 		    }
 		});
 		
@@ -362,7 +364,7 @@ public class VentanaPrincipal {
 		cajaArriba.add(horizontalStrut_2);
 		
 		//Foto Usuario
-		String path4 = "https://cdn-icons-png.flaticon.com/512/3135/3135768.png";
+		String path4 = Controlador.INSTANCE.getUsuarioActual().getImagenPerfil().toString();
         URL url4 = new URL(path4);
         Image img = ImageIO.read(url4).getScaledInstance(60, 60, Image.SCALE_SMOOTH);
         JButton imagenPerfil = new JButton(new ImageIcon(img));
@@ -396,16 +398,24 @@ public class VentanaPrincipal {
 			         @Override
 			         public void actionPerformed(ActionEvent e) {
 			        	 //if usuario premium
-			             PremiumCon premiumCon = null;
+			            
+			             //Para probar venta Prremium
+			             //Controlador.INSTANCE.getUsuarioActual().setesPremium(true);
+			             boolean esPremium = Controlador.INSTANCE.getUsuarioActual().esPreium();
 						try {
-							premiumCon = new PremiumCon();
+							if(esPremium) {
+								System.out.println("CONNNNNNNNNNNNNNNNNN");
+								premiumCon = new PremiumCon();
+								premiumCon.mostrarVentana();
+							}else {
+								System.out.println("SINNNNNNNNNNNNNNN");
+								premiumSin = new PremiumSin();
+					            premiumSin.mostrarVentana();
+							}
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-			             premiumCon.mostrarVentana();
-			             //else if usuario no premium:
-			             PremiumSin  premiumSin = new PremiumSin();
-			             premiumSin.mostrarVentana();
+			             
 			         }
 			     });
 				
@@ -414,15 +424,15 @@ public class VentanaPrincipal {
 				botonPanel.addActionListener(new ActionListener() {
 			         @Override
 			         public void actionPerformed(ActionEvent e) {
-			        	 String contactoSeleccionado = (String) comboBox.getSelectedItem();
-			        	 Contacto contacto = null;
-			        	 for(Contacto c : Controlador.INSTANCE.getUsuarioActual().getContactos()) {
+			        	 Contacto contactoSeleccionado = (Contacto)comboBox.getSelectedItem();
+			        	 //Contacto contacto = null;
+			        	 /*for(Contacto c : Controlador.INSTANCE.getUsuarioActual().getContactos()) {
 			        		 if(contacto.equals(c.toString())) {
 			        			 contacto = c;
 			        		 }
-			        	 }
+			        	 }*/
 			        	 try {
-							añadirChat(contacto);
+							cambiarPantallaChat(contactoSeleccionado);
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();

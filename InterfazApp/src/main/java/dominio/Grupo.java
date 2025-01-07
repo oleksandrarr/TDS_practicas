@@ -36,7 +36,20 @@ public class Grupo extends Contacto{
 		
 	}
 
-	
+	@Override
+	public URL getImagen() {
+		
+		return this.imagen;
+	}
+
+	public void setImagen(URL imagen) {
+		this.imagen = imagen;
+	}
+
+	@Override
+	public String toString() {
+		return this.nombre;
+	}
 	
 	
 }

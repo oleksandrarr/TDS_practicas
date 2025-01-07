@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -25,7 +27,9 @@ public class AñadirGrupo {
     private List<ContactoIndividual> contactos;
     private String nombreGrupo;
     private VentanaPrincipal ventanaPrincipal;
-    
+    private JTextField urlField; // Campo de texto para la URL
+    private String imagen; // Variable para guardar el valor de la URL
+
     /**
      * Constructor para inicializar la GUI de Añadir Grupo.
      * @param ventanaPrincipal 
@@ -70,6 +74,15 @@ public class AñadirGrupo {
         // Panel para los botones
         JPanel panelBotones = new JPanel();
         panelPrincipal.add(panelBotones, BorderLayout.SOUTH);
+        
+     // Etiqueta para la URL
+        JLabel etiquetaUrl = new JLabel("URL de la imagen:");
+        panelPrincipal.add(etiquetaUrl, BorderLayout.NORTH);
+
+        // Campo de texto para la URL
+        urlField = new JTextField();
+        urlField.setPreferredSize(new Dimension(300, 30));
+        panelPrincipal.add(urlField, BorderLayout.CENTER);
 
         // Botón "Aceptar"
         JButton btnAceptar = new JButton("Aceptar");
@@ -77,19 +90,38 @@ public class AñadirGrupo {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String nombreGrupo = nombreGrupoField.getText();
-                if (!nombreGrupo.isEmpty()) {
-                    System.out.println("Grupo añadido: " + nombreGrupo);
+                String urlImagen = urlField.getText(); // Obtener el valor de la URL
+
+                if (!nombreGrupo.isEmpty() && !urlImagen.isEmpty()) {
+                		URL img = null;
+                		if(!urlImagen.isEmpty()) {
+                			try {
+								img = new URL("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png");
+							} catch (MalformedURLException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+                		}
+                		else {
+                        
+						try {
+							img = new URL(urlImagen);
+						} catch (MalformedURLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                		}
+                        Controlador.INSTANCE.añadirGrupo(contactos, nombreGrupo, img); // Pasar la URL al controlador
+                        frame.dispose();
                     
-                    Controlador.INSTANCE.añadirGrupo(contactos,nombreGrupo);
-                    frame.dispose();
                 } else {
-                    System.out.println("El nombre del grupo no puede estar vacío.");
+                    System.out.println("El nombre del grupo y la URL no pueden estar vacíos.");
                 }
-                
+
                 ventanaPrincipal.actualizarListaContactos();
             }
-            
         });
+
         panelBotones.add(btnAceptar);
 
         // Botón "Cancelar"

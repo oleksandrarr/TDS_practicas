@@ -1,6 +1,8 @@
 package controlador;
 
 import dao.*;
+
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -63,11 +65,11 @@ public enum Controlador {
 	}
 
 	public boolean registrarUsuario(String nombre, String apellidos, String email, String login, String telefono, String password,
-			String fechaNacimiento) {
+			String fechaNacimiento,URL imagenPerfil) {
 
 		if (esUsuarioRegistrado(login))
 			return false;
-		Usuario usuario = new Usuario(nombre, apellidos, email, login, telefono,password, fechaNacimiento);
+		Usuario usuario = new Usuario(nombre, apellidos, email, login, telefono,password, fechaNacimiento,imagenPerfil);
 
 		UsuarioDAO usuarioDAO = factoria
 				.getUsuarioDAO(); /* Adaptador DAO para almacenar el nuevo Usuario en la BD */
@@ -104,7 +106,7 @@ public enum Controlador {
 		    	return null;
 		    }
 		ContactoIndividual contacto = new ContactoIndividual(nombre, RepositorioUsuarios.INSTANCE.findUsuarioPorTelefono(telefono).getId(),telefono);
-		
+		contacto.setImagen(usuarioContacto.getImagenPerfil());
 		usuarioActual.añadirContacto(contacto);
 		ContactoDAO contactoDAO = factoria
 				.getContactoDAO(); 
@@ -180,6 +182,7 @@ public enum Controlador {
 		    	
 		    	ContactoIndividual contactoUsuarioActual = new ContactoIndividual(usuarioActual.getNumeroTelefono(), 
 		    			usuarioActual.getId(),usuarioActual.getNumeroTelefono());
+		    	contactoUsuarioActual.setImagen(usuarioActual.getImagenPerfil());
 		    	contactoDAO.create(contactoUsuarioActual);
 		        usuarioEncontrado.añadirContacto(contactoUsuarioActual);
 		        contactoUsuarioActual.registrarMensaje(mensaje2);
@@ -257,12 +260,12 @@ public enum Controlador {
 		
 	}
 
-	public void añadirGrupo(List<ContactoIndividual> contactos,String nombre) {
+	public void añadirGrupo(List<ContactoIndividual> contactos,String nombre,URL foto) {
 		
 		Grupo grupo = new Grupo(nombre);
 		grupo.setNombre(nombre);
 		grupo.setContactos(contactos);
-		System.out.println("sfsdjfhsdjkfhsdjkf"+contactos.size());
+		grupo.setImagen(foto);
 		
 		usuarioActual.añadirContacto(grupo);
 		ContactoDAO contactoDAO = factoria

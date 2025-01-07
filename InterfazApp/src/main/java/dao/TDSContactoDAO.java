@@ -10,6 +10,9 @@ import dominio.Usuario;
 import beans.Entidad;
 import beans.Propiedad;
 import dao.UsuarioDAO;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +30,7 @@ public final class TDSContactoDAO implements ContactoDAO {
     private static final String CONTACTOS_GRUPO = "contactos";  // Lista de contactos en el grupo
     private static final String MENSAJES = "mensajes";
     private static final String TELEFONO = "numeroTelefono";
-  
+    private static final String IMAGEN = "imagen";
     public TDSContactoDAO() {
         servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
     }
@@ -46,7 +49,7 @@ public final class TDSContactoDAO implements ContactoDAO {
         if (eContacto != null) {
             try {
 				return entidadToContacto(eContacto);
-			} catch (DAOException e) {
+			} catch (DAOException | MalformedURLException e) {
 			
 				e.printStackTrace();
 			}
@@ -57,11 +60,11 @@ public final class TDSContactoDAO implements ContactoDAO {
    
     
   
-    private Contacto entidadToContacto(Entidad eContacto) throws DAOException {
+    private Contacto entidadToContacto(Entidad eContacto) throws DAOException, MalformedURLException {
         
         String nombre = servPersistencia.recuperarPropiedadEntidad(eContacto, NOMBRE);
         String tipoContacto = servPersistencia.recuperarPropiedadEntidad(eContacto, TIPO_CONTACTO);
-        
+        String imagen = servPersistencia.recuperarPropiedadEntidad(eContacto, IMAGEN);
         
      
         if ("Individual".equals(tipoContacto)) {
@@ -71,6 +74,7 @@ public final class TDSContactoDAO implements ContactoDAO {
             ContactoIndividual contacto = new ContactoIndividual(Optional.ofNullable(nombre).orElse(null), idUsuario,numeroTelefono);
             contacto.setListaMensaje(obtenerMensajes(servPersistencia.recuperarPropiedadEntidad(eContacto,MENSAJES)));
             contacto.setId(eContacto.getId());
+            contacto.setImagen(new URL(imagen));
             return contacto;
         } 
        
@@ -82,6 +86,7 @@ public final class TDSContactoDAO implements ContactoDAO {
             String mensajesIds = servPersistencia.recuperarPropiedadEntidad(eContacto, MENSAJES);
             grupo.setListaMensaje(obtenerMensajes(mensajesIds));
             grupo.setId(eContacto.getId());
+            grupo.setImagen(new URL(imagen));
             return grupo;
         }
      
@@ -173,6 +178,7 @@ public final class TDSContactoDAO implements ContactoDAO {
         		        new Propiedad(USUARIO, String.valueOf(((ContactoIndividual) contacto).getUsuario())),
         		        new Propiedad(TIPO_CONTACTO,contacto.getTipoContacto()),
         		        new Propiedad(MENSAJES,mensajesIds.toString()),
+        		        new Propiedad(IMAGEN,contacto.getImagen().toString()),
         		        new Propiedad(TELEFONO, ((ContactoIndividual)contacto).getNumeroTelefono())
         		    )));
 
@@ -193,6 +199,7 @@ public final class TDSContactoDAO implements ContactoDAO {
                     new Propiedad(NOMBRE, contacto.getNombre()),
                     new Propiedad(TIPO_CONTACTO, "Grupo"),
                     new Propiedad(MENSAJES,mensajesIds.toString()),
+                    new Propiedad(IMAGEN,contacto.getImagen().toString()),
                     new Propiedad(CONTACTOS_GRUPO, contactosIds.toString())
                 )));
         }
@@ -273,6 +280,10 @@ public final class TDSContactoDAO implements ContactoDAO {
             // Actualizar mensajes
             if (prop.getNombre().equals(MENSAJES)) {
                 prop.setValor(mensajesConcatenados);
+                servPersistencia.modificarPropiedad(prop);
+            }
+            if (prop.getNombre().equals(IMAGEN)) {
+                prop.setValor(contacto.getImagen().toString());
                 servPersistencia.modificarPropiedad(prop);
             }
 

@@ -1,5 +1,6 @@
 package dominio;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,12 +18,13 @@ public class Usuario {
 	private String numeroTelefono;
 	private List<Contacto> contactos;
 	private LocalDate fechaRegistro;	//para premium
-
+	private URL imagenPerfil;
+	private boolean esPremium;
 	
 
 
 	public Usuario(String nombre, String apellidos, String email, String login,String numeroTelefono, String password,
-			String fechaNacimiento) {
+			String fechaNacimiento, URL imagenPerfil) {
 		this.id = 0;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -33,7 +35,8 @@ public class Usuario {
 		this.numeroTelefono = numeroTelefono;
 		this.contactos = new ArrayList<Contacto>();
 		this.fechaRegistro = LocalDate.now();
-		
+		this.imagenPerfil=imagenPerfil;
+		this.esPremium=false;
 	}
 	
 	
@@ -57,7 +60,10 @@ public class Usuario {
 	public String getNumeroTelefono() {
 		return numeroTelefono;
 	}
-
+	
+	public URL getImagenPerfil() {
+		return this.imagenPerfil;
+	}
 	public void setNumeroTelefono(String numeroTelefono) {
 		this.numeroTelefono = numeroTelefono;
 	}
@@ -137,7 +143,7 @@ public class Usuario {
 	
 	public void añadirContacto(Contacto contacto) {
 	    if (contacto != null) {
-	    	System.out.println("Se añadeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+
 	        contactos.add(contacto);
 	    } else {
 	        System.out.println("Intentando añadir un contacto nulo");
@@ -157,5 +163,12 @@ public class Usuario {
 	    return null; // Devuelve null si no encuentra el contacto
 	}
 
+	public boolean esPreium() {
+		return this.esPremium;
+	}
+	
+	public void setesPremium(boolean esPremium) {
+		this.esPremium=esPremium;
+	}
 	
 }

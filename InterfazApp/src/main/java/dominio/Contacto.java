@@ -21,6 +21,7 @@ public abstract class Contacto {
 	    
 	public void setTipoContacto(String tipoContacto) {
 		this.tipoContacto = tipoContacto;
+		
 	}
 
 		public Contacto(String nombre) {
@@ -58,13 +59,8 @@ public abstract class Contacto {
 	    	}
 	    }
 		
-		public String toString() {
-			return nombre;
-		}
 		
 
-	
-		public  abstract boolean registrarMensaje(Mensaje mensaje);
 		
 		public String getNombre() {
 		        return nombre; // Proporciona un comportamiento genérico para todas las subclases
@@ -73,4 +69,10 @@ public abstract class Contacto {
 		public void setNombre(String nombre) {
 			this.nombre=nombre;
 		}
+		
+
+		public abstract URL getImagen();
+		public  abstract boolean registrarMensaje(Mensaje mensaje);
+		public abstract String toString();
+		
 }
