@@ -170,7 +170,7 @@ public class VentanaBuscar {
         txtTelefono.setColumns(10);
         
         // Usuario
-        JLabel lblNewLabel_usuario = new JLabel("Usuario:");
+        JLabel lblNewLabel_usuario = new JLabel("Contacto");
         lblNewLabel_usuario.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         GridBagConstraints gbc_lblNewLabel_usuario = new GridBagConstraints();
         gbc_lblNewLabel_usuario.anchor = GridBagConstraints.WEST;
@@ -190,7 +190,7 @@ public class VentanaBuscar {
         textField_usuario.setColumns(10);
         
         //boton
-        JButton btnNewButton_Aceptar = new JButton("Aceptar");
+        JButton btnNewButton_Aceptar = new JButton("Buscar");
         Utilidades.crearBoton(btnNewButton_Aceptar, 80, 20, 12);
         GridBagConstraints gbc_btnNewButton_Aceptar = new GridBagConstraints();
         gbc_btnNewButton_Aceptar.insets = new Insets(5, 5, 5, 5);

@@ -32,6 +32,7 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	private static final String TELEFONO_USUARIO = "numeroUsuario";
 	private static final String CONTACTO = "contactos";
 	private static final String IMAGEN = "imagen";
+	private static final String PREMIUM = "premium";
 	private ServicioPersistencia servPersistencia;
 	private SimpleDateFormat dateFormat;
 
@@ -50,18 +51,20 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 		String fechaNacimiento = servPersistencia.recuperarPropiedadEntidad(eUsuario, FECHA_NACIMIENTO);
 		String numeroUsuario = servPersistencia.recuperarPropiedadEntidad(eUsuario, TELEFONO_USUARIO);
 		String contactosIds = servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTO);
-		String urlImagen = servPersistencia.recuperarPropiedadEntidad(eUsuario, IMAGEN); // Recuperar la URL
+		String imagen = servPersistencia.recuperarPropiedadEntidad(eUsuario, IMAGEN); // Recuperar la URL
+		String premium = servPersistencia.recuperarPropiedadEntidad(eUsuario, PREMIUM); 
 		URL imagenPerfil = null;
 		    try {
 		       
-		        if (urlImagen != null && !urlImagen.isEmpty()) {
-		            imagenPerfil = new URL(urlImagen);
+		        if (imagen != null && !imagen.isEmpty()) {
+		            imagenPerfil = new URL(imagen);
 		        }
 		    } catch (Exception e) {
 		        System.err.println("Error al convertir la URL de la imagen de perfil: " + e.getMessage());
 		    }
 		Usuario usuario = new Usuario(nombre, apellidos, email, login,numeroUsuario, password, fechaNacimiento,imagenPerfil);
 		usuario.setId(eUsuario.getId());
+		usuario.setPremium(Boolean.parseBoolean(premium));
 		
 		List<Contacto> contactos;
 		try {
@@ -130,7 +133,8 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	        new Propiedad(TELEFONO_USUARIO, usuario.getNumeroTelefono()),
 	        new Propiedad(PASSWORD, usuario.getPassword()),
 	        new Propiedad(FECHA_NACIMIENTO, usuario.getFechaNacimiento().toString()),
-	        new Propiedad(IMAGEN,usuario.getImagenPerfil().toString()),
+	        new Propiedad(IMAGEN,usuario.getImagen().toString()),
+	        new Propiedad(PREMIUM,String.valueOf(usuario.isPremium())),
 	        new Propiedad(CONTACTO, contactosIds.toString())  // Aquí se registra la propiedad 'contactos'
 	    )));
 
@@ -197,8 +201,11 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 	        } else if (prop.getNombre().equals(FECHA_NACIMIENTO)) {
 	            prop.setValor(usuario.getFechaNacimiento());
 	        }else if (prop.getNombre().equals(IMAGEN)) {
-	            prop.setValor(usuario.getImagenPerfil().toString());
+	            prop.setValor(usuario.getImagen().toString());
+	        }else if (prop.getNombre().equals(PREMIUM)) {
+	            prop.setValor(String.valueOf(usuario.isPremium()));
 	        }
+
 
 	        // Guarda la propiedad modificada
 	        servPersistencia.modificarPropiedad(prop);

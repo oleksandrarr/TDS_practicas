@@ -70,9 +70,21 @@ public abstract class Contacto {
 			this.nombre=nombre;
 		}
 		
-
+		//Metodo para buscar mensajes en el contacto
+		public List<Mensaje> encontrarMensaje(String texto,String telefono,String contacto){
+		    List<Mensaje> mensajesEncontrados = new ArrayList<>();
+			for(Mensaje m: this.listaMensaje) {
+				if(m.encontrarMensaje(texto,telefono,contacto)!=null) {
+					mensajesEncontrados.add(m);
+				}
+			}
+			return mensajesEncontrados;
+		}
+		
+		
 		public abstract URL getImagen();
 		public  abstract boolean registrarMensaje(Mensaje mensaje);
 		public abstract String toString();
+		
 		
 }

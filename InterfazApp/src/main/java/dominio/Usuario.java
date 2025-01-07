@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Usuario {
 	
@@ -18,13 +19,12 @@ public class Usuario {
 	private String numeroTelefono;
 	private List<Contacto> contactos;
 	private LocalDate fechaRegistro;	//para premium
-	private URL imagenPerfil;
-	private boolean esPremium;
-	
+	private URL imagen;
+	private boolean premium;
 
 
 	public Usuario(String nombre, String apellidos, String email, String login,String numeroTelefono, String password,
-			String fechaNacimiento, URL imagenPerfil) {
+			String fechaNacimiento, URL imagen) {
 		this.id = 0;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -35,11 +35,21 @@ public class Usuario {
 		this.numeroTelefono = numeroTelefono;
 		this.contactos = new ArrayList<Contacto>();
 		this.fechaRegistro = LocalDate.now();
-		this.imagenPerfil=imagenPerfil;
-		this.esPremium=false;
+		this.imagen=imagen;
+		this.premium= false;
 	}
 	
 	
+	public boolean isPremium() {
+		return premium;
+	}
+
+
+	public void setPremium(boolean premium) {
+		this.premium = premium;
+	}
+
+
 	public LocalDate getFechaRegistro() {
 		return fechaRegistro;
 	}
@@ -60,10 +70,7 @@ public class Usuario {
 	public String getNumeroTelefono() {
 		return numeroTelefono;
 	}
-	
-	public URL getImagenPerfil() {
-		return this.imagenPerfil;
-	}
+
 	public void setNumeroTelefono(String numeroTelefono) {
 		this.numeroTelefono = numeroTelefono;
 	}
@@ -143,7 +150,7 @@ public class Usuario {
 	
 	public void añadirContacto(Contacto contacto) {
 	    if (contacto != null) {
-
+	    	System.out.println("Se añadeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 	        contactos.add(contacto);
 	    } else {
 	        System.out.println("Intentando añadir un contacto nulo");
@@ -163,12 +170,21 @@ public class Usuario {
 	    return null; // Devuelve null si no encuentra el contacto
 	}
 
-	public boolean esPreium() {
-		return this.esPremium;
+	public List<Mensaje> encontrarMensajes(String texto, String telefono, String contacto){
+		List<Mensaje> mensajesEncontrados = contactos.stream()
+			    .flatMap(c -> c.encontrarMensaje(texto, telefono, contacto).stream())
+			    .collect(Collectors.toList());
+		return mensajesEncontrados;
+		
 	}
-	
-	public void setesPremium(boolean esPremium) {
-		this.esPremium=esPremium;
+
+
+	public URL getImagen() {
+		return imagen;
 	}
-	
+
+
+	public void setImagen(URL imagen) {
+		this.imagen = imagen;
+	}
 }

@@ -364,7 +364,7 @@ public class VentanaPrincipal {
 		cajaArriba.add(horizontalStrut_2);
 		
 		//Foto Usuario
-		String path4 = Controlador.INSTANCE.getUsuarioActual().getImagenPerfil().toString();
+		String path4 = Controlador.INSTANCE.getUsuarioActual().getImagen().toString();
         URL url4 = new URL(path4);
         Image img = ImageIO.read(url4).getScaledInstance(60, 60, Image.SCALE_SMOOTH);
         JButton imagenPerfil = new JButton(new ImageIcon(img));
@@ -401,14 +401,14 @@ public class VentanaPrincipal {
 			            
 			             //Para probar venta Prremium
 			             //Controlador.INSTANCE.getUsuarioActual().setesPremium(true);
-			             boolean esPremium = Controlador.INSTANCE.getUsuarioActual().esPreium();
+			             boolean esPremium = Controlador.INSTANCE.getUsuarioActual().isPremium();
 						try {
 							if(esPremium) {
-								System.out.println("CONNNNNNNNNNNNNNNNNN");
+							
 								premiumCon = new PremiumCon();
 								premiumCon.mostrarVentana();
 							}else {
-								System.out.println("SINNNNNNNNNNNNNNN");
+							
 								premiumSin = new PremiumSin();
 					            premiumSin.mostrarVentana();
 							}

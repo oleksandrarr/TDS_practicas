@@ -5,6 +5,7 @@ import dao.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,7 +107,7 @@ public enum Controlador {
 		    	return null;
 		    }
 		ContactoIndividual contacto = new ContactoIndividual(nombre, RepositorioUsuarios.INSTANCE.findUsuarioPorTelefono(telefono).getId(),telefono);
-		contacto.setImagen(usuarioContacto.getImagenPerfil());
+		contacto.setImagen(usuarioContacto.getImagen());
 		usuarioActual.añadirContacto(contacto);
 		ContactoDAO contactoDAO = factoria
 				.getContactoDAO(); 
@@ -182,7 +183,7 @@ public enum Controlador {
 		    	
 		    	ContactoIndividual contactoUsuarioActual = new ContactoIndividual(usuarioActual.getNumeroTelefono(), 
 		    			usuarioActual.getId(),usuarioActual.getNumeroTelefono());
-		    	contactoUsuarioActual.setImagen(usuarioActual.getImagenPerfil());
+		    	contactoUsuarioActual.setImagen(usuarioActual.getImagen());
 		    	contactoDAO.create(contactoUsuarioActual);
 		        usuarioEncontrado.añadirContacto(contactoUsuarioActual);
 		        contactoUsuarioActual.registrarMensaje(mensaje2);
@@ -277,6 +278,20 @@ public enum Controlador {
 		usuarioDAO.update(usuarioActual);
 		
 
+	}
+	
+	public List<Mensaje> buscarMensaje(String texto,String telefono, String contacto){
+		List<Mensaje> mensajesEncontrados = new ArrayList<>();
+		if(texto!=null && telefono == null && contacto == null) {
+			for(Contacto c: usuarioActual.getContactos()) {
+				//c.encontrarMensaje(texto);
+			}
+		}else if(texto!=null && telefono != null && contacto == null) {
+			
+			
+		}
+		return null;
+		
 	}
 	
 }

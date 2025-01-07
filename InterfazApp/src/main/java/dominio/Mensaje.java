@@ -119,6 +119,13 @@ public class Mensaje {
 	public void setFechaHoraEnvio(LocalDateTime fechaHoraEnvio) {
 		this.fechaHoraEnvio = fechaHoraEnvio;
 	}
+	
+	//hay que cambiar los mensajes , el emisor y recteptor deben se numeros de telefono
+	public Mensaje encontrarMensaje(String texto, String telefono, String contacto) {
+		//if((texto==null|| this.texto.toLowerCase().contains(texto.toLowerCase())) && (telefono==null || this.emisor)
+			//	);
+		return null;
+	}
 
 
     
