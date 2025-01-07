@@ -35,8 +35,8 @@ public class ElementoChat extends JPanel {
         }
         // Configurar el layout del panel principal
         this.setLayout(new BorderLayout(10, 10));
-        this.setBackground(new Color(40, 167, 69)); // Fondo verde
-        this.setBorder(new LineBorder(Color.BLACK, 1));
+        this.setBackground(Utilidades.VERDE_FONDO); // Fondo verde
+        //this.setBorder(new LineBorder(Color.BLACK, 1));
         
         this.setPreferredSize(new Dimension(300, 100)); // Ancho: 300, Alto: 100
         this.setMinimumSize(new Dimension(300, 100));
@@ -44,8 +44,8 @@ public class ElementoChat extends JPanel {
         
         // Crear el panel para la foto
         panelFoto = new JPanel();
+        panelFoto.setBackground(Utilidades.VERDE_FONDO);
         panelFoto.setPreferredSize(new Dimension(60, 60));
-        panelFoto.setBackground(Color.GREEN);
         
 
         // Cargar la imagen desde la URL
@@ -62,9 +62,11 @@ public class ElementoChat extends JPanel {
 
         // Crear el panel para el texto
         JPanel panelTexto = new JPanel(new GridLayout(2, 1));
+        panelTexto.setBackground(Utilidades.VERDE_LABELS);
         panelTexto.setOpaque(false);
 
         JLabel labelNombre = new JLabel(nombre);
+        labelNombre.setBackground(Utilidades.VERDE_FONDO);
         labelNombre.setFont(new Font("Arial", Font.BOLD, 16));
         labelNombre.setForeground(Color.BLACK);
         labelNombre.setBorder(new LineBorder(Color.BLACK, 1)); // Borde azul de 1 píxel
@@ -154,6 +156,7 @@ public class ElementoChat extends JPanel {
         for (Component component : this.getComponents()) {
             if (component instanceof JPanel) {
                 JPanel panel = (JPanel) component;
+                panel.setBackground(Utilidades.VERDE_FONDO);
                 for (Component inner : panel.getComponents()) {
                     if (inner instanceof JLabel) {
                         JLabel label = (JLabel) inner;
