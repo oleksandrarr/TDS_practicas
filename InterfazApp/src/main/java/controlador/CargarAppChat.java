@@ -34,6 +34,7 @@ public class CargarAppChat {
 		Contacto contacto1 = controlador.añadirContactoIndividual("Paula", "647479157");
 		Contacto contacto2 = controlador.añadirContactoIndividual("Dani", "6337894238");
 		Contacto contacto3 = controlador.añadirContactoIndividual("Jose", "655224817");
+		Contacto contacto4 = controlador.añadirContactoIndividual("Alejandro", "634568319");
 		System.out.println("Todos los contactos añadidos.");
 		
 		Controlador.INSTANCE.enviarMensaje(contacto1, "Hola!", 0);

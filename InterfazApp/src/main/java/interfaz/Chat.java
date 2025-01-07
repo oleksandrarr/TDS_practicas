@@ -53,6 +53,18 @@ public class Chat extends JPanel {
     		this.setMinimumSize(new Dimension(500, 700));
     		this.setPreferredSize(new Dimension(500, 700));
             
+    		JPanel panelSuperior = new JPanel();
+    	    panelSuperior.setBackground(Utilidades.VERDE_LABELS); // Verde oscuro
+    	    panelSuperior.setLayout(new FlowLayout(FlowLayout.CENTER)); // Centrado horizontalmente
+
+    	    JLabel labelNombreContacto = new JLabel(contacto.getNombre());
+    	    System.out.println("Contactoooo: "+contacto.getNombre());
+    	    labelNombreContacto.setFont(new Font("Arial", Font.BOLD, 20)); // Fuente personalizada
+    	    labelNombreContacto.setForeground(Color.BLACK); // Texto blanco
+    	    panelSuperior.add(labelNombreContacto); // Añadir el JLabel al panel
+
+    	    this.add(panelSuperior, BorderLayout.NORTH); // Añadir el panel superior al Chat
+    	    
     		JPanel chat=new JPanel();
     		chat.setBackground(new Color(122, 184, 135));
     		chat.setLayout(new BoxLayout(chat,BoxLayout.Y_AXIS));

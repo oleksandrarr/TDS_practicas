@@ -17,7 +17,7 @@ public class ElementoChatRenderer implements ListCellRenderer<ElementoChat> {
         if (isSelected) {
             value.setBackground(new Color(184, 207, 229)); // Fondo azul claro
         } else {
-            value.setBackground(Color.GREEN); // Fondo blanco
+            value.setBackground(Utilidades.VERDE_CLARO); // Fondo blanco
         }
 
         // Actualizar el borde según si la celda tiene el foco

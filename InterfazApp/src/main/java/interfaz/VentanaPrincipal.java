@@ -66,6 +66,7 @@ public class VentanaPrincipal {
 	private VentanaBuscar ventanaBuscar;
 	private PremiumSin premiumSin;
 	private PremiumCon premiumCon;
+	private String nombreChatActual;
 	
 
 
@@ -112,6 +113,8 @@ public class VentanaPrincipal {
 		ventana.setSize(new Dimension(900, 900));
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contenedor=(JPanel) ventana.getContentPane();
+		contenedor.setBackground(Utilidades.VERDE_FONDO);
+		ventana.getContentPane().setBackground(Utilidades.VERDE_FONDO);
 		
 		añadirMenuBar();
 		añadirCajaArriba();
@@ -125,9 +128,9 @@ public class VentanaPrincipal {
 		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
 		//list<Contactos>
 		if(listaContactos.size()>0) {
-		Contacto contacto1 = listaContactos.get(0);
-		
-		añadirChat(contacto1);
+			Contacto contacto1 = listaContactos.get(0);
+			
+			añadirChat(contacto1);
 		}
 		añadirListaContactos();
 	}
@@ -142,8 +145,10 @@ public class VentanaPrincipal {
 	    //////QUITAR CODIGO QUE SOBRA////
 	    // Agregar contactos al modelo
 	    for (Contacto contacto : listaContactos) {
-	    	
-	    	if(Controlador.INSTANCE.obtenerMensajes(contacto)!=null) {
+
+	    	if(!Controlador.INSTANCE.obtenerMensajes(contacto).isEmpty()) {
+	    		
+
 		        if (contacto instanceof ContactoIndividual) {
 		            //ContactoIndividual c = (ContactoIndividual) contacto;
 		            //String nombre = c.getNombreOptional().orElse(c.getNumeroTelefono());
@@ -190,6 +195,8 @@ public class VentanaPrincipal {
 	    // Envolver la lista en un JScrollPane
 	    JScrollPane scroll = new JScrollPane(lista);
 	    scroll.setPreferredSize(new Dimension(320, 320));
+	    scroll.getViewport().setBackground(Utilidades.VERDE_FONDO); 
+	    scroll.setBorder(null); // Eliminar bordes blancos si los hay
 	    cajaIzquierda.add(scroll);
 	}
 
@@ -255,6 +262,7 @@ public class VentanaPrincipal {
 		cajaArriba.setMinimumSize(new Dimension(700, 80));
 		cajaArriba.setMaximumSize(new Dimension(700, 80));
 		ventana.getContentPane().add(cajaArriba, BorderLayout.NORTH);
+		ventana.setBackground(Utilidades.VERDE_FONDO);
 		cajaArriba.setLayout(new BoxLayout(cajaArriba, BoxLayout.X_AXIS));
 		Component horizontalStrut_1_1 = Box.createHorizontalStrut(10);
 		cajaArriba.add(horizontalStrut_1_1);
@@ -276,35 +284,7 @@ public class VentanaPrincipal {
 		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
 		cajaArriba.add(horizontalStrut_1);
 		
-		//ActionListener para seleccionar contacto al que enviar Mensaje
-		comboBox.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        // Obtener el elemento seleccionado
-		        //String contactoSeleccionado = (String) comboBox.getSelectedItem();
-		        
-		        // Buscar el contacto en la lista de contactos del usuario
-		        
-		        Contacto contactoSeleccionado = (Contacto) comboBox.getSelectedItem();
-		        /*
-		        for (Contacto c : Controlador.INSTANCE.getUsuarioActual().getContactos()) {
-		            if (c.toString().equals(contactoSeleccionado)) {
-		                contacto = c;
-		                break;
-		            }
-		        }
-	*/
-		        // Cambiar al chat correspondiente si se encuentra el contacto
-		        /*if (contacto != null) {
-		            try {
-		                cambiarPantallaChat(contacto);
-		            } catch (IOException ex) {
-		                ex.printStackTrace();
-		            }
-		        }*/
-		    }
-		});
-		
+
 		//boton nuevo chat
 		String path = "https://cdn-icons-png.flaticon.com/512/106/106733.png";
         URL url = new URL(path);
@@ -424,6 +404,7 @@ public class VentanaPrincipal {
 				botonPanel.addActionListener(new ActionListener() {
 			         @Override
 			         public void actionPerformed(ActionEvent e) {
+
 			        	 Contacto contactoSeleccionado = (Contacto)comboBox.getSelectedItem();
 			        	 //Contacto contacto = null;
 			        	 /*for(Contacto c : Controlador.INSTANCE.getUsuarioActual().getContactos()) {
@@ -437,6 +418,30 @@ public class VentanaPrincipal {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
+
+/*
+			        	 String contactoSeleccionado = (String) comboBox.getSelectedItem();
+			        	 nombreChatActual = contactoSeleccionado;
+			        	 if (contactoSeleccionado != null && !contactoSeleccionado.isEmpty()) {
+			                 // Buscar el contacto correspondiente en la lista de contactos
+			                 Contacto contacto = null;
+			                 for (Contacto c : Controlador.INSTANCE.getUsuarioActual().getContactos()) {
+			                     if (c.toString().equals(contactoSeleccionado)) {
+			                         contacto = c;
+			                         break;
+			                     }
+			                 }
+
+			                 // Cambiar a la pantalla de chat si se encuentra el contacto
+			                 if (contacto != null) {
+			                     try {
+			                         cambiarPantallaChat(contacto); 
+			                     } catch (IOException ex) {
+			                         ex.printStackTrace();
+			                     }
+			                 }
+			         }*/
+
 			         }
 			     });
 		
@@ -444,30 +449,26 @@ public class VentanaPrincipal {
 	
 	private void añadirCajaIzquierda(){
 		cajaIzquierda = new JPanel();
-		cajaIzquierda.setBackground(new Color(40, 167, 69));
+		cajaIzquierda.setBackground(Utilidades.VERDE_FONDO);
 		
 		cajaIzquierda.setPreferredSize(new Dimension(380, 700));
-		cajaIzquierda.setMinimumSize(new Dimension(200, 200));
-		cajaIzquierda.setMaximumSize(new Dimension(500, 1000));
-		pantalla.add(cajaIzquierda);
 		cajaIzquierda.setLayout(new BoxLayout(cajaIzquierda, BoxLayout.Y_AXIS));
+	    pantalla.add(cajaIzquierda, BorderLayout.WEST);
 		
 	}
 	
 	private void añadirPantalla() {
 		pantalla = new JPanel();
-		pantalla.setBackground(new Color(40, 167, 69));
-		ventana.getContentPane().add(pantalla, BorderLayout.CENTER);
-		pantalla.setLayout(new BoxLayout(pantalla, BoxLayout.X_AXIS));
+		pantalla.setBackground(Utilidades.VERDE_FONDO);
+		pantalla.setLayout(new BorderLayout()); // Cambiar a BorderLayout
+	    ventana.getContentPane().add(pantalla, BorderLayout.CENTER);
 		
 	}
 	
 	private void añadirChat(Contacto contacto) throws IOException{
 		chat = new Chat(contacto);
-		chat.setPreferredSize(new Dimension(500, 700));
-		chat.setMinimumSize(new Dimension(500, 700));
-		chat.setMaximumSize(new Dimension(500, 700));
-		pantalla.add(chat);
+		chat.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		pantalla.add(chat, BorderLayout.CENTER);
 	}
 	
 	private void cambiarPantallaChat(Contacto contacto) throws IOException {

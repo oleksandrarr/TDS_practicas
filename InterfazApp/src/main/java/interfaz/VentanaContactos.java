@@ -107,9 +107,6 @@ public class VentanaContactos {
 	    	
 	    	if(c instanceof ContactoIndividual) {
 	    		modeloLista.addElement(c);
-	    	}else {
-	    		
-	    		modeloLista.addElement(c);
 	    	}
 	    	
 	    }
@@ -212,13 +209,21 @@ public class VentanaContactos {
 		panelSouth = new JPanel();
 		panelSouth.setBorder(new EmptyBorder(0, 10, 10, 10)); 
 		panelSouth.setBackground(Utilidades.VERDE_FONDO);
-        frame.getContentPane().add(panelSouth, BorderLayout.SOUTH);
-        panelSouth.setLayout(new GridLayout(0, 4, 0, 0));
+        frame.add(panelSouth, BorderLayout.SOUTH);
         
+        JButton btnNewButton_4 = new JButton("Aceptar");
+        Utilidades.crearBoton(btnNewButton_4, 100, 30, 12);
+        panelSouth.add(btnNewButton_4);
+
         JButton btnNewButton_2 = new JButton("Añadir Contacto Nuevo");
         Utilidades.crearBoton(btnNewButton_2, 170, 30, 12);
         panelSouth.add(btnNewButton_2);
         btnNewButton_2.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        JButton btnNewButton_3 = new JButton("Cancelar");
+        Utilidades.crearBoton(btnNewButton_3, 100, 30, 12);
+        panelSouth.add(btnNewButton_3);
+        btnNewButton_3.setVerticalAlignment(SwingConstants.BOTTOM);
         
         
       //Action listener Añadir Contacto
@@ -238,17 +243,9 @@ public class VentanaContactos {
             }
         });
         
-        JButton btnNewButton_4 = new JButton("Aceptar");
-        Utilidades.crearBoton(btnNewButton_4, 100, 30, 12);
-        panelSouth.add(btnNewButton_4);
-        
-        JButton btnNewButton_3 = new JButton("Cancelar");
-        Utilidades.crearBoton(btnNewButton_3, 100, 30, 12);
-        panelSouth.add(btnNewButton_3);
-        btnNewButton_3.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        JButton btnNewButton_5 = new JButton("Añadir Grupo");
-        btnNewButton_5.addActionListener(new ActionListener() {
+        //JButton btnNewButton_5 = new JButton("Añadir Grupo");
+        //Action Listener del boton "Aceptar"
+        btnNewButton_4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Crear una lista para almacenar los contactos del grupo
@@ -268,7 +265,7 @@ public class VentanaContactos {
                 
             }
         });
-        panelSouth.add(btnNewButton_5);
+       // panelSouth.add(btnNewButton_5);
         
         //boton cancelar
         btnNewButton_3.addActionListener(new ActionListener() {
