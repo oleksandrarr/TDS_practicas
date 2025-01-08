@@ -135,6 +135,10 @@ public class PremiumSin {
         panelBotones.setBackground(Utilidades.VERDE_FONDO);
         frame.getContentPane().add(panelBotones, BorderLayout.SOUTH);
         
+        JButton btnNewButton_2 = new JButton("Calcular descuento");
+        Utilidades.crearBoton(btnNewButton_2, 150, 30, 12);
+        panelBotones.add(btnNewButton_2);
+        
         JButton btnNewButton = new JButton("Cancelar");
         Utilidades.crearBoton(btnNewButton, 100, 30, 12);
         panelBotones.add(btnNewButton);
@@ -150,6 +154,35 @@ public class PremiumSin {
 				 frame.dispose();  // Cierra la ventana
 	         }
 	     });
+        
+        //calcular descuento
+        btnNewButton_2.addActionListener(new ActionListener() {
+			 @Override
+			 public void actionPerformed(ActionEvent e) {
+				 int descuento = Controlador.INSTANCE.getUsuarioActual().calcularDescuento();
+				 int coste = 15 - (15 * descuento);
+				 if(descuento == 0) {
+					 JOptionPane.showMessageDialog(frame, "No tiene descuento disponible.\n "
+					 		+ "Precio final a pagar: "+coste, "Información Descuento",
+								JOptionPane.INFORMATION_MESSAGE);
+				 } else {
+					 JOptionPane.showMessageDialog(frame, "Tiene el descuento disponible de: "+descuento
+							 +"\n Precio final a pagar: "+coste, "Información Descuento",
+								JOptionPane.INFORMATION_MESSAGE);
+				 }
+	         }
+	     });
+        
+      //comprar
+        btnNewButton_1.addActionListener(new ActionListener() {
+			 @Override
+			 public void actionPerformed(ActionEvent e) {
+				 Controlador.INSTANCE.getUsuarioActual().setPremium(true);
+				 JOptionPane.showMessageDialog(frame, "Tiene el Premium.", "Premium Pagado",
+							JOptionPane.INFORMATION_MESSAGE);
+				 frame.dispose();
+	         }
+	     });
     }
     
     private void añadirPanelCentro() {
@@ -160,9 +193,9 @@ public class PremiumSin {
         
         GridBagLayout gbl_panelCentro = new GridBagLayout();
 	     gbl_panelCentro.columnWidths = new int[]{25, 250, 100, 25};
-	     gbl_panelCentro.rowHeights = new int[]{25, 50, 50, 50, 25};
+	     gbl_panelCentro.rowHeights = new int[]{25, 75, 75, 25};
 	     gbl_panelCentro.columnWeights = new double[]{0.0, 1.0, 0.5, 0.0};
-	     gbl_panelCentro.rowWeights = new double[]{0.0, 1.0, 1.0, 1.0, 0.0};
+	     gbl_panelCentro.rowWeights = new double[]{0.0, 1.0, 1.0, 0.0};
 	     panelCentro.setLayout(gbl_panelCentro);
 	     
         LocalDate fechaRegistro = Controlador.INSTANCE.getUsuarioActual().getFechaRegistro();
@@ -204,33 +237,6 @@ public class PremiumSin {
         gbc_lblNewLabel_5.gridx = 2;
         gbc_lblNewLabel_5.gridy = 2;
         panelCentro.add(lblNewLabel_5, gbc_lblNewLabel_5);
-        
-        JLabel lblNewLabel_3 = new JLabel("Descuento disponible:");
-        lblNewLabel_3.setFont(new Font("Serif"+ "", Font.BOLD, 15));
-        GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-        gbc_lblNewLabel_3.anchor = GridBagConstraints.WEST;
-        gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
-        gbc_lblNewLabel_3.gridx = 1;
-        gbc_lblNewLabel_3.gridy = 3;
-        panelCentro.add(lblNewLabel_3, gbc_lblNewLabel_3);
-        
-        //int semanas = LocalDate.now().minusWeeks(fechaRegistro);
-        //calculo del descuento
-        /* 
-         * if (mensajes >= 100){
-         * 		descuento = "Descuento por enviar más de 100 mensajes";
-         * } elif (semanas >= 4){
-         * 		descuento = "Descuento por estar registrado más de 4 semanas";
-         * }
-         */
-        JLabel lblNewLabel_6 = new JLabel("Descuento");
-        lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
-        gbc_lblNewLabel_6.insets = new Insets(0, 0, 5, 5);
-        gbc_lblNewLabel_6.anchor = GridBagConstraints.WEST;
-        gbc_lblNewLabel_6.gridx = 2;
-        gbc_lblNewLabel_6.gridy = 3;
-        panelCentro.add(lblNewLabel_6, gbc_lblNewLabel_6);
     }
     
 }

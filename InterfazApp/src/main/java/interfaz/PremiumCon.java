@@ -1,6 +1,7 @@
 package interfaz;
 
 import java.awt.EventQueue;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -43,7 +44,6 @@ public class PremiumCon {
     private JPanel panelNombre;
     private JPanel panelBotones;
     private JPanel panelCentro;
-    private JComboBox<String> comboBox;
     
     /**
      * Launch the application.
@@ -80,14 +80,13 @@ public class PremiumCon {
      */
     private void initialize() throws IOException {
         frame = new JFrame();
-        frame.setBounds(75, 75, 400, 165);
+        frame.setBounds(75, 75, 350, 120);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setTitle("Premium");
         frame.setBackground(Utilidades.VERDE_FONDO);
         
         añadirPanelNombre();
-        añadirPanelBotones();        
-        añadirPanelCentro();
+        añadirPanelBotones(); 
     }
     
     private void añadirPanelNombre() {
@@ -133,29 +132,10 @@ public class PremiumCon {
         btnNewButton.addActionListener(new ActionListener() {
 			 @Override
 			 public void actionPerformed(ActionEvent e) {
-				 //falta
+				 
 	         }
 	     });
         
     }
     
-    private void añadirPanelCentro() throws IOException {
-    	panelCentro = new JPanel();
-        panelCentro.setBackground(Utilidades.VERDE_FONDO);
-        frame.getContentPane().add(panelCentro, BorderLayout.CENTER);
-		
-        comboBox = new JComboBox<String>();
-		comboBox.setPreferredSize(new Dimension(200, 30));
-		comboBox.setMinimumSize(new Dimension(200, 30));
-		comboBox.setMaximumSize(new Dimension(200, 30));
-		comboBox.setBackground(Utilidades.VERDE_LABELS); // Verde medio
-		comboBox.setForeground(Color.BLACK); // Texto blanco para contraste
-		comboBox.setOpaque(true);
-		panelCentro.add(comboBox);
-		
-		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
-		for(Contacto c : listaContactos) {
-			comboBox.addItem(c.toString());
-		}
-    }
 }

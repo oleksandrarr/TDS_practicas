@@ -187,4 +187,18 @@ public class Usuario {
 	public void setImagen(URL imagen) {
 		this.imagen = imagen;
 	}
+	
+	public int calcularDescuento() {
+		int descuento = 0;
+		int numMensajesUltMes = (int) contactos.stream().flatMap(cont -> cont.getListaMensaje().stream()).filter(m -> m.getFechaHoraEnvio().getMonthValue() == (LocalDateTime.now().getMonthValue())).count();
+		long semanasRegistrado = fechaRegistro.until(LocalDate.now()).toTotalMonths();
+		
+		if(numMensajesUltMes >= 100) {
+			descuento = 15;
+		} 
+		if(semanasRegistrado >= 4) {
+			descuento = 20;
+		}
+		return descuento;
+	}
 }
