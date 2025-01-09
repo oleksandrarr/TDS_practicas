@@ -1,11 +1,9 @@
 package controlador;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
-import dao.DAOException;
 import dominio.Contacto;
 import dominio.ContactoIndividual;
 import dominio.Mensaje;
@@ -14,7 +12,7 @@ import dominio.Mensaje;
 import dominio.Usuario;
 
 public class CargarAppChat {
-	public static void main(String[] args) throws DAOException, MalformedURLException {
+	public static void main(String[] args) throws Exception {
 		 
 		Controlador controlador = Controlador.INSTANCE;
 		
