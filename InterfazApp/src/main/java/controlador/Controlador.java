@@ -2,6 +2,7 @@ package controlador;
 
 import dao.*;
 
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JList;
+
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 
 import dao.DAOException;
 import dao.FactoriaDAO;
@@ -294,4 +300,43 @@ public enum Controlador {
 		
 	}
 	
+	public String generarPDF() {
+	    try {
+	        String rutaArchivo = "Contactos_de_" + usuarioActual.getNombre() + ".pdf";
+	        PdfWriter writer = new PdfWriter(rutaArchivo);
+	        PdfDocument pdf = new PdfDocument(writer);
+	        Document document = new Document(pdf);
+
+	        // Contactos individuales
+	        Paragraph tituloIndividuales = new Paragraph("Contactos Individuales").setBold();
+	        document.add(tituloIndividuales);
+
+	        for (ContactoIndividual ci : usuarioActual.getContactosIndividuales()) {
+	            Paragraph contactoInfo = new Paragraph("Nombre: " + ci.getNombre() + ", Teléfono: " + ci.getNumeroTelefono());
+	            document.add(contactoInfo);
+	        }
+
+	        // Grupos
+	        Paragraph tituloGrupos = new Paragraph("Grupos").setBold();
+	        document.add(tituloGrupos);
+
+	        for (Grupo g : usuarioActual.getGrupos()) {
+	            Paragraph grupoInfo = new Paragraph("Grupo: " + g.getNombre());
+	            document.add(grupoInfo);
+
+	            for (ContactoIndividual ci : g.getContactos()) {
+	                Paragraph miembroInfo = new Paragraph("  - Nombre: " + ci.getNombre() + ", Teléfono: " + ci.getNumeroTelefono());
+	                document.add(miembroInfo);
+	            }
+	        }
+
+	        document.close();
+	        System.out.println("PDF generado exitosamente en: " + rutaArchivo);
+	        return rutaArchivo;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		return null;
+	}
+
 }

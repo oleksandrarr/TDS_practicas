@@ -53,11 +53,6 @@ public class ContactoIndividual extends Contacto {
 		this.nombre=Optional.of(nombre);
 	}
 
-	@Override
-	public String getNombre() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 

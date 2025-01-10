@@ -4,6 +4,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,6 +63,25 @@ public class Usuario {
 		return contactos;
 	}
 
+	public List<ContactoIndividual> getContactosIndividuales(){
+		List<ContactoIndividual> lista = new LinkedList<ContactoIndividual>();
+		for(Contacto c : contactos) {
+			if(c instanceof ContactoIndividual) {
+				lista.add((ContactoIndividual) c);
+			}
+		}
+		return lista;
+	}
+	
+	public List<Grupo> getGrupos(){
+		List<Grupo> lista = new LinkedList<Grupo>();
+		for(Contacto c : contactos) {
+			if(c instanceof Grupo) {
+				lista.add((Grupo) c);
+			}
+		}
+		return lista;
+	}
 
 	public void setContactos(List<Contacto> list) {
 		this.contactos = list;

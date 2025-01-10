@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
@@ -132,7 +133,10 @@ public class PremiumCon {
         btnNewButton.addActionListener(new ActionListener() {
 			 @Override
 			 public void actionPerformed(ActionEvent e) {
-				 
+				 String ruta = Controlador.INSTANCE.generarPDF();
+				 JOptionPane.showMessageDialog(frame,
+							"Se ha generado un PDF en: "+ruta+".", "Éxito",
+							JOptionPane.INFORMATION_MESSAGE);
 	         }
 	     });
         
