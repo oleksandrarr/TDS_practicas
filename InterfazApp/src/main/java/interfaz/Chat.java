@@ -123,8 +123,14 @@ public class Chat extends JPanel {
 			List<Mensaje> mensajes = Controlador.INSTANCE.obtenerMensajes(contacto);
 			if(mensajes!=null) {
 	 		 for (Mensaje m : mensajes) {
-	 			 BubbleText burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE, Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre()
+	 			 BubbleText burbuja;
+	 			 if(m.getTipoMensaje()==Mensaje.ENVIADO) {
+	 				 burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE, Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre()
 	 					 +m.getFechaHoraEnvio().format(soloHora), m.getTipoMensaje(), 11);
+	 			 }else {
+	 				 burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE, Controlador.INSTANCE.getContactoPorId(m.getEmisor()).getNombre()
+		 					 +m.getFechaHoraEnvio().format(soloHora), m.getTipoMensaje(), 11);
+	 			 }
 	             chat.add(burbuja); 
 	             chat.scrollRectToVisible(new Rectangle(0,640+burbuja.getHeight(),1,1));
 	             System.out.println("Se añade");

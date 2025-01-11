@@ -190,10 +190,21 @@ public class Usuario {
 	    return null; // Devuelve null si no encuentra el contacto
 	}
 
-	public List<Mensaje> encontrarMensajes(String texto, String telefono, String contacto){
-		List<Mensaje> mensajesEncontrados = contactos.stream()
-			    .flatMap(c -> c.encontrarMensaje(texto, telefono, contacto).stream())
-			    .collect(Collectors.toList());
+	public List<Mensaje> encontrarMensajes(String texto, int idContacto, String contacto){
+		List<Mensaje> mensajesEncontrados= new ArrayList<>();
+		for(Contacto c: contactos) {
+			if(c instanceof ContactoIndividual && ((ContactoIndividual)c).getId()==idContacto) {
+				mensajesEncontrados.addAll(c.encontrarMensaje(texto));
+				System.out.println("ENTRA1");
+			}else if(c.getNombre().equals(contacto)) {
+				mensajesEncontrados.addAll(c.encontrarMensaje(texto));
+				System.out.println("ENTRA2");
+			}else if(idContacto==0 && contacto==null) {
+				mensajesEncontrados.addAll(c.encontrarMensaje(texto));
+				System.out.println("ENTRA3");
+			}
+		}
+		System.out.println("//////////2222222////////"+mensajesEncontrados.size());
 		return mensajesEncontrados;
 		
 	}
@@ -208,6 +219,7 @@ public class Usuario {
 		this.imagen = imagen;
 	}
 	
+
 	public int calcularDescuento() {
 		int descuento = 0;
 		int numMensajesUltMes = (int) contactos.stream().flatMap(cont -> cont.getListaMensaje().stream()).filter(m -> m.getFechaHoraEnvio().getMonthValue() == (LocalDateTime.now().getMonthValue())).count();

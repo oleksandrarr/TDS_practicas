@@ -1,6 +1,7 @@
 package dominio;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,5 +80,9 @@ public class ContactoIndividual extends Contacto {
 	public String toString() {
 		return this.getNombreOptional().orElse(numeroTelefono);
 	}
+
+
+
+
 
 }

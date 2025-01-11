@@ -41,7 +41,7 @@ public class VentanaBuscar {
 	private String mensaje;
 	private String telefono;
 	private String usuario;
-	
+	private JPanel panelMensajes;
 	private JTextField txtTelefono;
 	private JTextField textField_texto;
 	private JTextField textField_usuario;
@@ -211,28 +211,40 @@ public class VentanaBuscar {
 	        	 
 	        	 Contacto contacto = null;
 	        	 List<Contacto> lista = Controlador.INSTANCE.getUsuarioActual().getContactos();
-	        	 for(Contacto c : lista) {
-	        		 if(usuario.equals(c.toString())){
-	        			 contacto = c;
-	        		 }
-	        	 }
-	        	 List<dominio.Mensaje> listaMensajes = Controlador.INSTANCE.getContactoIndividual(contacto.getId()).getListaMensaje();
+	        	 
+	        	 List<dominio.Mensaje> listaMensajes = Controlador.INSTANCE.buscarMensaje(mensaje, telefono, usuario);
+	        	 System.out.println("/////////////7277e3784722ii"+listaMensajes.size());
+	        	 panelMensajes.removeAll();
 	        	 for(dominio.Mensaje m : listaMensajes) {
-	        		 if(mensaje.equals(m.getTexto())) {
+	        		 System.out.println("/////////////7277e3784722iittttt"+m.getReceptor());
+	        		 System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeMI:"+m.getEmisor()+
+	        				 "//"+Controlador.INSTANCE.getUsuarioActual().getId()+"//"+m.getReceptor()+m.getTexto());
+	        		 	 mensaje=m.getTexto();	
+	        		 	 if(m.getTipoMensaje()==dominio.Mensaje.ENVIADO) {
 	        			 emisor = Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre();
-	        			 
 	        			 receptor = Controlador.INSTANCE.getContactoPorId(m.getReceptor()).getNombre();
-	        		 }
+	        		 	 }else {
+	        		 		 emisor = Controlador.INSTANCE.getContactoPorId(m.getEmisor()).getNombre();
+		        			 receptor = Controlador.INSTANCE.getUsuarioPorId(m.getReceptor()).getNombre();
+	        		 	 }
+	        			 panelMensajes.add(añadirPanelMensaje(receptor, emisor, mensaje));
+	        			 System.out.println("Buscando mensajes con:");
+		        		 System.out.println("Texto: " + mensaje);
+		        		 System.out.println("Teléfono: " + telefono);
+		        		 System.out.println("Usuario: " + usuario);
+	        		 
 	        	 }
 	        	 
-	        	 añadirPanelMensaje(receptor, emisor, mensaje);
+	        	 panelMensajes.revalidate();
+	             panelMensajes.repaint();
+	        	
 	         }
 	     });
         
 	}
 	
 	private void crearPanelScroll() {
-		JPanel panelMensajes = new JPanel();
+		panelMensajes = new JPanel();
 		panelMensajes.setBackground(Utilidades.VERDE_CLARO);
         panelMensajes.setLayout(new BoxLayout(panelMensajes, BoxLayout.Y_AXIS));
         

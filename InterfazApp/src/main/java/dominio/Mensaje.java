@@ -121,10 +121,17 @@ public class Mensaje {
 	}
 	
 	//hay que cambiar los mensajes , el emisor y recteptor deben se numeros de telefono
-	public Mensaje encontrarMensaje(String texto, String telefono, String contacto) {
-		//if((texto==null|| this.texto.toLowerCase().contains(texto.toLowerCase())) && (telefono==null || this.emisor)
-			//	);
-		return null;
+	public boolean encontrarMensaje(String texto) {
+		System.out.println("ENTRA menaje final"+this.getTexto());
+		if (texto == null || texto.isEmpty()) {
+	        return true; // Si no hay texto considero que todos los mensajes coinciden con la busqueda
+	    }
+		if(this.texto.toLowerCase().contains(texto.toLowerCase())){
+			System.out.println("ENTRA menaje fina2222222l"+this.getTexto());
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 

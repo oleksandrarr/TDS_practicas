@@ -154,8 +154,13 @@ public enum Controlador {
 	        throw new IllegalArgumentException("El texto del mensaje no puede ser nulo o vacío.");
 	    }
 
-	    // Crear el mensaje
-	    Mensaje mensaje = new Mensaje(texto, usuarioActual.getId(), contacto.getId(), LocalDateTime.now(), tipo);
+	    Mensaje mensaje;
+		// Crear el mensaje
+	    if(tipo==dominio.Mensaje.ENVIADO) {
+	    mensaje = new Mensaje(texto, usuarioActual.getId(), contacto.getId(), LocalDateTime.now(), tipo);
+	    }else {
+	    mensaje = new Mensaje(texto, contacto.getId(), usuarioActual.getId(), LocalDateTime.now(), tipo);
+	    }
 	    contacto.registrarMensaje(mensaje);
 	    MensajeDAO mensajeDAO = factoria.getMensajeDAO();
 	    mensajeDAO.registrar(mensaje);
@@ -167,8 +172,9 @@ public enum Controlador {
 	    if(contacto instanceof ContactoIndividual) {
 		    ContactoIndividual c = (ContactoIndividual) contacto;
 		    
-		    int tipo2 = (tipo == 1) ? 0 : 1;
-		    Mensaje mensaje2 = new Mensaje(texto, usuarioActual.getId(), contacto.getId(), LocalDateTime.now(), tipo2);
+		    
+		    
+		   
 		    // Asegurar que el usuario existe
 		    Usuario usuarioEncontrado = RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario());
 		    if (usuarioEncontrado == null) {
@@ -177,8 +183,16 @@ public enum Controlador {
 	
 		    
 		    UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
-		    
+		  
 		    if (usuarioEncontrado.getContactoIndividual(usuarioActual.getId()) != null) {
+		    	Mensaje mensaje2 ;
+		    	if(tipo==Mensaje.ENVIADO) {
+		    	 mensaje2 = new Mensaje(texto,usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(),usuarioEncontrado.getId(),
+		    			 LocalDateTime.now(), 1);
+		    	}else {
+		    		 mensaje2 = new Mensaje(texto,usuarioEncontrado.getId(),
+				    			usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(), LocalDateTime.now(), 1);
+		    	}
 		    	usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).registrarMensaje(mensaje2);
 		        mensajeDAO.registrar(mensaje2);
 		        contactoDAO.update(usuarioEncontrado.getContactoIndividual(usuarioActual.getId()));
@@ -192,6 +206,14 @@ public enum Controlador {
 		    	contactoUsuarioActual.setImagen(usuarioActual.getImagen());
 		    	contactoDAO.create(contactoUsuarioActual);
 		        usuarioEncontrado.añadirContacto(contactoUsuarioActual);
+		        Mensaje mensaje2 ;
+		    	if(tipo==Mensaje.ENVIADO) {
+		    	 mensaje2 = new Mensaje(texto,usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(),usuarioEncontrado.getId(),
+		    			 LocalDateTime.now(), 1);
+		    	}else {
+		    		 mensaje2 = new Mensaje(texto,usuarioEncontrado.getId(),
+				    			usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(), LocalDateTime.now(), 1);
+		    	}
 		        contactoUsuarioActual.registrarMensaje(mensaje2);
 		        mensajeDAO.registrar(mensaje2);
 		        contactoDAO.update(contactoUsuarioActual);
@@ -202,7 +224,7 @@ public enum Controlador {
 	    	Grupo g = (Grupo)contacto;
 	    	
 	    	for(ContactoIndividual c: g.getContactos()) {
-	    		System.out.println("/////MUEMBRO"+((ContactoIndividual)c).getNombreOptional());
+	    		
 			    enviarMensaje(c,mensaje.getTexto(),tipo);
 	    	}
 	    	
@@ -288,15 +310,16 @@ public enum Controlador {
 	
 	public List<Mensaje> buscarMensaje(String texto,String telefono, String contacto){
 		List<Mensaje> mensajesEncontrados = new ArrayList<>();
-		if(texto!=null && telefono == null && contacto == null) {
-			for(Contacto c: usuarioActual.getContactos()) {
-				//c.encontrarMensaje(texto);
-			}
-		}else if(texto!=null && telefono != null && contacto == null) {
-			
-			
+		int idContacto=0;
+		if(!telefono.isEmpty() && !telefono.equals(usuarioActual.getNumeroTelefono())){
+			 idContacto = 0; //Ya tengo el contacto
+		}else if(!telefono.isEmpty()){
+			idContacto=getContactoPorTelefono(telefono).getId();
 		}
-		return null;
+		
+		
+		mensajesEncontrados=usuarioActual.encontrarMensajes(texto, idContacto, contacto);
+		return mensajesEncontrados;
 		
 	}
 	
