@@ -235,7 +235,87 @@ public enum Controlador {
 	}
 
 	
-	
+	public boolean enviarMensajeEmoticono(Contacto contacto, int emoticono, int tipo) throws DAOException {
+	    // Validaciones iniciales
+	    if (usuarioActual == null) {
+	        throw new IllegalStateException("No hay un usuario autenticado. Inicie sesión primero.");
+	    }
+
+	    if (contacto == null) {
+	        throw new IllegalArgumentException("El contacto proporcionado es nulo.");
+	    }
+
+	    Mensaje mensaje;
+		// Crear el mensaje
+	    if(tipo==dominio.Mensaje.ENVIADO) {
+	    mensaje = new Mensaje(emoticono, usuarioActual.getId(), contacto.getId(), LocalDateTime.now(), tipo);
+	    }else {
+	    mensaje = new Mensaje(emoticono, contacto.getId(), usuarioActual.getId(), LocalDateTime.now(), tipo);
+	    }
+	    contacto.registrarMensaje(mensaje);
+	    MensajeDAO mensajeDAO = factoria.getMensajeDAO();
+	    mensajeDAO.registrar(mensaje);
+	    ContactoDAO contactoDAO = factoria.getContactoDAO();
+	    contactoDAO.update(contacto);
+	    
+	    if(contacto instanceof ContactoIndividual) {
+		    ContactoIndividual c = (ContactoIndividual) contacto;
+		    Usuario usuarioEncontrado = RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario());
+		    if (usuarioEncontrado == null) {
+		        throw new IllegalArgumentException("No se encontró el usuario asociado al contacto.");
+		    }
+		    
+		    UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
+		  
+		    if (usuarioEncontrado.getContactoIndividual(usuarioActual.getId()) != null) {
+		    	Mensaje mensaje2 ;
+		    	if(tipo==Mensaje.ENVIADO) {
+		    	 mensaje2 = new Mensaje(emoticono,usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(),usuarioEncontrado.getId(),
+		    			 LocalDateTime.now(), 1);
+		    	}else {
+		    		 mensaje2 = new Mensaje(emoticono,usuarioEncontrado.getId(),
+				    			usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(), LocalDateTime.now(), 1);
+		    	}
+		    	usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).registrarMensaje(mensaje2);
+		        mensajeDAO.registrar(mensaje2);
+		        contactoDAO.update(usuarioEncontrado.getContactoIndividual(usuarioActual.getId()));
+		        usuarioDAO.update(usuarioEncontrado);
+		        contactoDAO.update(contacto);
+		        
+		    } else {
+		    	
+		    	ContactoIndividual contactoUsuarioActual = new ContactoIndividual(usuarioActual.getNumeroTelefono(), 
+		    			usuarioActual.getId(),usuarioActual.getNumeroTelefono());
+		    	contactoUsuarioActual.setImagen(usuarioActual.getImagen());
+		    	contactoDAO.create(contactoUsuarioActual);
+		        usuarioEncontrado.añadirContacto(contactoUsuarioActual);
+		        Mensaje mensaje2 ;
+		    	if(tipo==Mensaje.ENVIADO) {
+		    	 mensaje2 = new Mensaje(emoticono,usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(),usuarioEncontrado.getId(),
+		    			 LocalDateTime.now(), 1);
+		    	}else {
+		    		 mensaje2 = new Mensaje(emoticono,usuarioEncontrado.getId(),
+				    			usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(), LocalDateTime.now(), 1);
+		    	}
+		        contactoUsuarioActual.registrarMensaje(mensaje2);
+		        mensajeDAO.registrar(mensaje2);
+		        contactoDAO.update(contactoUsuarioActual);
+		        usuarioDAO.update(usuarioEncontrado);
+		        contactoDAO.update(contacto);
+		    }
+	    }else {
+	    	Grupo g = (Grupo)contacto;
+	    	
+	    	for(ContactoIndividual c: g.getContactos()) {
+	    		
+			    enviarMensaje(c,mensaje.getTexto(),tipo);
+	    	}
+	    	
+	    	
+	    	
+	    }
+	    return true;
+	}
 	/*
 	public boolean enviarMensaje(Contacto contacto, int emoticono,int tipo) {
 		Mensaje mensaje = new Mensaje(emoticono, usuarioActual.getId(), contacto.getId(),LocalDateTime.now(),tipo );

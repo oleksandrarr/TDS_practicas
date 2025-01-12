@@ -166,9 +166,15 @@ public class Chat extends JPanel {
                 JButton emoticono = new JButton();
                 fixSize(emoticono, 40, 40);  // Tamaño de los botones
                 emoticono.setIcon(BubbleText.getEmoji(i));  // Obtiene el emoticón según el índice
+                final int indice = i;
                 emoticono.addActionListener(e -> {
-                    // Aquí se puede definir la acción al hacer clic en el emoticón
-                    System.out.println("Emoticón seleccionado: ");
+                    try {
+						Controlador.INSTANCE.enviarMensajeEmoticono(contacto, indice, 0);
+					} catch (DAOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                    System.out.println("Emoticón seleccionado: "+indice);
                     emojiPopup.setVisible(false);
                 });
                 cajaEmoji.add(emoticono);

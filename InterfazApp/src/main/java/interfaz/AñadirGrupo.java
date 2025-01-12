@@ -8,6 +8,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -59,37 +61,40 @@ public class AñadirGrupo {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setBackground(Utilidades.VERDE_FONDO);
 
-        // Crear el panel principal
         JPanel panelPrincipal = new JPanel();
-        panelPrincipal.setLayout(new BorderLayout());
+        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
         panelPrincipal.setBorder(new EmptyBorder(10, 10, 10, 10));
         panelPrincipal.setBackground(Utilidades.VERDE_FONDO);
         frame.getContentPane().add(panelPrincipal);
 
-        // Etiqueta para el nombre del grupo
-        JLabel etiquetaNombre = new JLabel("Nombre del grupo:");
-        etiquetaNombre.setHorizontalAlignment(SwingConstants.CENTER);
-        panelPrincipal.add(etiquetaNombre, BorderLayout.NORTH);
+        // Etiqueta y campo de texto para la URL
+        JLabel etiquetaUrl = new JLabel("URL de la imagen:");
+        etiquetaUrl.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        panelPrincipal.add(etiquetaUrl);
 
-        // Campo de texto para el nombre del grupo
+        urlField = new JTextField();
+        urlField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        panelPrincipal.add(urlField);
+
+        // Espaciador para separar secciones
+        panelPrincipal.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        // Etiqueta y campo de texto para el nombre del grupo
+        JLabel etiquetaNombre = new JLabel("Nombre del grupo:");
+        etiquetaNombre.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        panelPrincipal.add(etiquetaNombre);
+
         nombreGrupoField = new JTextField();
-        nombreGrupoField.setBackground(Utilidades.VERDE_LABELS);
-        nombreGrupoField.setPreferredSize(new Dimension(300, 30));
-        panelPrincipal.add(nombreGrupoField, BorderLayout.CENTER);
+        nombreGrupoField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        panelPrincipal.add(nombreGrupoField);
+
+        // Espaciador para separar secciones
+        panelPrincipal.add(Box.createRigidArea(new Dimension(0, 20)));
 
         // Panel para los botones
         JPanel panelBotones = new JPanel();
         panelBotones.setBackground(Utilidades.VERDE_FONDO);
-        panelPrincipal.add(panelBotones, BorderLayout.SOUTH);
-        
-     // Etiqueta para la URL
-        JLabel etiquetaUrl = new JLabel("URL de la imagen:");
-        panelPrincipal.add(etiquetaUrl, BorderLayout.NORTH);
-
-        // Campo de texto para la URL
-        urlField = new JTextField();
-        urlField.setPreferredSize(new Dimension(300, 30));
-        panelPrincipal.add(urlField, BorderLayout.CENTER);
+        panelPrincipal.add(panelBotones);
 
         // Botón "Aceptar"
         JButton btnAceptar = new JButton("Aceptar");

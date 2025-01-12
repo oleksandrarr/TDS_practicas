@@ -349,7 +349,7 @@ public class RegistroView extends JDialog {
 		lineaBotones.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		btnRegistrar = new JButton("Registrar");
-		btnRegistrar.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		btnRegistrar.setFont(new Font("Arial", Font.BOLD, 12));
 		btnRegistrar.setBackground(Utilidades.VERDE_BOTONES);
 		btnRegistrar.setForeground(Color.BLACK); 
 		btnRegistrar.setOpaque(true);
@@ -357,7 +357,7 @@ public class RegistroView extends JDialog {
 		lineaBotones.add(btnRegistrar);
 		
 		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		btnCancelar.setFont(new Font("Arial", Font.BOLD, 12));
 		btnCancelar.setBackground(Utilidades.VERDE_BOTONES);
 		btnCancelar.setForeground(Color.BLACK); 
 		btnCancelar.setOpaque(true);

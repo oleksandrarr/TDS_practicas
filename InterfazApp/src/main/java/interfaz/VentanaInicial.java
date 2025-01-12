@@ -54,7 +54,7 @@ public class VentanaInicial {
 		frmVentanaInicial.getContentPane().add(verticalStrut_2);
 		
 		JLabel labelApp = new JLabel("AppChat");
-		labelApp.setFont(new Font("Serif", Font.BOLD, 36));
+		labelApp.setFont(new Font("Serif", Font.BOLD, 50));
 		labelApp.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(labelApp);
 		

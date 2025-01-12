@@ -276,10 +276,7 @@ public class VentanaPrincipal {
 		comboBox.setOpaque(true);
 		cajaArriba.add(comboBox);
 		
-		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
-		for(Contacto c : listaContactos) {		
-			comboBox.addItem(c);
-		}
+		actualizarComboBox();
 		
 		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
 		cajaArriba.add(horizontalStrut_1);
@@ -414,6 +411,7 @@ public class VentanaPrincipal {
 			        	 }*/
 			        	 try {
 							cambiarPantallaChat(contactoSeleccionado);
+							actualizarListaContactos();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -509,6 +507,15 @@ public class VentanaPrincipal {
 	    lista.repaint();
 	}
 	
+	
+	public void actualizarComboBox() {
+	    List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
+	    comboBox.removeAllItems();
+	    for (Contacto c : listaContactos) {
+	        comboBox.addItem(c);
+	    }
+	}
+
 	
 	
 

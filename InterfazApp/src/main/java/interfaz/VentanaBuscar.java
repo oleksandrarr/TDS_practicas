@@ -26,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -170,7 +171,7 @@ public class VentanaBuscar {
         txtTelefono.setColumns(10);
         
         // Usuario
-        JLabel lblNewLabel_usuario = new JLabel("Contacto");
+        JLabel lblNewLabel_usuario = new JLabel("Contacto:");
         lblNewLabel_usuario.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         GridBagConstraints gbc_lblNewLabel_usuario = new GridBagConstraints();
         gbc_lblNewLabel_usuario.anchor = GridBagConstraints.WEST;
@@ -253,47 +254,51 @@ public class VentanaBuscar {
         scrollPaneBuscar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         frame.getContentPane().add(scrollPaneBuscar, BorderLayout.CENTER);
      
-        //Bucle con mensajes
-        for (int i=0; i<3; i++) {
-        	panelMensajes.add(añadirPanelMensaje("Receptor", "Emisor ", "Texto"));
-        }
 	}
 	
 	private JPanel añadirPanelMensaje(String receptor, String emisor, String mensaje) {
 		JPanel panelMensaje = new JPanel();
-		panelMensaje.setBackground(Utilidades.VERDE_FONDO); 
+		panelMensaje.setBackground(Utilidades.VERDE_CLARO); 
 		panelMensaje.setBorder(new LineBorder(Color.BLACK, 1));
 	    panelMensaje.setLayout(new GridBagLayout());
 
 	    GridBagConstraints gbc = new GridBagConstraints();
 	    gbc.insets = new Insets(5, 5, 5, 5);
-	    
-	    //Receptor
-	    JLabel lblReceptor = new JLabel(receptor);
-	    gbc.gridx = 1;
-	    gbc.gridy = 0;
-	    gbc.anchor = GridBagConstraints.NORTHWEST;
-	    gbc.weightx = 1.0;
-	    panelMensaje.add(lblReceptor, gbc);
-	    
-	    //Emisor
-	    JLabel lblEmisor = new JLabel(emisor);
-	    gbc.gridx = 0;
-	    gbc.gridy = 0;
-	    gbc.anchor = GridBagConstraints.NORTHEAST;
-	    gbc.weightx = 1.0;
+
+	    // Emisor
+	    JLabel lblEmisor = new JLabel("Emisor: " + emisor);
+	    gbc.gridx = 0; // Columna 0
+	    gbc.gridy = 0; // Fila 0
+	    gbc.anchor = GridBagConstraints.NORTHWEST; // Anclar arriba a la izquierda
+	    gbc.weightx = 1.0; // Expansión horizontal
+	    gbc.weighty = 0.0; // No expansión vertical
+	    gbc.insets = new Insets(10, 10, 0, 0); // Márgenes
 	    panelMensaje.add(lblEmisor, gbc);
-	    
-	    //Mensaje
-	    JTextField txtMensaje = new JTextField(20); 
-	    txtMensaje.setBackground(new Color(199, 235, 201));
-	    gbc.gridx = 0;
-	    gbc.gridy = 1;
-	    gbc.gridwidth = 2;
-	    gbc.fill = GridBagConstraints.HORIZONTAL;
-	    gbc.weightx = 1.0;
-	    gbc.weighty = 0.0;
-	    panelMensaje.add(txtMensaje, gbc);
+
+	    // Receptor
+	    JLabel lblReceptor = new JLabel("Receptor: " + receptor);
+	    gbc.gridx = 1; // Columna 1
+	    gbc.gridy = 0; // Fila 0
+	    gbc.anchor = GridBagConstraints.NORTHEAST; // Anclar arriba a la derecha
+	    gbc.weightx = 1.0; // Expansión horizontal
+	    gbc.insets = new Insets(10, 0, 0, 10); // Márgenes
+	    panelMensaje.add(lblReceptor, gbc);
+
+	    // Mensaje
+	    JLabel lblMensaje = new JLabel("Mensaje: " + mensaje);
+	    lblMensaje.setOpaque(true);
+	    lblMensaje.setBackground(new Color(199, 235, 201));
+	    lblMensaje.setHorizontalAlignment(SwingConstants.CENTER); // Centrar texto
+	    gbc.gridx = 0; // Columna 0
+	    gbc.gridy = 1; // Fila 1
+	    gbc.gridwidth = 2; // Abarcar dos columnas
+	    gbc.anchor = GridBagConstraints.CENTER; // Centrar en el espacio disponible
+	    gbc.fill = GridBagConstraints.HORIZONTAL; // Expandir horizontalmente
+	    gbc.weightx = 1.0; // Expansión horizontal
+	    gbc.weighty = 1.0; // Expansión vertical
+	    gbc.insets = new Insets(10, 10, 10, 10); // Márgenes
+	    panelMensaje.add(lblMensaje, gbc);
+
 	   
 	    return panelMensaje;
 	}

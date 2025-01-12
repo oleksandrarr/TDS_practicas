@@ -22,6 +22,7 @@ public class Usuario {
 	private LocalDate fechaRegistro;	//para premium
 	private URL imagen;
 	private boolean premium;
+	private String saludo;
 
 
 	public Usuario(String nombre, String apellidos, String email, String login,String numeroTelefono, String password,
@@ -38,8 +39,25 @@ public class Usuario {
 		this.fechaRegistro = LocalDate.now();
 		this.imagen=imagen;
 		this.premium= false;
+		this.saludo = null;
 	}
 	
+	public Usuario(String nombre, String apellidos, String email, String login,String numeroTelefono, String password,
+			String fechaNacimiento, URL imagen, String saludo) {
+		this.id = 0;
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.email = email;
+		this.login = login;
+		this.password = password;
+		this.fechaNacimiento = fechaNacimiento;
+		this.numeroTelefono = numeroTelefono;
+		this.contactos = new ArrayList<Contacto>();
+		this.fechaRegistro = LocalDate.now();
+		this.imagen=imagen;
+		this.premium= false;
+		this.saludo = saludo;
+	}
 	
 	public boolean isPremium() {
 		return premium;
@@ -48,6 +66,14 @@ public class Usuario {
 
 	public void setPremium(boolean premium) {
 		this.premium = premium;
+	}
+	
+	public String getSaludo() {
+		return saludo;
+	}
+	
+	public void setSaludo(String saludo) {
+		this.saludo = saludo;
 	}
 
 
@@ -232,5 +258,11 @@ public class Usuario {
 			descuento = 20;
 		}
 		return descuento;
+	}
+	
+	public int getMensajesEnviados() {
+		int mes = LocalDateTime.now().getMonthValue();
+		int mensajes = (int) contactos.stream().flatMap(c -> c.getListaMensaje().stream()).filter(m -> m.getFechaHoraEnvio().getMonthValue() == (mes)).count();
+		return mensajes;
 	}
 }

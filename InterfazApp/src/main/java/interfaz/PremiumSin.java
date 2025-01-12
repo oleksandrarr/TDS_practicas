@@ -227,9 +227,8 @@ public class PremiumSin {
         panelCentro.add(lblNewLabel_2, gbc_lblNewLabel_2);
         
         //mensajes enviados en el último mes
-        //int mensajes = Controlador.INSTANCE.getUsuarioActual().getMensajesEnviados();
-       // JLabel lblNewLabel_5 = new JLabel(String.valueOf(mensajes));
-        JLabel lblNewLabel_5 = new JLabel("0");
+        int mensajes = Controlador.INSTANCE.getUsuarioActual().getMensajesEnviados();
+        JLabel lblNewLabel_5 = new JLabel(String.valueOf(mensajes));
         lblNewLabel_5.setFont(new Font("Serif", Font.PLAIN, 13));
         GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
         gbc_lblNewLabel_5.anchor = GridBagConstraints.WEST;

@@ -151,7 +151,7 @@ public class LoginView {
 		panelBotonesLoginRegistro.add(btnLogin);
 
 		JButton btnRegistro = new JButton("Registro");
-		Utilidades.crearBoton(btnRegistro, 80, 30, 12);
+		Utilidades.crearBoton(btnRegistro, 90, 30, 12);
 		panelBotonesLoginRegistro.add(btnRegistro);
 
 		JPanel panelBotonSalir = new JPanel();

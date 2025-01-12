@@ -240,6 +240,7 @@ public class VentanaContactos {
                     listaContactos.repaint(); // Refrescar la vista
                 });
                 añadirContacto.mostrarVentana();
+                ventanaPrincipal.actualizarComboBox();
             }
         });
         
