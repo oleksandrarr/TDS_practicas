@@ -41,105 +41,105 @@ import javax.imageio.ImageIO;
 
 public class PremiumCon {
 
-    private JFrame frame;
-    private JPanel panelNombre;
-    private JPanel panelBotones;
-    private JPanel panelCentro;
-    
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                	PremiumCon window = new PremiumCon();
-                    window.frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+	private JFrame frame;
+	private JPanel panelNombre;
+	private JPanel panelBotones;
+	private JPanel panelCentro;
 
-    /**
-     * Create the application.
-     * @throws IOException 
-     */
-    public PremiumCon() throws IOException {
-        initialize();
-    }
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					PremiumCon window = new PremiumCon();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
-    public void mostrarVentana() {
+	/**
+	 * Create the application.
+	 * 
+	 * @throws IOException
+	 */
+	public PremiumCon() throws IOException {
+		initialize();
+	}
+
+	public void mostrarVentana() {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
-    
-    /**
-     * Initialize the contents of the frame.
-     * @throws IOException 
-     */
-    private void initialize() throws IOException {
-        frame = new JFrame();
-        frame.setBounds(75, 75, 350, 120);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setTitle("Premium");
-        frame.setBackground(Utilidades.VERDE_FONDO);
-        
-        añadirPanelNombre();
-        añadirPanelBotones(); 
-    }
-    
-    private void añadirPanelNombre() {
-    	panelNombre = new JPanel();
-        frame.getContentPane().add(panelNombre, BorderLayout.NORTH);
-        panelNombre.setLayout(new BoxLayout(panelNombre, BoxLayout.Y_AXIS));
-        panelNombre.setBackground(Utilidades.VERDE_FONDO);
-        
-        panelNombre.add(Box.createVerticalStrut(10));
-        
-        Box box = Box.createHorizontalBox(); 
-        box.add(Box.createHorizontalGlue()); 
-        JLabel lblNewLabel = new JLabel("Premium");
-        lblNewLabel.setFont(new Font("Serif", Font.BOLD, 20));
-        box.add(lblNewLabel); 
-        box.add(Box.createHorizontalGlue()); 
 
-        panelNombre.add(box);        
-        panelNombre.add(Box.createVerticalStrut(10));
-    }
-    
-    private void añadirPanelBotones() {
-    	panelBotones = new JPanel();
-        panelBotones.setBackground(Utilidades.VERDE_FONDO);
-        frame.getContentPane().add(panelBotones, BorderLayout.SOUTH);
-        
-        
-        JButton btnNewButton_1 = new JButton("Cancelar");
-        Utilidades.crearBoton(btnNewButton_1, 100, 30, 12);
-        panelBotones.add(btnNewButton_1);
-        
-		 btnNewButton_1.addActionListener(new ActionListener() {
-			 @Override
-			 public void actionPerformed(ActionEvent e) {
-				 frame.dispose();  // Cierra la ventana
-	         }
-	     });
-        
-        JButton btnNewButton = new JButton("Generar PDF");
-        Utilidades.crearBoton(btnNewButton, 120, 30, 12);
-        panelBotones.add(btnNewButton);
-        
-        btnNewButton.addActionListener(new ActionListener() {
-			 @Override
-			 public void actionPerformed(ActionEvent e) {
-				 String ruta = Controlador.INSTANCE.generarPDF();
-				 JOptionPane.showMessageDialog(frame,
-							"Se ha generado un PDF en: "+ruta+".", "Éxito",
-							JOptionPane.INFORMATION_MESSAGE);
-	         }
-	     });
-        
-    }
-    
+	/**
+	 * Initialize the contents of the frame.
+	 * 
+	 * @throws IOException
+	 */
+	private void initialize() throws IOException {
+		frame = new JFrame();
+		frame.setBounds(75, 75, 350, 120);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setTitle("Premium");
+		frame.setBackground(Utilidades.VERDE_FONDO);
+
+		añadirPanelNombre();
+		añadirPanelBotones();
+	}
+
+	private void añadirPanelNombre() {
+		panelNombre = new JPanel();
+		frame.getContentPane().add(panelNombre, BorderLayout.NORTH);
+		panelNombre.setLayout(new BoxLayout(panelNombre, BoxLayout.Y_AXIS));
+		panelNombre.setBackground(Utilidades.VERDE_FONDO);
+
+		panelNombre.add(Box.createVerticalStrut(10));
+
+		Box box = Box.createHorizontalBox();
+		box.add(Box.createHorizontalGlue());
+		JLabel lblNewLabel = new JLabel("Premium");
+		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 20));
+		box.add(lblNewLabel);
+		box.add(Box.createHorizontalGlue());
+
+		panelNombre.add(box);
+		panelNombre.add(Box.createVerticalStrut(10));
+	}
+
+	private void añadirPanelBotones() {
+		panelBotones = new JPanel();
+		panelBotones.setBackground(Utilidades.VERDE_FONDO);
+		frame.getContentPane().add(panelBotones, BorderLayout.SOUTH);
+
+		JButton btnNewButton_1 = new JButton("Cancelar");
+		Utilidades.crearBoton(btnNewButton_1, 100, 30, 12);
+		panelBotones.add(btnNewButton_1);
+
+		btnNewButton_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose(); // Cierra la ventana
+			}
+		});
+
+		JButton btnNewButton = new JButton("Generar PDF");
+		Utilidades.crearBoton(btnNewButton, 120, 30, 12);
+		panelBotones.add(btnNewButton);
+
+		btnNewButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String ruta = Controlador.INSTANCE.generarPDF();
+				JOptionPane.showMessageDialog(frame, "Se ha generado un PDF en: " + ruta + ".", "Éxito",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+
+	}
+
 }

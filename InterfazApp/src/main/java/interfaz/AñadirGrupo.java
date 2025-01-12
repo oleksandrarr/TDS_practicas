@@ -26,137 +26,130 @@ import dominio.ContactoIndividual;
 
 public class AñadirGrupo {
 
-    private JFrame frame;
-    private JTextField nombreGrupoField;
-    private List<ContactoIndividual> contactos;
-    private String nombreGrupo;
-    private VentanaPrincipal ventanaPrincipal;
-    private JTextField urlField; // Campo de texto para la URL
-    private String imagen; // Variable para guardar el valor de la URL
+	private JFrame frame;
+	private JTextField nombreGrupoField;
+	private List<ContactoIndividual> contactos;
+	private String nombreGrupo;
+	private VentanaPrincipal ventanaPrincipal;
+	private JTextField urlField; // Campo de texto para la URL
+	private String imagen; // Variable para guardar el valor de la URL
 
-    /**
-     * Constructor para inicializar la GUI de Añadir Grupo.
-     * @param ventanaPrincipal 
-     */
-    public AñadirGrupo(List<ContactoIndividual> contactos, VentanaPrincipal ventanaPrincipal) {
-        initialize(contactos,ventanaPrincipal);
-       
-    }
+	/**
+	 * Constructor para inicializar la GUI de Añadir Grupo.
+	 * 
+	 * @param ventanaPrincipal
+	 */
+	public AñadirGrupo(List<ContactoIndividual> contactos, VentanaPrincipal ventanaPrincipal) {
+		initialize(contactos, ventanaPrincipal);
 
-    /**
-     * Muestra la ventana.
-     */
-    public void mostrarVentana() {
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+	}
 
-    /**
-     * Inicializa el contenido de la ventana.
-     */
-    private void initialize(List<ContactoIndividual> contactos,VentanaPrincipal ventanaPrincipal) {
-    	this.ventanaPrincipal=ventanaPrincipal;
-        frame = new JFrame("Añadir Grupo");
-        frame.setBounds(100, 100, 300, 200);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setBackground(Utilidades.VERDE_FONDO);
+	/**
+	 * Muestra la ventana.
+	 */
+	public void mostrarVentana() {
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
 
-        JPanel panelPrincipal = new JPanel();
-        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
-        panelPrincipal.setBorder(new EmptyBorder(10, 10, 10, 10));
-        panelPrincipal.setBackground(Utilidades.VERDE_FONDO);
-        frame.getContentPane().add(panelPrincipal);
+	/**
+	 * Inicializa el contenido de la ventana.
+	 */
+	private void initialize(List<ContactoIndividual> contactos, VentanaPrincipal ventanaPrincipal) {
+		this.ventanaPrincipal = ventanaPrincipal;
+		frame = new JFrame("Añadir Grupo");
+		frame.setBounds(100, 100, 300, 200);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setBackground(Utilidades.VERDE_FONDO);
 
-        // Etiqueta y campo de texto para la URL
-        JLabel etiquetaUrl = new JLabel("URL de la imagen:");
-        etiquetaUrl.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        panelPrincipal.add(etiquetaUrl);
+		JPanel panelPrincipal = new JPanel();
+		panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
+		panelPrincipal.setBorder(new EmptyBorder(10, 10, 10, 10));
+		panelPrincipal.setBackground(Utilidades.VERDE_FONDO);
+		frame.getContentPane().add(panelPrincipal);
 
-        urlField = new JTextField();
-        urlField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-        panelPrincipal.add(urlField);
+		// Etiqueta y campo de texto para la URL
+		JLabel etiquetaUrl = new JLabel("URL de la imagen:");
+		etiquetaUrl.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		panelPrincipal.add(etiquetaUrl);
 
-        // Espaciador para separar secciones
-        panelPrincipal.add(Box.createRigidArea(new Dimension(0, 10)));
+		urlField = new JTextField();
+		urlField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+		panelPrincipal.add(urlField);
 
-        // Etiqueta y campo de texto para el nombre del grupo
-        JLabel etiquetaNombre = new JLabel("Nombre del grupo:");
-        etiquetaNombre.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        panelPrincipal.add(etiquetaNombre);
+		// Espaciador para separar secciones
+		panelPrincipal.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        nombreGrupoField = new JTextField();
-        nombreGrupoField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-        panelPrincipal.add(nombreGrupoField);
+		// Etiqueta y campo de texto para el nombre del grupo
+		JLabel etiquetaNombre = new JLabel("Nombre del grupo:");
+		etiquetaNombre.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		panelPrincipal.add(etiquetaNombre);
 
-        // Espaciador para separar secciones
-        panelPrincipal.add(Box.createRigidArea(new Dimension(0, 20)));
+		nombreGrupoField = new JTextField();
+		nombreGrupoField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+		panelPrincipal.add(nombreGrupoField);
 
-        // Panel para los botones
-        JPanel panelBotones = new JPanel();
-        panelBotones.setBackground(Utilidades.VERDE_FONDO);
-        panelPrincipal.add(panelBotones);
+		// Espaciador para separar secciones
+		panelPrincipal.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Botón "Aceptar"
-        JButton btnAceptar = new JButton("Aceptar");
-        Utilidades.crearBoton(btnAceptar, 100, 30, 12);
-        btnAceptar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String nombreGrupo = nombreGrupoField.getText();
-                String urlImagen = urlField.getText();
+		// Panel para los botones
+		JPanel panelBotones = new JPanel();
+		panelBotones.setBackground(Utilidades.VERDE_FONDO);
+		panelPrincipal.add(panelBotones);
 
-                if (nombreGrupo.isEmpty()) {
-                    JOptionPane.showMessageDialog(frame, 
-                        "El nombre del grupo no puede estar vacío.", 
-                        "Error", 
-                        JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+		// Botón "Aceptar"
+		JButton btnAceptar = new JButton("Aceptar");
+		Utilidades.crearBoton(btnAceptar, 100, 30, 12);
+		btnAceptar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String nombreGrupo = nombreGrupoField.getText();
+				String urlImagen = urlField.getText();
 
-                if (contactos.isEmpty()) {
-                    JOptionPane.showMessageDialog(frame, 
-                        "No hay contactos elegidos.", 
-                        "Error", 
-                        JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+				if (nombreGrupo.isEmpty()) {
+					JOptionPane.showMessageDialog(frame, "El nombre del grupo no puede estar vacío.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
-                URL img = null;
-                try {
-                    if (urlImagen.isEmpty()) {
-                        img = new URL("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png");
-                    } else {
-                        img = new URL(urlImagen);
-                    }
-                } catch (MalformedURLException e1) {
-                    JOptionPane.showMessageDialog(frame, 
-                        "La URL proporcionada no es válida.", 
-                        "Error", 
-                        JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+				if (contactos.isEmpty()) {
+					JOptionPane.showMessageDialog(frame, "No hay contactos elegidos.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
-                Controlador.INSTANCE.añadirGrupo(contactos, nombreGrupo, img);
-                ventanaPrincipal.actualizarListaContactos();
-                frame.dispose();
-            }
-        });
-        panelBotones.add(btnAceptar);
+				URL img = null;
+				try {
+					if (urlImagen.isEmpty()) {
+						img = new URL(
+								"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png");
+					} else {
+						img = new URL(urlImagen);
+					}
+				} catch (MalformedURLException e1) {
+					JOptionPane.showMessageDialog(frame, "La URL proporcionada no es válida.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
-        // Botón "Cancelar"
-        JButton btnCancelar = new JButton("Cancelar");
-        Utilidades.crearBoton(btnCancelar, 100, 30, 12);
-        btnCancelar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-            }
-        });
-        panelBotones.add(btnCancelar);
-        this.contactos=contactos;
-        //Controlador.INSTANCE.añadirGrupo(contactos,nombreGrupo);
-    }
+				Controlador.INSTANCE.añadirGrupo(contactos, nombreGrupo, img);
+				ventanaPrincipal.actualizarListaContactos();
+				frame.dispose();
+			}
+		});
+		panelBotones.add(btnAceptar);
 
-    
-  
+		// Botón "Cancelar"
+		JButton btnCancelar = new JButton("Cancelar");
+		Utilidades.crearBoton(btnCancelar, 100, 30, 12);
+		btnCancelar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
+		panelBotones.add(btnCancelar);
+		this.contactos = contactos;
+	}
+
 }

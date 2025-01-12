@@ -29,7 +29,7 @@ public class LoginView {
 	private JFrame frmLogin;
 	private JTextField textUsuario;
 	private JPasswordField textPassword;
-    private Runnable onLoginSuccess;
+	private Runnable onLoginSuccess;
 
 	/**
 	 * Create the application.
@@ -37,23 +37,22 @@ public class LoginView {
 	public LoginView() {
 		initialize();
 	}
-	
 
-    public LoginView(Runnable onLoginSuccess) {
-        this.onLoginSuccess = onLoginSuccess;
-        initialize();
-    }
-    
+	public LoginView(Runnable onLoginSuccess) {
+		this.onLoginSuccess = onLoginSuccess;
+		initialize();
+	}
+
 	public void mostrarVentana() {
 		frmLogin.setLocationRelativeTo(null);
 		frmLogin.setVisible(true);
 	}
-	
-	/********************************************************************** 
-	 * Procurar organizar la creación de una ventana en varios métodos
-	 * con el fin de facilitar su comprensión. Esta clase muestra un ejemplo
+
+	/**********************************************************************
+	 * Procurar organizar la creación de una ventana en varios métodos con el fin de
+	 * facilitar su comprensión. Esta clase muestra un ejemplo
 	 **********************************************************************/
-	
+
 	private void initialize() {
 		frmLogin = new JFrame();
 		frmLogin.setTitle("Login");
@@ -93,12 +92,9 @@ public class LoginView {
 	private JPanel crearPanelUsuarioPassw() {
 		JPanel panelCampos = new JPanel();
 		panelCampos.setBackground(Utilidades.VERDE_FONDO);
-		TitledBorder titledBorder = new TitledBorder(new LineBorder(Color.BLACK), 
-                "Login", // Título del borde
-                TitledBorder.LEADING, 
-                TitledBorder.TOP, 
-                null, 
-                Color.BLACK);panelCampos.setLayout(new BoxLayout(panelCampos, BoxLayout.Y_AXIS));
+		TitledBorder titledBorder = new TitledBorder(new LineBorder(Color.BLACK), "Login", // Título del borde
+				TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK);
+		panelCampos.setLayout(new BoxLayout(panelCampos, BoxLayout.Y_AXIS));
 
 		// Panel Campo Login
 		JPanel panelCampoUsuario = new JPanel();
@@ -109,10 +105,10 @@ public class LoginView {
 		JLabel lblUsuario = new JLabel("Usuario: ");
 		panelCampoUsuario.add(lblUsuario);
 		lblUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblUsuario.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		lblUsuario.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		textUsuario = new JTextField();
-		textUsuario.setBackground(Utilidades.VERDE_LABELS); 
+		textUsuario.setBackground(Utilidades.VERDE_LABELS);
 		panelCampoUsuario.add(textUsuario, BorderLayout.EAST);
 		textUsuario.setColumns(15);
 
@@ -125,13 +121,13 @@ public class LoginView {
 		JLabel lblPassword = new JLabel("Contrase\u00F1a: ");
 		panelCampoPassword.add(lblPassword);
 		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPassword.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		lblPassword.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		textPassword = new JPasswordField();
-		textPassword.setBackground(Utilidades.VERDE_LABELS); 
+		textPassword.setBackground(Utilidades.VERDE_LABELS);
 		panelCampoPassword.add(textPassword, BorderLayout.EAST);
 		textPassword.setColumns(15);
-		
+
 		return panelCampos;
 	}
 
@@ -147,7 +143,7 @@ public class LoginView {
 
 		JButton btnLogin = new JButton("Login");
 		Utilidades.crearBoton(btnLogin, 70, 30, 12);
-		
+
 		panelBotonesLoginRegistro.add(btnLogin);
 
 		JButton btnRegistro = new JButton("Registro");
@@ -165,7 +161,7 @@ public class LoginView {
 		addManejadorBotonLogin(btnLogin);
 		addManejadorBotonRegistro(btnRegistro);
 		addManejadorBotonSalir(btnSalir);
-		
+
 		return panelBotones;
 	}
 
@@ -181,8 +177,8 @@ public class LoginView {
 	private void addManejadorBotonRegistro(JButton btnRegistro) {
 		btnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistroView registro = new RegistroView (frmLogin);
-				registro.setLocationRelativeTo(frmLogin);                              	
+				RegistroView registro = new RegistroView(frmLogin);
+				registro.setLocationRelativeTo(frmLogin);
 				registro.setVisible(true);
 				frmLogin.dispose();
 			}
@@ -192,27 +188,26 @@ public class LoginView {
 	private void addManejadorBotonLogin(JButton btnLogin) {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean login = Controlador.INSTANCE.loginUsuario(
-						textUsuario.getText(),
+				boolean login = Controlador.INSTANCE.loginUsuario(textUsuario.getText(),
 						new String(textPassword.getPassword()));
 
 				if (login) {
 					VentanaPrincipal principal;
 					try {
-						
+
 						principal = new VentanaPrincipal();
 						principal.mostrarVentana();
 						frmLogin.dispose();
 						if (onLoginSuccess != null) {
-                            onLoginSuccess.run();
-                        }
+							onLoginSuccess.run();
+						}
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-					
+
 				} else
-					JOptionPane.showMessageDialog(frmLogin, "Nombre de usuario o contraseña no valido",
-							"Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frmLogin, "Nombre de usuario o contraseña no valido", "Error",
+							JOptionPane.ERROR_MESSAGE);
 			}
 		});
 	}
