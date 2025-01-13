@@ -57,7 +57,6 @@ public final class TDSMensajeDAO implements MensajeDAO {
         if (texto != null && !texto.isEmpty()) {
             return new Mensaje(texto, idUsuario, contacto, fechaHora,tipo);
         } else if (emoticono != null && !emoticono.isEmpty()) {
-        	
             int emoticonon = Integer.parseInt(emoticono);  
             return new Mensaje(emoticonon, idUsuario, contacto, fechaHora,tipo);
         }
@@ -70,7 +69,7 @@ public final class TDSMensajeDAO implements MensajeDAO {
         eMensaje.setNombre(MENSAJE);
         eMensaje.setPropiedades(new ArrayList<>(Arrays.asList(
         	    new Propiedad(TEXTO, mensaje.getTexto()),
-        	    // new Propiedad(EMOTICONO, Integer.toString(mensaje.getEmoticono())),
+        	    new Propiedad(EMOTICONO, Integer.toString(mensaje.getEmoticono())),
         	    new Propiedad(USUARIO, Integer.toString(mensaje.getEmisor())),
         	    new Propiedad(CONTACTO, Integer.toString(mensaje.getReceptor())),
         	    new Propiedad(FECHA_HORA_ENVIO, mensaje.getFechaHoraEnvio().toString()),

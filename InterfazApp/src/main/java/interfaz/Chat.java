@@ -122,20 +122,36 @@ public class Chat extends JPanel {
 		if (mensajes != null) {
 			for (Mensaje m : mensajes) {
 				BubbleText burbuja;
-				if (m.getTipoMensaje() == Mensaje.ENVIADO) {
-					burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE,
-							Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre()
-									+ m.getFechaHoraEnvio().format(soloHora),
-							m.getTipoMensaje(), 11);
-				} else {
-					burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE,
-							Controlador.INSTANCE.getContactoPorId(m.getEmisor()).getNombre()
-									+ m.getFechaHoraEnvio().format(soloHora),
-							m.getTipoMensaje(), 11);
+				
+				if (m.getTexto() != null) {
+					if (m.getTipoMensaje() == Mensaje.ENVIADO) {
+						burbuja = new BubbleText(chat,m.getTexto(), Color.WHITE,
+								Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre()
+										+ m.getFechaHoraEnvio().format(soloHora),
+								m.getTipoMensaje(), 11);
+					} else {
+						burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE,
+								Controlador.INSTANCE.getContactoPorId(m.getEmisor()).getNombre()
+										+ m.getFechaHoraEnvio().format(soloHora),
+								m.getTipoMensaje(), 11);
+					}
+				}
+				else {
+					if (m.getTipoMensaje() == Mensaje.ENVIADO) {
+						burbuja = new BubbleText(chat,m.getEmoticono(), Color.WHITE,
+								Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre()
+										+ m.getFechaHoraEnvio().format(soloHora),
+								m.getTipoMensaje(), 11);
+					} else {
+						burbuja = new BubbleText(chat, m.getEmoticono(), Color.WHITE,
+								Controlador.INSTANCE.getContactoPorId(m.getEmisor()).getNombre()
+										+ m.getFechaHoraEnvio().format(soloHora),
+								m.getTipoMensaje(), 11);
+					}
 				}
 				chat.add(burbuja);
 				chat.scrollRectToVisible(new Rectangle(0, 640 + burbuja.getHeight(), 1, 1));
-				System.out.println("Se añade");
+				
 			}
 		}
 
@@ -162,8 +178,21 @@ public class Chat extends JPanel {
 				}
 				System.out.println("Emoticón seleccionado: " + indice);
 				emojiPopup.setVisible(false);
+
+				LocalDateTime hora1 = LocalDateTime.now();
+
+				BubbleText burbuja = new BubbleText(chat, indice, Color.WHITE,
+						"Tú " + hora.format(soloHora), Mensaje.ENVIADO, 11);
+				chat.add(burbuja); // Añadir la burbuja al panel de chat
+
+				// Desplazar la vista hacia el final
+				chat.scrollRectToVisible(new Rectangle(0, chat.getHeight(), 1, 1));
+				// Refrescar la interfaz gráfica
+				chat.revalidate();
+				chat.repaint();
 			});
 			cajaEmoji.add(emoticono);
+			
 		}
 
 		emojiPopup.add(cajaEmoji);

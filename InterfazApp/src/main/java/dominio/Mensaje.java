@@ -38,24 +38,7 @@ public class Mensaje {
 		this.tipoMensaje = tipoMensaje;
 	}
     
-    public Mensaje(String texto, int usuario, String telefonoReceptor,LocalDateTime fechaHoraEnvio, int tipoMensaje) {
-		
-		this.texto = texto;
-		this.emisor = usuario;
-		this.telefonoReceptor = telefonoReceptor;
-		this.fechaHoraEnvio = fechaHoraEnvio;
-		this.tipoMensaje = tipoMensaje;
-	}
-
-    public Mensaje(int emoticono,int usuario, String telefonoReceptor, LocalDateTime fechaHoraEnvio, int tipoMensaje) {
-		
-		this.emoticono = emoticono;
-		this.emisor = usuario;
-		this.telefonoReceptor = telefonoReceptor;
-		this.fechaHoraEnvio = fechaHoraEnvio;
-		this.tipoMensaje = tipoMensaje;
-	}
-
+  
 	public int getTipoMensaje() {
 		return tipoMensaje;
 	}
