@@ -104,7 +104,7 @@ public class VentanaPrincipal {
 	 * 
 	 * @throws IOException
 	 */
-	private void initialize() throws IOException { 
+	private void initialize() throws IOException {
 
 		ventana = new JFrame();
 		ventana.setTitle("AppChat");
@@ -118,7 +118,7 @@ public class VentanaPrincipal {
 		añadirCajaArriba();
 		añadirPantalla();
 		añadirCajaIzquierda();
-;
+		;
 		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
 		if (listaContactos.size() > 0) {
 			Contacto contacto1 = listaContactos.get(0);
@@ -178,7 +178,7 @@ public class VentanaPrincipal {
 		JScrollPane scroll = new JScrollPane(lista);
 		scroll.setPreferredSize(new Dimension(320, 320));
 		scroll.getViewport().setBackground(Utilidades.VERDE_FONDO);
-		scroll.setBorder(null); 
+		scroll.setBorder(null);
 		cajaIzquierda.add(scroll);
 	}
 
@@ -341,6 +341,15 @@ public class VentanaPrincipal {
 			public void actionPerformed(ActionEvent e) {
 				VentanaBuscar ventanaBuscar = new VentanaBuscar();
 				ventanaBuscar.mostrarVentana();
+			}
+		});
+
+		// ActionListener boton Ajustes
+		botonUsuarioActual.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VentanaAjustes ajustes = new VentanaAjustes();
+				ajustes.mostrarVentana();
 			}
 		});
 
