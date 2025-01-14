@@ -82,12 +82,10 @@ public final class TDSMensajeDAO implements MensajeDAO {
     @Override
     public void registrar(Mensaje mensaje) throws DAOException {
         Entidad eMensaje = mensajeToEntidad(mensaje);
-        System.out.println("Entidad antes de registrar: " + eMensaje.getPropiedades());
 
         try {
             eMensaje = servPersistencia.registrarEntidad(eMensaje);
             mensaje.setId(eMensaje.getId());
-            System.out.println("Mensaje registrado con éxito. ID: " + mensaje.getId());
         } catch (Exception e) {
             e.printStackTrace();
             throw new DAOException("Error al registrar el mensaje en la base de datos."+e);

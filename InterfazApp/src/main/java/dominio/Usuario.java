@@ -196,10 +196,7 @@ public class Usuario {
 	
 	public void añadirContacto(Contacto contacto) {
 	    if (contacto != null) {
-	    	System.out.println("Se añadeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 	        contactos.add(contacto);
-	    } else {
-	        System.out.println("Intentando añadir un contacto nulo");
 	    }
 	}
 
@@ -221,16 +218,12 @@ public class Usuario {
 		for(Contacto c: contactos) {
 			if(c instanceof ContactoIndividual && ((ContactoIndividual)c).getId()==idContacto) {
 				mensajesEncontrados.addAll(c.encontrarMensaje(texto));
-				System.out.println("ENTRA1");
 			}else if(c.getNombre().equals(contacto)) {
 				mensajesEncontrados.addAll(c.encontrarMensaje(texto));
-				System.out.println("ENTRA2");
 			}else if(idContacto==0 && contacto==null) {
 				mensajesEncontrados.addAll(c.encontrarMensaje(texto));
-				System.out.println("ENTRA3");
 			}
 		}
-		System.out.println("//////////2222222////////"+mensajesEncontrados.size());
 		return mensajesEncontrados;
 		
 	}

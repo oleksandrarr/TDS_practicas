@@ -16,8 +16,6 @@ public class Grupo extends Contacto{
 	    }
 		this.integrantes = new ArrayList<ContactoIndividual>();
 		this.tipoContacto = "Grupo";
-		
-		
 	}
 
 	@Override

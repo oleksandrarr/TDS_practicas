@@ -40,8 +40,6 @@ public enum Controlador {
 		}
 		ContactoDAO contactoDAO = factoria.getContactoDAO();
 		List<Contacto> contactos = contactoDAO.getAll();
-		System.out.println("Longitud "+contactos.size());
-		//System.exit( 0);
 	}
 
 	public Usuario getUsuarioActual() {
@@ -128,7 +126,6 @@ public enum Controlador {
 	}
 	
 	public ContactoIndividual getContactoIndividual(int codigo) {
-		 System.out.printf("Usuario actual: %s \n", usuarioActual.getLogin());
 		 ContactoIndividual c = usuarioActual.getContactoIndividual(codigo);
 		 
 		 if (c == null) {
@@ -167,20 +164,14 @@ public enum Controlador {
 	    ContactoDAO contactoDAO = factoria.getContactoDAO();
 	    contactoDAO.update(contacto);
 
-
-	    
 	    if(contacto instanceof ContactoIndividual) {
 		    ContactoIndividual c = (ContactoIndividual) contacto;
-		    
-		    
-		    
-		   
+		  
 		    // Asegurar que el usuario existe
 		    Usuario usuarioEncontrado = RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario());
 		    if (usuarioEncontrado == null) {
 		        throw new IllegalArgumentException("No se encontró el usuario asociado al contacto.");
 		    }
-	
 		    
 		    UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
 		  
@@ -224,11 +215,8 @@ public enum Controlador {
 	    	Grupo g = (Grupo)contacto;
 	    	
 	    	for(ContactoIndividual c: g.getContactos()) {
-	    		
 			    enviarMensaje(c,mensaje.getTexto(),tipo);
 	    	}
-	    	
-	    	
 	    	
 	    }
 	    return true;
@@ -245,8 +233,6 @@ public enum Controlador {
 	        throw new IllegalArgumentException("El contacto proporcionado es nulo.");
 	    }
 
-	    
-
 	    Mensaje mensaje;
 		// Crear el mensaje
 	    if(tipo==1) {
@@ -260,14 +246,8 @@ public enum Controlador {
 	    ContactoDAO contactoDAO = factoria.getContactoDAO();
 	    contactoDAO.update(contacto);
 
-
-	    
 	    if(contacto instanceof ContactoIndividual) {
 		    ContactoIndividual c = (ContactoIndividual) contacto;
-		    
-		    
-		    
-		   
 		    // Asegurar que el usuario existe
 		    Usuario usuarioEncontrado = RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario());
 		    if (usuarioEncontrado == null) {
@@ -317,12 +297,8 @@ public enum Controlador {
 	    	Grupo g = (Grupo)contacto;
 	    	
 	    	for(ContactoIndividual c: g.getContactos()) {
-	    		
 			    enviarMensajeEmoticono(c,mensaje.getEmoticono(),tipo);
 	    	}
-	    	
-	    	
-	    	
 	    }
 	    return true;
 	}
@@ -339,7 +315,6 @@ public enum Controlador {
 	}
 	
 
-
 	public ContactoIndividual getContactoPorTelefono(String telefono) {
 		for(Contacto c: usuarioActual.getContactos()) {
 			if(c instanceof ContactoIndividual && ((ContactoIndividual)c).getNumeroTelefono().equals(telefono)) {
@@ -352,7 +327,6 @@ public enum Controlador {
 
 	public void modificarContacto(String nombre, String tel) {
 		ContactoIndividual contacto = getContactoPorTelefono(tel);
-		System.out.println("nombre");
 		contacto.setNombreOptiona(nombre);
 		ContactoDAO contactoDAO = factoria.getContactoDAO();
 		contactoDAO.update(contacto);
@@ -424,7 +398,6 @@ public enum Controlador {
 	        }
 
 	        document.close();
-	        System.out.println("PDF generado exitosamente en: " + rutaArchivo);
 	        return rutaArchivo;
 	    } catch (Exception e) {
 	        e.printStackTrace();

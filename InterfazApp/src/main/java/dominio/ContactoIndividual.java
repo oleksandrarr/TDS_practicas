@@ -19,23 +19,15 @@ public class ContactoIndividual extends Contacto {
 		this.tipoContacto = "Individual";
 		this.numeroTelefono=numeroTelefono;
         this.nombre = Optional.ofNullable(nombre);
-		
-		
 	}
-
-	
 
 	public String getNumeroTelefono() {
 		return numeroTelefono;
 	}
 
-
-
 	public void setNumeroTelefono(String numeroTelefono) {
 		this.numeroTelefono = numeroTelefono;
 	}
-
-
 
 	public int getUsuario() {
 		return this.usuario;
@@ -55,34 +47,23 @@ public class ContactoIndividual extends Contacto {
 	}
 
 
-
-
 	@Override
 	public boolean registrarMensaje(Mensaje mensaje) {
 		return this.listaMensaje.add(mensaje);
 	}
-
-
-
+	
 	@Override
 	public URL getImagen() {
 		return this.imagen;
 	}
-	
 
 	public void setImagen(URL imagen) {
 		this.imagen=imagen;
 	}
-
-
-
+	
 	@Override
 	public String toString() {
 		return this.getNombreOptional().orElse(numeroTelefono);
 	}
-
-
-
-
 
 }

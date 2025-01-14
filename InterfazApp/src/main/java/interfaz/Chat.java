@@ -57,7 +57,6 @@ public class Chat extends JPanel {
 		panelSuperior.setLayout(new FlowLayout(FlowLayout.CENTER)); // Centrado horizontalmente
 
 		JLabel labelNombreContacto = new JLabel(contacto.getNombre());
-		System.out.println("Contactoooo: " + contacto.getNombre());
 		labelNombreContacto.setFont(new Font("Arial", Font.BOLD, 20)); // Fuente personalizada
 		labelNombreContacto.setForeground(Color.BLACK); // Texto blanco
 		panelSuperior.add(labelNombreContacto); // Añadir el JLabel al panel
@@ -125,13 +124,11 @@ public class Chat extends JPanel {
 				
 				if (m.getTexto() != null) {
 					if (m.getTipoMensaje() == 0) {
-						System.out.println("eeeeeeeeee33333eeeeeeeeee"+m.getEmisor()+"/"+m.getReceptor());
 						burbuja = new BubbleText(chat,m.getTexto(), Color.WHITE,
 								Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre()
 										+ m.getFechaHoraEnvio().format(soloHora),
 								m.getTipoMensaje(), 11);
 					} else {
-						System.out.println("eeeeeeeeeeeeeeeeeeee"+m.getEmisor()+"/"+m.getReceptor()+""+m.getTipoMensaje());
 						burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE,
 								Controlador.INSTANCE.getContactoPorId(m.getEmisor()).getNombre()
 										+ m.getFechaHoraEnvio().format(soloHora),
@@ -178,7 +175,6 @@ public class Chat extends JPanel {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				System.out.println("Emoticón seleccionado: " + indice);
 				emojiPopup.setVisible(false);
 
 				LocalDateTime hora1 = LocalDateTime.now();

@@ -61,7 +61,6 @@ public class AgregarContactoSinNombre extends JFrame {
         aceptarButton.addActionListener(e -> {
             String nombre = nombreField.getText();
             String tel = telefonoField.getText();
-            System.out.println("/////////////Nombre: " + nombre + ", Teléfono: " + tel);
             Controlador.INSTANCE.modificarContacto(nombre,tel);
             elementoChat.actualizarContacto(nombre, tel);
             ventanaPrincipal.actualizarListaContactos();

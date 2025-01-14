@@ -47,7 +47,6 @@ public abstract class Contacto {
 
 
 	    public List<Mensaje> getListaMensaje() {
-	    	System.out.println("va a devolver"+listaMensaje.size());
 	        return listaMensaje;
 	    }
 	    
@@ -73,14 +72,11 @@ public abstract class Contacto {
 		//Metodo para buscar mensajes en el contacto
 		public List<Mensaje> encontrarMensaje(String texto){
 		    List<Mensaje> mensajesEncontrados = new ArrayList<>();
-		    System.out.println("ENTRA a ver el tamalo"+this.listaMensaje.size());
 			for(Mensaje m: this.listaMensaje) {
-				System.out.println("ENTRA menaje"+m.getEmisor());
 				if(m.encontrarMensaje(texto)==true) {
 					mensajesEncontrados.add(m);
 				}
 			}
-			System.out.println("//////////////////"+mensajesEncontrados.size());
 			return mensajesEncontrados;
 		}
 		

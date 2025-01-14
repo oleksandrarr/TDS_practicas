@@ -93,7 +93,6 @@ public class ElementoChat extends JPanel {
 
 				// Agregar funcionalidad al botón
 				botonNombre.addActionListener(e -> {
-					System.out.println("Botón '+' clicado para: " + nombre);
 					new AgregarContactoSinNombre(telefono, this, ventanaPrincipal).setVisible(true);
 				});
 

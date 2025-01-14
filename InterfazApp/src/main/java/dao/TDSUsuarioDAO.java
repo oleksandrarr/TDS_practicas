@@ -76,9 +76,7 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 		List<Contacto> contactos;
 		try {
 			contactos = obtenerContactos(contactosIds);
-			System.out.println("La lista de contactos"+contactosIds);
 			usuario.setContactos(contactos);
-			System.out.printf("Al recuperar el usuario '%s' ha encontrado %d contactos. \n",nombre,contactos.size());
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
@@ -153,10 +151,6 @@ public final class TDSUsuarioDAO implements UsuarioDAO {
 		Entidad eUsuario = this.usuarioToEntidad(usuario);
 		eUsuario = servPersistencia.registrarEntidad(eUsuario);
 		usuario.setId(eUsuario.getId());
-		System.out.println("Propiedades al registrar la entidad Usuario:"); //PARA COMPROBAR LAS PROPIEDADES
-		for (Propiedad prop : eUsuario.getPropiedades()) {
-		    System.out.printf("Propiedad: %s, Valor: %s\n", prop.getNombre(), prop.getValor());
-		}
 	}
 
 	public boolean delete(Usuario usuario) {
