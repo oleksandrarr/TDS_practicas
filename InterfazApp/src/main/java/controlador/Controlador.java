@@ -191,7 +191,7 @@ public enum Controlador {
 		    			 LocalDateTime.now(), 1);
 		    	}else {
 		    		 mensaje2 = new Mensaje(texto,usuarioEncontrado.getId(),
-				    			usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(), LocalDateTime.now(), 1);
+				    			usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(), LocalDateTime.now(), 0);
 		    	}
 		    	usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).registrarMensaje(mensaje2);
 		        mensajeDAO.registrar(mensaje2);
@@ -212,7 +212,7 @@ public enum Controlador {
 		    			 LocalDateTime.now(), 1);
 		    	}else {
 		    		 mensaje2 = new Mensaje(texto,usuarioEncontrado.getId(),
-				    			usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(), LocalDateTime.now(), 1);
+				    			usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(), LocalDateTime.now(), 0);
 		    	}
 		        contactoUsuarioActual.registrarMensaje(mensaje2);
 		        mensajeDAO.registrar(mensaje2);
@@ -236,7 +236,7 @@ public enum Controlador {
 
 	
 	public boolean enviarMensajeEmoticono(Contacto contacto, int emoticono, int tipo) throws DAOException {
-	    // Validaciones iniciales
+		// Validaciones iniciales
 	    if (usuarioActual == null) {
 	        throw new IllegalStateException("No hay un usuario autenticado. Inicie sesión primero.");
 	    }
@@ -245,9 +245,11 @@ public enum Controlador {
 	        throw new IllegalArgumentException("El contacto proporcionado es nulo.");
 	    }
 
+	    
+
 	    Mensaje mensaje;
 		// Crear el mensaje
-	    if(tipo==dominio.Mensaje.ENVIADO) {
+	    if(tipo==1) {
 	    mensaje = new Mensaje(emoticono, usuarioActual.getId(), contacto.getId(), LocalDateTime.now(), tipo);
 	    }else {
 	    mensaje = new Mensaje(emoticono, contacto.getId(), usuarioActual.getId(), LocalDateTime.now(), tipo);
@@ -257,13 +259,21 @@ public enum Controlador {
 	    mensajeDAO.registrar(mensaje);
 	    ContactoDAO contactoDAO = factoria.getContactoDAO();
 	    contactoDAO.update(contacto);
+
+
 	    
 	    if(contacto instanceof ContactoIndividual) {
 		    ContactoIndividual c = (ContactoIndividual) contacto;
+		    
+		    
+		    
+		   
+		    // Asegurar que el usuario existe
 		    Usuario usuarioEncontrado = RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario());
 		    if (usuarioEncontrado == null) {
 		        throw new IllegalArgumentException("No se encontró el usuario asociado al contacto.");
 		    }
+	
 		    
 		    UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
 		  
@@ -308,7 +318,7 @@ public enum Controlador {
 	    	
 	    	for(ContactoIndividual c: g.getContactos()) {
 	    		
-			    enviarMensaje(c,mensaje.getTexto(),tipo);
+			    enviarMensajeEmoticono(c,mensaje.getEmoticono(),tipo);
 	    	}
 	    	
 	    	
@@ -316,27 +326,7 @@ public enum Controlador {
 	    }
 	    return true;
 	}
-	/*
-	public boolean enviarMensaje(Contacto contacto, int emoticono,int tipo) {
-		Mensaje mensaje = new Mensaje(emoticono, usuarioActual.getId(), contacto.getId(),LocalDateTime.now(),tipo );
-		contacto.registrarMensaje(mensaje);
-		return true;
-	}
-	*/
-	//Enviar Mensaje de tipo texto a número de teléfono
-	/*
-	public boolean enviarMensaje(String telefonoContacto, String texto,int tipo) {
-		System.out.println("Entra al metod2222o//////////////");
-		Mensaje mensaje = new Mensaje(texto, usuarioActual, telefonoContacto,LocalDateTime.now(),tipo );
-		return true;
-	}
 	
-	//Enviar Mensaje de tipo emoticono a número de teléfono
-	public boolean enviarMensaje(String telefonoContacto, int emoticono,int tipo) {
-		Mensaje mensaje = new Mensaje(emoticono, usuarioActual, telefonoContacto,LocalDateTime.now(),tipo );
-		return true;
-	}
-	*/
 	public List<Mensaje> obtenerMensajes(Contacto contacto) {
 		 if (contacto == null) {
 		        throw new IllegalArgumentException("El contacto proporcionado no existe");

@@ -124,12 +124,14 @@ public class Chat extends JPanel {
 				BubbleText burbuja;
 				
 				if (m.getTexto() != null) {
-					if (m.getTipoMensaje() == Mensaje.ENVIADO) {
+					if (m.getTipoMensaje() == 0) {
+						System.out.println("eeeeeeeeee33333eeeeeeeeee"+m.getEmisor()+"/"+m.getReceptor());
 						burbuja = new BubbleText(chat,m.getTexto(), Color.WHITE,
 								Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre()
 										+ m.getFechaHoraEnvio().format(soloHora),
 								m.getTipoMensaje(), 11);
 					} else {
+						System.out.println("eeeeeeeeeeeeeeeeeeee"+m.getEmisor()+"/"+m.getReceptor()+""+m.getTipoMensaje());
 						burbuja = new BubbleText(chat, m.getTexto(), Color.WHITE,
 								Controlador.INSTANCE.getContactoPorId(m.getEmisor()).getNombre()
 										+ m.getFechaHoraEnvio().format(soloHora),
@@ -137,7 +139,7 @@ public class Chat extends JPanel {
 					}
 				}
 				else {
-					if (m.getTipoMensaje() == Mensaje.ENVIADO) {
+					if (m.getTipoMensaje() == 0) {
 						burbuja = new BubbleText(chat,m.getEmoticono(), Color.WHITE,
 								Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre()
 										+ m.getFechaHoraEnvio().format(soloHora),
