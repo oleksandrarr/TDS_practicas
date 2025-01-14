@@ -42,9 +42,11 @@ public class Chat extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel cajaEmoji;
+	private VentanaPrincipal ventanaPrincipal;
 
-	public Chat(Contacto contacto) throws IOException {
+	public Chat(Contacto contacto, VentanaPrincipal ventanaPrincipal) throws IOException {
 		Controlador controlador = Controlador.INSTANCE;
+		this.ventanaPrincipal = ventanaPrincipal;
 		BubbleText.noZoom();
 
 		this.setLayout(new BorderLayout());
@@ -210,9 +212,11 @@ public class Chat extends JPanel {
 
 					try {
 						Controlador.INSTANCE.enviarMensaje(contacto, mensaje, Mensaje.ENVIADO);
+						Controlador.INSTANCE.actualizar();
 					} catch (DAOException e1) {
 						e1.printStackTrace();
 					} // Llamar al método con el texto
+					ventanaPrincipal.actualizarListaContactos();
 					textField_1.setText(""); // Limpiar el campo después de enviar
 
 					// Crear una nueva burbuja para mostrar el mensaje en el área de chat

@@ -385,7 +385,6 @@ public class VentanaPrincipal {
 				Contacto contactoSeleccionado = (Contacto) comboBox.getSelectedItem();
 				try {
 					cambiarPantallaChat(contactoSeleccionado);
-					actualizarListaContactos();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -429,7 +428,7 @@ public class VentanaPrincipal {
 	}
 
 	private void añadirChat(Contacto contacto) throws IOException {
-		chat = new Chat(contacto);
+		chat = new Chat(contacto, this);
 		chat.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		pantalla.add(chat, BorderLayout.CENTER);
 	}
@@ -452,8 +451,21 @@ public class VentanaPrincipal {
 
 		// Vuelve a cargar los contactos
 		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
+
+		listaContactos.sort((c1, c2) -> {
+			var m1 = Controlador.INSTANCE.obtenerMensajes(c1);
+			var m2 = Controlador.INSTANCE.obtenerMensajes(c2);
+			
+			if(m1 == null || m1.isEmpty()) return 1;
+			if(m2 == null || m2.isEmpty()) return -1;
+			
+			var ult1 = m1.getLast();
+			var ult2 = m2.getLast();
+			return ult2.getFechaHoraEnvio().compareTo(ult1.getFechaHoraEnvio());
+		});
+		
 		for (Contacto contacto : listaContactos) {
-			if (Controlador.INSTANCE.obtenerMensajes(contacto) != null) {
+			if (!Controlador.INSTANCE.obtenerMensajes(contacto).isEmpty()) {
 				if (contacto instanceof ContactoIndividual) {
 					model.addElement(new ElementoChat(contacto, this));
 				} else if (contacto instanceof Grupo) {
@@ -461,7 +473,7 @@ public class VentanaPrincipal {
 				}
 			}
 		}
-
+		
 		// Refresca la lista
 		lista.revalidate();
 		lista.repaint();

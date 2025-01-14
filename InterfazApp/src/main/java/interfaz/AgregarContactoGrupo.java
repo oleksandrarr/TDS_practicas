@@ -177,7 +177,7 @@ public class AgregarContactoGrupo extends JFrame {
 					for(int i = 0; i<modeloGrupo.size(); i++) {
 						grupoFinal.getContactos().add((ContactoIndividual) modeloGrupo.getElementAt(i));
 					}
-					
+					dispose();
 					
 				}
 			});
