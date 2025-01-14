@@ -64,7 +64,7 @@ public class VentanaPrincipal {
 	private PremiumSin premiumSin;
 	private PremiumCon premiumCon;
 	private String nombreChatActual;
-
+	private JButton imagenPerfil;
 	public void mostrarVentana() {
 		ventana.setLocationRelativeTo(null);
 		ventana.setVisible(true);
@@ -319,13 +319,17 @@ public class VentanaPrincipal {
 		String path4 = Controlador.INSTANCE.getUsuarioActual().getImagen().toString();
 		URL url4 = new URL(path4);
 		Image img = ImageIO.read(url4).getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-		JButton imagenPerfil = new JButton(new ImageIcon(img));
+		imagenPerfil = new JButton(new ImageIcon(img));
+		imagenPerfil.setPreferredSize(new Dimension(60, 60)); // Tamaño explícito
+		imagenPerfil.setMaximumSize(new Dimension(60, 60));
+		imagenPerfil.setMinimumSize(new Dimension(60, 60));
 		imagenPerfil.setContentAreaFilled(false);
 		imagenPerfil.setFocusPainted(false);
 		imagenPerfil.setBorderPainted(false);
-		imagenPerfil.setOpaque(false);
+		
+		
 		cajaArriba.add(imagenPerfil);
-
+		
 		// ActionListener boton Contactos
 		botonUsuarios.addActionListener(new ActionListener() {
 			@Override
@@ -387,6 +391,21 @@ public class VentanaPrincipal {
 					e1.printStackTrace();
 				}
 			}
+		});
+		
+		imagenPerfil.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	setImagenPerfil cambiarImagen = new setImagenPerfil(VentanaPrincipal.this);
+		        cambiarImagen.mostrarVentana(ventana);
+		    }
+		});
+		
+		imagenPerfil.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        System.out.println("Mouse clickeado en el botón de imagen de perfil");
+		    }
 		});
 
 	}
@@ -454,6 +473,17 @@ public class VentanaPrincipal {
 		for (Contacto c : listaContactos) {
 			comboBox.addItem(c);
 		}
+	}
+
+	public void actualizarImagenPerfil(ImageIcon imagenDrag) {
+	    // Asegurarse de que el botón de imagen de perfil no sea nulo
+	    if (imagenPerfil != null) {
+	    	imagenPerfil.setIcon(imagenDrag); // Actualizar el icono
+	        cajaArriba.revalidate();
+	        cajaArriba.repaint();
+	    } else {
+	        System.err.println("Error: El botón de imagen de perfil no está inicializado.");
+	    }
 	}
 
 }
