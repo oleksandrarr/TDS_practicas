@@ -98,6 +98,19 @@ public class ElementoChat extends JPanel {
 
 				add(botonNombre, BorderLayout.EAST); // Botón a la derecha
 			}
+		} else if (contacto instanceof Grupo) {
+			botonNombre = new JButton("+");
+			botonNombre.setPreferredSize(new Dimension(30, 30));
+			botonNombre.setBackground(Color.WHITE);
+			botonNombre.setBorder(new LineBorder(Color.BLACK, 1));
+			botonNombre.setFocusPainted(false);
+
+			// Agregar funcionalidad al botón
+			botonNombre.addActionListener(e -> {
+				new AgregarContactoGrupo(contacto, this, ventanaPrincipal).setVisible(true);
+			});
+
+			add(botonNombre, BorderLayout.EAST); // Botón a la derecha
 		}
 		// Agregar componentes al panel principal
 		add(panelFoto, BorderLayout.WEST); // Foto a la izquierda
