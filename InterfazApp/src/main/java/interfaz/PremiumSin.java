@@ -71,8 +71,9 @@ public class PremiumSin {
 		frame.setBackground(Utilidades.VERDE_FONDO);
 
 		añadirPanelNombre();
-		añadirPanelBotones();
+		
 		añadirPanelCentro();
+		añadirPanelBotones();
 	}
 
 	private void añadirPanelNombre() {
@@ -153,15 +154,16 @@ public class PremiumSin {
 		btnNewButton_2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int descuento = Controlador.INSTANCE.getUsuarioActual().calcularDescuento();
-				int coste = 15 - (15 * descuento);
-				if (descuento == 0) {
+				double descuento = Controlador.INSTANCE.getUsuarioActual().calcularDescuento();
+				int descuentoPorcentaje = (int) (descuento * 100);
+				int coste = (int) (15 - (15 * descuento));
+				if (descuento == 0.0) {
 					JOptionPane.showMessageDialog(frame,
 							"No tiene descuento disponible.\n " + "Precio final a pagar: " + coste,
 							"Información Descuento", JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(frame,
-							"Tiene el descuento disponible de: " + descuento + "\n Precio final a pagar: " + coste,
+							"Tiene el descuento disponible de: " + descuentoPorcentaje + "\n Precio final a pagar: " + coste,
 							"Información Descuento", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
@@ -192,7 +194,7 @@ public class PremiumSin {
 		gbl_panelCentro.rowWeights = new double[] { 0.0, 1.0, 1.0, 0.0 };
 		panelCentro.setLayout(gbl_panelCentro);
 
-		LocalDate fechaRegistro = Controlador.INSTANCE.getUsuarioActual().getFechaRegistro();
+		
 
 		JLabel lblNewLabel_1 = new JLabel("Fecha de registro:");
 		lblNewLabel_1.setFont(new Font("Arial", Font.BOLD, 15));
@@ -202,6 +204,9 @@ public class PremiumSin {
 		gbc_lblNewLabel_1.gridx = 1;
 		gbc_lblNewLabel_1.gridy = 1;
 		panelCentro.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		
+		Controlador.INSTANCE.getUsuarioActual().setFechaRegistro(LocalDate.of(2024, 9, 14));
+		LocalDate fechaRegistro = Controlador.INSTANCE.getUsuarioActual().getFechaRegistro();
 		JLabel lblNewLabel_4 = new JLabel(fechaRegistro.toString());
 		lblNewLabel_4.setFont(new Font("Arial", Font.PLAIN, 13));
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();

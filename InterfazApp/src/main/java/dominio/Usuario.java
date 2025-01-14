@@ -239,17 +239,18 @@ public class Usuario {
 	}
 	
 
-	public int calcularDescuento() {
-		int descuento = 0;
+	public double calcularDescuento() {
+		double descuento = 0;
 		int numMensajesUltMes = (int) contactos.stream().flatMap(cont -> cont.getListaMensaje().stream()).filter(m -> m.getFechaHoraEnvio().getMonthValue() == (LocalDateTime.now().getMonthValue())).count();
 		long semanasRegistrado = fechaRegistro.until(LocalDate.now()).toTotalMonths();
 		
 		if(numMensajesUltMes >= 100) {
-			descuento = 15;
+			descuento =  0.15;
 		} 
 		if(semanasRegistrado >= 4) {
-			descuento = 20;
+			descuento = 0.20;
 		}
+		System.out.println(descuento);
 		return descuento;
 	}
 	
