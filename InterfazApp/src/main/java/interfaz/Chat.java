@@ -173,6 +173,7 @@ public class Chat extends JPanel {
 			emoticono.addActionListener(e -> {
 				try {
 					Controlador.INSTANCE.enviarMensajeEmoticono(contacto, indice, 0);
+					
 				} catch (DAOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -212,7 +213,7 @@ public class Chat extends JPanel {
 
 					try {
 						Controlador.INSTANCE.enviarMensaje(contacto, mensaje, Mensaje.ENVIADO);
-						Controlador.INSTANCE.actualizar();
+						ventanaPrincipal.actualizarListaContactos();
 					} catch (DAOException e1) {
 						e1.printStackTrace();
 					} // Llamar al método con el texto

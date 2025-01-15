@@ -52,8 +52,10 @@ public abstract class Contacto {
 	    
 	    public Optional<Mensaje> getUltimoMensaje(){
 	    	if(listaMensaje == null || listaMensaje.isEmpty()) {
+	    		
 	    		return Optional.empty();
 	    	}else {
+	    		System.out.println("Ultimo Mensaje de "+this.getNombre()+" es " + this.getListaMensaje().getLast().getTexto());
 	    		return Optional.of(listaMensaje.getLast());
 	    	}
 	    }

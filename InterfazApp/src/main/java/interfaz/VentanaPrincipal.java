@@ -24,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.awt.Component;
 
 import javax.swing.border.TitledBorder;
@@ -45,7 +46,7 @@ import javax.swing.*;
 import interfaz.*;
 
 public class VentanaPrincipal {
-
+	private static VentanaPrincipal instance;
 	private JFrame ventana;
 	private JPanel cajaArriba;
 	private JPanel cajaIzquierda;
@@ -65,6 +66,7 @@ public class VentanaPrincipal {
 	private PremiumCon premiumCon;
 	private String nombreChatActual;
 	private JButton imagenPerfil;
+	DefaultListModel<ElementoChat> model;
 	public void mostrarVentana() {
 		ventana.setLocationRelativeTo(null);
 		ventana.setVisible(true);
@@ -98,7 +100,13 @@ public class VentanaPrincipal {
 	public VentanaPrincipal() throws IOException {
 		initialize();
 	}
-
+	
+	 public static synchronized VentanaPrincipal getInstance() throws IOException {
+	        if (instance == null) {
+	            instance = new VentanaPrincipal();
+	        }
+	        return instance;
+	    }
 	/**
 	 * Initialize the contents of the frame.
 	 * 
@@ -113,6 +121,7 @@ public class VentanaPrincipal {
 		contenedor = (JPanel) ventana.getContentPane();
 		contenedor.setBackground(Utilidades.VERDE_FONDO);
 		ventana.getContentPane().setBackground(Utilidades.VERDE_FONDO);
+		
 
 		añadirMenuBar();
 		añadirCajaArriba();
@@ -130,19 +139,20 @@ public class VentanaPrincipal {
 
 	public void añadirListaContactos() throws IOException {
 		// Crear el modelo de la lista
-		DefaultListModel<ElementoChat> model = new DefaultListModel<>();
+		model = new DefaultListModel<>();
 
 		// Obtener contactos del usuario actual
-		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
+		List<Contacto> listaContactos = getListaContactosOrdenada();
+		
 		// Agregar contactos al modelo
 		for (Contacto contacto : listaContactos) {
-			if (!Controlador.INSTANCE.obtenerMensajes(contacto).isEmpty()) {
+		
 				if (contacto instanceof ContactoIndividual) {
 					model.addElement(new ElementoChat(contacto, this));
 				} else if (contacto instanceof Grupo) {
 					model.addElement(new ElementoChat(contacto, this));
 				}
-			}
+			
 		}
 
 		// Crear la lista visual
@@ -444,37 +454,28 @@ public class VentanaPrincipal {
 	}
 
 	public void actualizarListaContactos() {
-		DefaultListModel<ElementoChat> model = (DefaultListModel<ElementoChat>) lista.getModel();
+		
 
 		// Limpia el modelo actual
 		model.clear();
 
 		// Vuelve a cargar los contactos
-		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
+		List<Contacto> listaContactos = getListaContactosOrdenada();
 
-		listaContactos.sort((c1, c2) -> {
-			var m1 = Controlador.INSTANCE.obtenerMensajes(c1);
-			var m2 = Controlador.INSTANCE.obtenerMensajes(c2);
-			
-			if(m1 == null || m1.isEmpty()) return 1;
-			if(m2 == null || m2.isEmpty()) return -1;
-			
-			var ult1 = m1.getLast();
-			var ult2 = m2.getLast();
-			return ult2.getFechaHoraEnvio().compareTo(ult1.getFechaHoraEnvio());
-		});
 		
 		for (Contacto contacto : listaContactos) {
-			if (!Controlador.INSTANCE.obtenerMensajes(contacto).isEmpty()) {
+		
 				if (contacto instanceof ContactoIndividual) {
+					System.out.println("ERROR1"+contacto.getListaMensaje().getLast().getTexto());
 					model.addElement(new ElementoChat(contacto, this));
 				} else if (contacto instanceof Grupo) {
 					model.addElement(new ElementoChat(contacto, this));
-				}
+				
 			}
 		}
 		
 		// Refresca la lista
+		
 		lista.revalidate();
 		lista.repaint();
 	}
@@ -497,5 +498,18 @@ public class VentanaPrincipal {
 	        System.err.println("Error: El botón de imagen de perfil no está inicializado.");
 	    }
 	}
+	
+	public List<Contacto> getListaContactosOrdenada(){
+		
+		return Controlador.INSTANCE.getUsuarioActual().getContactos().stream()
+        .filter(contacto -> contacto.getUltimoMensaje().isPresent()) 
+        .sorted((c1, c2) -> {
+            LocalDateTime fecha1 = c1.getUltimoMensaje().get().getFechaHoraEnvio(); 
+            LocalDateTime fecha2 = c2.getUltimoMensaje().get().getFechaHoraEnvio();
+            return fecha2.compareTo(fecha1); 
+        })
+        .collect(Collectors.toList()); // Convertir a lista
+	}
+
 
 }

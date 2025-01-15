@@ -3,6 +3,7 @@ package controlador;
 import dao.*;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ import com.itextpdf.layout.element.Paragraph;
 import dao.DAOException;
 import dao.FactoriaDAO;
 import dominio.Usuario;
+import interfaz.VentanaPrincipal;
 import dominio.Contacto;
 import dominio.ContactoIndividual;
 import dominio.Grupo;
@@ -300,6 +302,15 @@ public enum Controlador {
 			    enviarMensajeEmoticono(c,mensaje.getEmoticono(),tipo);
 	    	}
 	    }
+	    
+
+		try {
+			VentanaPrincipal.getInstance().actualizarListaContactos();
+		} catch (IOException e1) {
+			
+			e1.printStackTrace();
+		}
+	    
 	    return true;
 	}
 	
@@ -307,7 +318,8 @@ public enum Controlador {
 		 if (contacto == null) {
 		        throw new IllegalArgumentException("El contacto proporcionado no existe");
 		    }
-		    return contacto.getListaMensaje();
+		 System.out.println("Controlador:Ultimo Mensaje de "+contacto.getNombre()+" es " + contacto.getListaMensaje().getLast().getTexto());
+		 return contacto.getListaMensaje();
     }
 
 	public List<Contacto> obtenerContactos(){
