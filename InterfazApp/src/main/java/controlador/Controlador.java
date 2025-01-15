@@ -314,12 +314,8 @@ public enum Controlador {
 	    return true;
 	}
 	
-	public List<Mensaje> obtenerMensajes(Contacto contacto) {
-		 if (contacto == null) {
-		        throw new IllegalArgumentException("El contacto proporcionado no existe");
-		    }
-		 System.out.println("Controlador:Ultimo Mensaje de "+contacto.getNombre()+" es " + contacto.getListaMensaje().getLast().getTexto());
-		 return contacto.getListaMensaje();
+	public List<Mensaje> obtenerMensajes(int i) {
+		 return getContactoPorId(i).getListaMensaje();
     }
 
 	public List<Contacto> obtenerContactos(){

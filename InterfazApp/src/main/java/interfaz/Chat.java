@@ -119,7 +119,7 @@ public class Chat extends JPanel {
 
 		LocalDateTime hora = LocalDateTime.now();
 
-		List<Mensaje> mensajes = Controlador.INSTANCE.obtenerMensajes(contacto);
+		List<Mensaje> mensajes = Controlador.INSTANCE.obtenerMensajes(contacto.getId());
 		if (mensajes != null) {
 			for (Mensaje m : mensajes) {
 				BubbleText burbuja;
@@ -213,21 +213,21 @@ public class Chat extends JPanel {
 
 					try {
 						Controlador.INSTANCE.enviarMensaje(contacto, mensaje, Mensaje.ENVIADO);
-						ventanaPrincipal.actualizarListaContactos();
+						
 					} catch (DAOException e1) {
 						e1.printStackTrace();
 					} // Llamar al método con el texto
-					ventanaPrincipal.actualizarListaContactos();
+					
 					textField_1.setText(""); // Limpiar el campo después de enviar
 
 					// Crear una nueva burbuja para mostrar el mensaje en el área de chat
 
 					LocalDateTime hora = LocalDateTime.now();
-
+					System.out.println("EN CHAT TIENE EL "+contacto.getListaMensaje().getLast().getTexto());
 					BubbleText burbuja = new BubbleText(chat, mensaje.toString(), Color.WHITE,
 							"Tú " + hora.format(soloHora), Mensaje.ENVIADO, 11);
 					chat.add(burbuja); // Añadir la burbuja al panel de chat
-
+					ventanaPrincipal.actualizarListaContactos();
 					// Desplazar la vista hacia el final
 					chat.scrollRectToVisible(new Rectangle(0, chat.getHeight(), 1, 1));
 					// Refrescar la interfaz gráfica

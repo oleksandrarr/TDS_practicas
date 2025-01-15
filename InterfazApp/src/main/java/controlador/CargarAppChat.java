@@ -47,7 +47,7 @@ public class CargarAppChat {
 		Controlador.INSTANCE.enviarMensaje(contacto3, "A que sí!", 0);
 		Controlador.INSTANCE.enviarMensaje(contacto5, "Buenos días", 1);
 	   
-		List<Mensaje> mensajes = controlador.obtenerMensajes(contacto1);
+		List<Mensaje> mensajes = controlador.obtenerMensajes(contacto1.getId());
 	  
 	}
 }

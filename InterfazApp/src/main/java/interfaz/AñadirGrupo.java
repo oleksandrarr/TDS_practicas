@@ -134,6 +134,7 @@ public class AñadirGrupo {
 
 				Controlador.INSTANCE.añadirGrupo(contactos, nombreGrupo, img);
 				ventanaPrincipal.actualizarListaContactos();
+				ventanaPrincipal.actualizarComboBox();
 				frame.dispose();
 			}
 		});

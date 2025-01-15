@@ -30,10 +30,10 @@ public class ElementoChat extends JPanel {
 		}
 
 		this.idContacto = contacto.getId();
-		if (Controlador.INSTANCE.obtenerMensajes(contacto) != null
-				&& !Controlador.INSTANCE.obtenerMensajes(contacto).isEmpty()) { // La lista no es null y no está vacía
-			this.ultimoMensaje = Controlador.INSTANCE.obtenerMensajes(contacto).getLast().getTexto(); 
-			System.out.println("ElementoChat:Ultimo mensaje: "+ultimoMensaje+ " "+contacto.getNombre());// Obtener el
+		if (Controlador.INSTANCE.obtenerMensajes(contacto.getId()) != null
+				&& !Controlador.INSTANCE.obtenerMensajes(contacto.getId()).isEmpty()) { // La lista no es null y no está vacía
+			this.ultimoMensaje = Controlador.INSTANCE.obtenerMensajes(contacto.getId()).getLast().getTexto();//Controlador.INSTANCE.obtenerMensajes(contacto).getLast().getTexto(); 
+			System.out.println("ElementoChat:Ultimo mensaje: "+ultimoMensaje+ " "+contacto.getNombre()+contacto.getId());// Obtener el
 																										// último
 																										// mensaje
 		}

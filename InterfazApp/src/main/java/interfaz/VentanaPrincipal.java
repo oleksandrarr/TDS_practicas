@@ -31,6 +31,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.itextpdf.kernel.log.SystemOutCounter;
+
 import controlador.Controlador;
 import dominio.Contacto;
 import dominio.ContactoIndividual;
@@ -462,11 +464,9 @@ public class VentanaPrincipal {
 		// Vuelve a cargar los contactos
 		List<Contacto> listaContactos = getListaContactosOrdenada();
 
-		
 		for (Contacto contacto : listaContactos) {
-		
+			System.out.println("el primero es"+contacto.getNombre());
 				if (contacto instanceof ContactoIndividual) {
-					System.out.println("ERROR1"+contacto.getListaMensaje().getLast().getTexto());
 					model.addElement(new ElementoChat(contacto, this));
 				} else if (contacto instanceof Grupo) {
 					model.addElement(new ElementoChat(contacto, this));
@@ -502,13 +502,22 @@ public class VentanaPrincipal {
 	public List<Contacto> getListaContactosOrdenada(){
 		
 		return Controlador.INSTANCE.getUsuarioActual().getContactos().stream()
-        .filter(contacto -> contacto.getUltimoMensaje().isPresent()) 
-        .sorted((c1, c2) -> {
-            LocalDateTime fecha1 = c1.getUltimoMensaje().get().getFechaHoraEnvio(); 
-            LocalDateTime fecha2 = c2.getUltimoMensaje().get().getFechaHoraEnvio();
-            return fecha2.compareTo(fecha1); 
-        })
-        .collect(Collectors.toList()); // Convertir a lista
+			    .filter(contacto -> {
+			        List<Mensaje> mensajes = Controlador.INSTANCE.obtenerMensajes(contacto.getId());
+			        return mensajes != null && !mensajes.isEmpty();
+			    })
+			    .sorted((c1, c2) -> {
+			        LocalDateTime fecha1 = Controlador.INSTANCE.obtenerMensajes(c1.getId())
+			            .get(Controlador.INSTANCE.obtenerMensajes(c1.getId()).size() - 1)
+			            .getFechaHoraEnvio();
+
+			        LocalDateTime fecha2 = Controlador.INSTANCE.obtenerMensajes(c2.getId())
+			            .get(Controlador.INSTANCE.obtenerMensajes(c2.getId()).size() - 1)
+			            .getFechaHoraEnvio();
+
+			        return fecha2.compareTo(fecha1); // Orden de más reciente a más antiguo
+			    })
+			    .collect(Collectors.toList()); // Convertir a lista
 	}
 
 
