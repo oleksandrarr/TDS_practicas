@@ -62,7 +62,7 @@ public abstract class Contacto {
 
 		
 		public String getNombre() {
-		        return nombre; // Proporciona un comportamiento genérico para todas las subclases
+		        return nombre; 
 		}
 		
 		public void setNombre(String nombre) {
@@ -80,9 +80,12 @@ public abstract class Contacto {
 			return mensajesEncontrados;
 		}
 		
+		public boolean registrarMensaje(Mensaje mensaje) {
+			return this.listaMensaje.add(mensaje);
+		}
 		
 		public abstract URL getImagen();
-		public  abstract boolean registrarMensaje(Mensaje mensaje);
+	
 		public abstract String toString();
 	
 		

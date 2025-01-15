@@ -18,12 +18,7 @@ public class Grupo extends Contacto{
 		this.tipoContacto = "Grupo";
 	}
 
-	@Override
-	public boolean registrarMensaje(Mensaje mensaje) {
-		this.listaMensaje.add(mensaje);
-		
-		return true;
-	}
+	
 
 	public List<ContactoIndividual> getContactos() {
 		return integrantes;

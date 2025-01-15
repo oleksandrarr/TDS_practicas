@@ -18,7 +18,7 @@ public class ContactoIndividual extends Contacto {
 		this.usuario = idUsuario;
 		this.tipoContacto = "Individual";
 		this.numeroTelefono=numeroTelefono;
-        this.nombre = Optional.ofNullable(nombre);
+		this.nombre = Optional.ofNullable(nombre).or(() -> Optional.of(numeroTelefono));
 	}
 
 	public String getNumeroTelefono() {
@@ -47,10 +47,6 @@ public class ContactoIndividual extends Contacto {
 	}
 
 
-	@Override
-	public boolean registrarMensaje(Mensaje mensaje) {
-		return this.listaMensaje.add(mensaje);
-	}
 	
 	@Override
 	public URL getImagen() {
