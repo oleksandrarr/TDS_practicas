@@ -195,30 +195,7 @@ public class VentanaPrincipal {
 		menuArchivo.add(new JSeparator());
 		menuArchivo.add(itemSalir);
 
-		JMenuItem itemCambiar = new JMenuItem("Cambiar pantalla");
-		menuOtro.add(itemCambiar);
 		
-		//Action Listeners para los botones
-		itemCambiar.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				BorderLayout layout = (BorderLayout) contenedor.getLayout();
-				JPanel dentro = (JPanel) layout.getLayoutComponent(BorderLayout.CENTER);
-				contenedor.remove(dentro);
-				if (dentro == pantalla) {
-					contenedor.add(pantalla2, BorderLayout.CENTER);
-					ventana.revalidate();
-					ventana.repaint();
-				} else {
-					contenedor.add(pantalla, BorderLayout.CENTER);
-					ventana.revalidate();
-					ventana.repaint();
-				}
-			}
-
-		});
-
 		itemSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ventana.dispose();
