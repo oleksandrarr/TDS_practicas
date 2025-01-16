@@ -55,7 +55,6 @@ public abstract class Contacto {
 	    		
 	    		return Optional.empty();
 	    	}else {
-	    		System.out.println("///Ultimo Mensaje de "+this.getNombre()+" es " + this.getListaMensaje().getLast().getTexto());
 	    		return Optional.of(listaMensaje.getLast());
 	    	}
 	    }
@@ -83,7 +82,6 @@ public abstract class Contacto {
 		}
 		
 		public boolean registrarMensaje(Mensaje mensaje) {
-			System.out.println("(())))"+mensaje.getTexto()+" "+this.getId()+nombre);
 			this.listaMensaje.add(mensaje);
 			return true;
 		}

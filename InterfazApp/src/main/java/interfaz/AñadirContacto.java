@@ -33,32 +33,16 @@ public class AñadirContacto {
 	private JTextField textoNombre;
 	private JTextField textoTelefono;
 	private Runnable onContactoAñadido; // Callback
+	private VentanaPrincipal ventanaPrincipal;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AñadirContacto window = new AñadirContacto();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public AñadirContacto() {
+	public AñadirContacto(VentanaPrincipal ventanaPrincipal) {
+		this.ventanaPrincipal = ventanaPrincipal;
 		initialize();
 	}
 
-	public AñadirContacto(Runnable onContactoAñadido) {
+	public AñadirContacto(VentanaPrincipal ventanaPrincipal, Runnable onContactoAñadido) {
 		this.onContactoAñadido = onContactoAñadido;
+		this.ventanaPrincipal = ventanaPrincipal;
 		initialize();
 	}
 
@@ -119,6 +103,7 @@ public class AñadirContacto {
 					frame.dispose();
 				}
 
+				ventanaPrincipal.actualizarComboBox();
 				frame.revalidate();
 				frame.repaint();
 			}

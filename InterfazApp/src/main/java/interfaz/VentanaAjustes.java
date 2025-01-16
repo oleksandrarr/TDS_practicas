@@ -24,21 +24,6 @@ public class VentanaAjustes {
 	private JFrame frame;
 	private JTextField urlField;
 	private JTextField saludoField;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaAjustes window = new VentanaAjustes();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.

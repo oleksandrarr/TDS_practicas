@@ -44,24 +44,7 @@ public class PremiumCon {
 	private JFrame frame;
 	private JPanel panelNombre;
 	private JPanel panelBotones;
-	private JPanel panelCentro;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PremiumCon window = new PremiumCon();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	/**
 	 * Create the application.
 	 * 

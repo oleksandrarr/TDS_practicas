@@ -57,18 +57,14 @@ public class VentanaPrincipal {
 
 	private JPanel contenedor;
 	private JList<ElementoChat> lista;
-	private JLabel personaje;
-	private ArrayList<ImageIcon> imagenes;
 	private JPanel pantalla;
 	Controlador controlador = Controlador.INSTANCE;
 	private JComboBox comboBox;
-	private VentanaContactos ventanaContactos;
-	private VentanaBuscar ventanaBuscar;
 	private PremiumSin premiumSin;
 	private PremiumCon premiumCon;
-	private String nombreChatActual;
 	private JButton imagenPerfil;
 	DefaultListModel<ElementoChat> model;
+
 	public void mostrarVentana() {
 		ventana.setLocationRelativeTo(null);
 		ventana.setVisible(true);
@@ -102,20 +98,21 @@ public class VentanaPrincipal {
 	public VentanaPrincipal() throws IOException {
 		initialize();
 	}
-	
-	 public static synchronized VentanaPrincipal getInstance() throws IOException {
-	        if (instance == null) {
-	            instance = new VentanaPrincipal();
-	        }
-	        return instance;
-	    }
+
+	public static synchronized VentanaPrincipal getInstance() throws IOException {
+		if (instance == null) {
+			instance = new VentanaPrincipal();
+		}
+		return instance;
+	}
+
 	/**
 	 * Initialize the contents of the frame.
 	 * 
 	 * @throws IOException
 	 */
 	private void initialize() throws IOException {
-
+		//Ventana principal
 		ventana = new JFrame();
 		ventana.setTitle("AppChat");
 		ventana.setSize(new Dimension(900, 900));
@@ -123,19 +120,11 @@ public class VentanaPrincipal {
 		contenedor = (JPanel) ventana.getContentPane();
 		contenedor.setBackground(Utilidades.VERDE_FONDO);
 		ventana.getContentPane().setBackground(Utilidades.VERDE_FONDO);
-		
 
 		añadirMenuBar();
 		añadirCajaArriba();
 		añadirPantalla();
 		añadirCajaIzquierda();
-		;
-		List<Contacto> listaContactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
-		if (listaContactos.size() > 0) {
-			Contacto contacto1 = listaContactos.get(0);
-
-			añadirChat(contacto1);
-		}
 		añadirListaContactos();
 	}
 
@@ -145,16 +134,15 @@ public class VentanaPrincipal {
 
 		// Obtener contactos del usuario actual
 		List<Contacto> listaContactos = getListaContactosOrdenada();
-		
+
 		// Agregar contactos al modelo
 		for (Contacto contacto : listaContactos) {
-		
-				if (contacto instanceof ContactoIndividual) {
-					model.addElement(new ElementoChat(contacto, this));
-				} else if (contacto instanceof Grupo) {
-					model.addElement(new ElementoChat(contacto, this));
-				}
-			
+			if (contacto instanceof ContactoIndividual) {
+				model.addElement(new ElementoChat(contacto, this));
+			} else if (contacto instanceof Grupo) {
+				model.addElement(new ElementoChat(contacto, this));
+			}
+
 		}
 
 		// Crear la lista visual
@@ -162,7 +150,6 @@ public class VentanaPrincipal {
 		lista.setCellRenderer(new ElementoChatRenderer());
 
 		// Agregar un MouseListener para manejar clics en los botones
-
 		lista.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -195,7 +182,6 @@ public class VentanaPrincipal {
 	}
 
 	private void añadirMenuBar() {
-		/*--menu--*/
 		JMenuBar menubar = new JMenuBar();
 		ventana.setJMenuBar(menubar);
 		JMenu menuArchivo = new JMenu("Archivo");
@@ -211,6 +197,8 @@ public class VentanaPrincipal {
 
 		JMenuItem itemCambiar = new JMenuItem("Cambiar pantalla");
 		menuOtro.add(itemCambiar);
+		
+		//Action Listeners para los botones
 		itemCambiar.addActionListener(new ActionListener() {
 
 			@Override
@@ -246,6 +234,7 @@ public class VentanaPrincipal {
 	}
 
 	private void añadirCajaArriba() throws IOException {
+		//Panel de arriba
 		cajaArriba = new JPanel();
 		cajaArriba.setBackground(Utilidades.VERDE_FONDO);
 		cajaArriba.setPreferredSize(new Dimension(700, 80));
@@ -282,6 +271,7 @@ public class VentanaPrincipal {
 		Component horizontalStrut_1_2 = Box.createHorizontalStrut(10);
 		cajaArriba.add(horizontalStrut_1_2);
 
+		//boton buscar
 		String path1 = "https://png.pngtree.com/png-clipart/20230401/original/pngtree-magnifying-glass-line-icon-png-image_9015864.png";
 		URL url1 = new URL(path1);
 
@@ -292,7 +282,8 @@ public class VentanaPrincipal {
 
 		Component horizontalStrut_1_3 = Box.createHorizontalStrut(10);
 		cajaArriba.add(horizontalStrut_1_3);
-		// Contactos
+		
+		// boton Contactos
 		String path2 = "https://cdn-icons-png.freepik.com/512/47/47769.png";
 		URL url2 = new URL(path2);
 		Image img2 = ImageIO.read(url2).getScaledInstance(30, 30, Image.SCALE_SMOOTH);
@@ -304,11 +295,10 @@ public class VentanaPrincipal {
 		Component horizontalStrut_1_4 = Box.createHorizontalStrut(10);
 		cajaArriba.add(horizontalStrut_1_4);
 
-		// Premium
+		// boton Premium
 		String path3 = "https://cdn-icons-png.flaticon.com/512/126/126179.png";
 		URL url3 = new URL(path3);
 		Image img3 = ImageIO.read(url3).getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-		// Controlador.INSTANCE.getUsuarioActual().getImagenPerfil();
 		ImageIcon image3 = new ImageIcon(img3);
 		JButton botonPremium = new JButton("Premium", image3);
 		Utilidades.crearBoton(botonPremium, 160, 40, 14);
@@ -338,10 +328,9 @@ public class VentanaPrincipal {
 		imagenPerfil.setContentAreaFilled(false);
 		imagenPerfil.setFocusPainted(false);
 		imagenPerfil.setBorderPainted(false);
-		
-		
+
 		cajaArriba.add(imagenPerfil);
-		
+
 		// ActionListener boton Contactos
 		botonUsuarios.addActionListener(new ActionListener() {
 			@Override
@@ -401,27 +390,22 @@ public class VentanaPrincipal {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				actualizarListaContactos();
 			}
 		});
-		
-		imagenPerfil.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		    	setImagenPerfil cambiarImagen = new setImagenPerfil(VentanaPrincipal.this);
-		        cambiarImagen.mostrarVentana(ventana);
-		    }
-		});
-		
-		imagenPerfil.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		        System.out.println("Mouse clickeado en el botón de imagen de perfil");
-		    }
-		});
 
+		// añadir imagen
+		imagenPerfil.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SetImagenPerfil cambiarImagen = new SetImagenPerfil(VentanaPrincipal.this);
+				cambiarImagen.mostrarVentana(ventana);
+			}
+		});
 	}
 
 	private void añadirCajaIzquierda() {
+		//panel para el chat abierto
 		cajaIzquierda = new JPanel();
 		cajaIzquierda.setBackground(Utilidades.VERDE_FONDO);
 
@@ -456,7 +440,6 @@ public class VentanaPrincipal {
 	}
 
 	public void actualizarListaContactos() {
-		
 
 		// Limpia el modelo actual
 		model.clear();
@@ -465,17 +448,16 @@ public class VentanaPrincipal {
 		List<Contacto> listaContactos = getListaContactosOrdenada();
 
 		for (Contacto contacto : listaContactos) {
-			System.out.println("el primero es"+contacto.getNombre());
-				if (contacto instanceof ContactoIndividual) {
-					model.addElement(new ElementoChat(contacto, this));
-				} else if (contacto instanceof Grupo) {
-					model.addElement(new ElementoChat(contacto, this));
-				
+			if (contacto instanceof ContactoIndividual) {
+				model.addElement(new ElementoChat(contacto, this));
+			} else if (contacto instanceof Grupo) {
+				model.addElement(new ElementoChat(contacto, this));
+
 			}
 		}
-		
+
 		// Refresca la lista
-		
+
 		lista.revalidate();
 		lista.repaint();
 	}
@@ -489,36 +471,30 @@ public class VentanaPrincipal {
 	}
 
 	public void actualizarImagenPerfil(ImageIcon imagenDrag) {
-	    // Asegurarse de que el botón de imagen de perfil no sea nulo
-	    if (imagenPerfil != null) {
-	    	imagenPerfil.setIcon(imagenDrag); // Actualizar el icono
-	        cajaArriba.revalidate();
-	        cajaArriba.repaint();
-	    } else {
-	        System.err.println("Error: El botón de imagen de perfil no está inicializado.");
-	    }
-	}
-	
-	public List<Contacto> getListaContactosOrdenada(){
-		
-		return Controlador.INSTANCE.getUsuarioActual().getContactos().stream()
-			    .filter(contacto -> {
-			        List<Mensaje> mensajes = Controlador.INSTANCE.obtenerMensajes(contacto.getId());
-			        return mensajes != null && !mensajes.isEmpty();
-			    })
-			    .sorted((c1, c2) -> {
-			        LocalDateTime fecha1 = Controlador.INSTANCE.obtenerMensajes(c1.getId())
-			            .get(Controlador.INSTANCE.obtenerMensajes(c1.getId()).size() - 1)
-			            .getFechaHoraEnvio();
-
-			        LocalDateTime fecha2 = Controlador.INSTANCE.obtenerMensajes(c2.getId())
-			            .get(Controlador.INSTANCE.obtenerMensajes(c2.getId()).size() - 1)
-			            .getFechaHoraEnvio();
-
-			        return fecha2.compareTo(fecha1); // Orden de más reciente a más antiguo
-			    })
-			    .collect(Collectors.toList()); // Convertir a lista
+		// Asegurarse de que el botón de imagen de perfil no sea nulo
+		if (imagenPerfil != null) {
+			imagenPerfil.setIcon(imagenDrag); // Actualizar el icono
+			cajaArriba.revalidate();
+			cajaArriba.repaint();
+		} else {
+			System.err.println("Error: El botón de imagen de perfil no está inicializado.");
+		}
 	}
 
+	public List<Contacto> getListaContactosOrdenada() {
+
+		return Controlador.INSTANCE.getUsuarioActual().getContactos().stream().filter(contacto -> {
+			List<Mensaje> mensajes = Controlador.INSTANCE.obtenerMensajes(contacto.getId());
+			return mensajes != null && !mensajes.isEmpty();
+		}).sorted((c1, c2) -> {
+			LocalDateTime fecha1 = Controlador.INSTANCE.obtenerMensajes(c1.getId())
+					.get(Controlador.INSTANCE.obtenerMensajes(c1.getId()).size() - 1).getFechaHoraEnvio();
+
+			LocalDateTime fecha2 = Controlador.INSTANCE.obtenerMensajes(c2.getId())
+					.get(Controlador.INSTANCE.obtenerMensajes(c2.getId()).size() - 1).getFechaHoraEnvio();
+
+			return fecha2.compareTo(fecha1); // Orden de más reciente a más antiguo
+		}).collect(Collectors.toList()); // Convertir a lista
+	}
 
 }

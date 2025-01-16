@@ -18,6 +18,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -39,31 +40,11 @@ public class VentanaContactos {
 	private DefaultListModel<Contacto> modeloGrupo;
 	private JList<Contacto> listaContactos;
 	private JList<Contacto> listaContactosGrupo;
-	private List<Contacto> listaGrupo;
-	private AñadirContacto añadirContacto;
 	private JPanel panelContactos;
 	private JPanel panelGrupo;
 	private JPanel panelBotones;
 	private JPanel panelSouth;
-	private JPanel panelG;
 	private VentanaPrincipal ventanaPrincipal;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
-					VentanaContactos window = new VentanaContactos(ventanaPrincipal); // Pasar la referencia
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -95,6 +76,7 @@ public class VentanaContactos {
 	}
 
 	private void añadirPanelContactos() {
+		//panel a la izquierda
 		panelContactos = new JPanel();
 		panelContactos.setBackground(Utilidades.VERDE_FONDO);
 		panelContactos.setLayout(new BoxLayout(panelContactos, BoxLayout.X_AXIS));
@@ -102,6 +84,7 @@ public class VentanaContactos {
 		panelContactos.setBorder(new EmptyBorder(10, 10, 10, 10));
 		frame.getContentPane().add(panelContactos, BorderLayout.WEST);
 
+		//modelo con los contactos del usuario
 		modeloLista = new DefaultListModel<>();
 		List<Contacto> contactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
 		for (Contacto c : contactos) {
@@ -111,6 +94,8 @@ public class VentanaContactos {
 			}
 
 		}
+		
+		//lista visual
 		listaContactos = new JList<>(modeloLista);
 		listaContactos.setBackground(Utilidades.VERDE_CLARO);
 		listaContactos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -122,6 +107,7 @@ public class VentanaContactos {
 	}
 
 	private void añadirPanelGrupo() {
+		//panel a la derecha
 		panelGrupo = new JPanel();
 		panelGrupo.setLayout(new BoxLayout(panelGrupo, BoxLayout.X_AXIS));
 		panelGrupo.setBackground(Utilidades.VERDE_FONDO);
@@ -129,7 +115,9 @@ public class VentanaContactos {
 		panelGrupo.setBorder(new EmptyBorder(10, 10, 10, 10));
 		frame.getContentPane().add(panelGrupo, BorderLayout.EAST);
 
+		//modelo
 		modeloGrupo = new DefaultListModel<>();
+		//lista visual
 		listaContactosGrupo = new JList<>(modeloGrupo);
 		listaContactosGrupo.setBackground(Utilidades.VERDE_CLARO);
 		listaContactosGrupo.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -140,7 +128,6 @@ public class VentanaContactos {
 		panelGrupo.add(scrollPaneGrupo);
 
 		scrollPaneGrupo.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Grupo"));
-		// panelGrupo.add(scrollPaneGrupo);
 	}
 
 	private void añadirPanelBotones() {
@@ -225,21 +212,22 @@ public class VentanaContactos {
 
 		// Action listener Añadir Contacto
 		btnNewButton_2.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				AñadirContacto añadirContacto = new AñadirContacto(() -> {
-					// Actualizar la lista de contactos
-					modeloLista.clear();
-					List<Contacto> contactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
-					for (Contacto c : contactos) {
-						modeloLista.addElement(c);
-					}
-					listaContactos.repaint(); // Refrescar la vista
-				});
-				añadirContacto.mostrarVentana();
-				ventanaPrincipal.actualizarComboBox();
-			}
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        AñadirContacto añadirContacto = new AñadirContacto(ventanaPrincipal, () -> {
+		            // Actualizar la lista de contactos
+		            modeloLista.clear();
+		            List<Contacto> contactos = Controlador.INSTANCE.getUsuarioActual().getContactos();
+		            for (Contacto c : contactos) {
+		                modeloLista.addElement(c);
+		            }
+		            listaContactos.repaint(); // Refrescar la vista
+		        });
+		        añadirContacto.mostrarVentana();
+		        ventanaPrincipal.actualizarComboBox();
+		    }
 		});
+
 
 		// Action Listener del boton "Aceptar"
 		btnNewButton_4.addActionListener(new ActionListener() {
@@ -256,9 +244,15 @@ public class VentanaContactos {
 					}
 				}
 
+				if (listaGrupo.isEmpty()) {
+					JOptionPane.showMessageDialog(frame, "No hay contactos elegidos.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				// Pasar la lista de contactos al constructor de AñadirGrupo
 				AñadirGrupo ventanaGrupo = new AñadirGrupo(listaGrupo, ventanaPrincipal);
 				ventanaGrupo.mostrarVentana();
+				ventanaPrincipal.actualizarListaContactos();
 
 			}
 		});

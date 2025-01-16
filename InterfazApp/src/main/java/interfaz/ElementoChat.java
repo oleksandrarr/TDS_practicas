@@ -33,14 +33,10 @@ public class ElementoChat extends JPanel {
 		if (Controlador.INSTANCE.obtenerMensajes(contacto.getId()) != null
 				&& !Controlador.INSTANCE.obtenerMensajes(contacto.getId()).isEmpty()) { // La lista no es null y no está vacía
 			this.ultimoMensaje = Controlador.INSTANCE.obtenerMensajes(contacto.getId()).getLast().getTexto();//Controlador.INSTANCE.obtenerMensajes(contacto).getLast().getTexto(); 
-			System.out.println("ElementoChat:Ultimo mensaje: "+ultimoMensaje+ " "+contacto.getNombre()+contacto.getId());// Obtener el
-																										// último
-																										// mensaje
 		}
 		// Configurar el layout del panel principal
 		this.setLayout(new BorderLayout(10, 10));
 		this.setBackground(Utilidades.VERDE_FONDO); // Fondo verde
-		// this.setBorder(new LineBorder(Color.BLACK, 1));
 
 		this.setPreferredSize(new Dimension(300, 100)); // Ancho: 300, Alto: 100
 		this.setMinimumSize(new Dimension(300, 100));
@@ -82,7 +78,7 @@ public class ElementoChat extends JPanel {
 		panelTexto.add(labelUltimoMensaje);
 
 		// Crear el botón "+"
-		if (contacto instanceof ContactoIndividual) {
+		if (contacto instanceof ContactoIndividual) {	//contacto no agregado
 
 			if (((ContactoIndividual) contacto).getNombreOptional().isPresent() && ((ContactoIndividual) contacto)
 					.getNombreOptional().get().equals(((ContactoIndividual) contacto).getNumeroTelefono())) {
@@ -99,7 +95,7 @@ public class ElementoChat extends JPanel {
 
 				add(botonNombre, BorderLayout.EAST); // Botón a la derecha
 			}
-		} else if (contacto instanceof Grupo) {
+		} else if (contacto instanceof Grupo) {	//grupo para añadir más miembros
 			botonNombre = new JButton("+");
 			botonNombre.setPreferredSize(new Dimension(30, 30));
 			botonNombre.setBackground(Color.WHITE);
