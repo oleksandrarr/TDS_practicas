@@ -218,7 +218,7 @@ public enum Controlador {
 			}
 		} else {
 			Grupo g = (Grupo) contacto;
-
+			
 			for (ContactoIndividual c : g.getContactos()) {
 				enviarMensaje(c, mensaje.getTexto(), tipo);
 			}
@@ -359,6 +359,17 @@ public enum Controlador {
 		usuarioDAO.update(usuarioActual);
 
 		return grupo;
+	}
+	
+	public void actualizarGrupo(List<ContactoIndividual> contactos, Grupo grupo) {	
+	    grupo.setContactos(contactos);
+	    
+		ContactoDAO contactoDAO = factoria.getContactoDAO();
+		contactoDAO.update(grupo);
+
+		UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
+		usuarioDAO.update(usuarioActual);
+		
 	}
 
 	public List<Mensaje> buscarMensaje(String texto, String telefono, String contacto) {

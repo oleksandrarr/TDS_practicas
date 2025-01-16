@@ -31,7 +31,17 @@ import dominio.ContactoIndividual;
 import dominio.Grupo;
 
 public class AgregarContactoGrupo extends JFrame {
-	public AgregarContactoGrupo(Contacto contacto, ElementoChat elementoChat, VentanaPrincipal ventanaPrincipal) {
+	public AgregarContactoGrupo(int id, ElementoChat elementoChat, VentanaPrincipal ventanaPrincipal) {
+			List<Contacto> listaContactosUsuario = Controlador.INSTANCE.getUsuarioActual().getContactos();
+			Contacto contacto = null;
+			for(Contacto c : listaContactosUsuario) {
+				if(c.getId() == id) {
+					contacto = c;
+					break;
+				}
+			}
+			System.out.println("GRUPO: " + contacto);
+			
 	        setTitle("Añadir miembro");
 	        setSize(500, 300);
 	        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -174,9 +184,24 @@ public class AgregarContactoGrupo extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					grupoFinal.getContactos().clear();
+					
 					for(int i = 0; i<modeloGrupo.size(); i++) {
 						grupoFinal.getContactos().add((ContactoIndividual) modeloGrupo.getElementAt(i));
 					}
+					
+					
+					List<ContactoIndividual> listaGrupo = new ArrayList<>();
+
+					// Iterar sobre el modelo del grupo (panel derecho)
+					for (int i = 0; i < modeloGrupo.size(); i++) {
+						Contacto contacto = modeloGrupo.getElementAt(i);
+						if (contacto instanceof ContactoIndividual) {
+							listaGrupo.add((ContactoIndividual) contacto);
+						}
+					}
+					System.out.println("Integrantes: " + grupoFinal.getContactos() + "   Nombre: " + grupoFinal.getNombre());
+					Controlador.INSTANCE.actualizarGrupo(listaGrupo, grupoFinal);
+					ventanaPrincipal.actualizarListaContactos();
 					dispose();
 					
 				}

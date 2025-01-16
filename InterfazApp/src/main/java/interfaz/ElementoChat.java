@@ -104,7 +104,7 @@ public class ElementoChat extends JPanel {
 
 			// Agregar funcionalidad al botón
 			botonNombre.addActionListener(e -> {
-				new AgregarContactoGrupo(contacto, this, ventanaPrincipal).setVisible(true);
+				new AgregarContactoGrupo(contacto.getId(), this, ventanaPrincipal).setVisible(true);
 			});
 
 			add(botonNombre, BorderLayout.EAST); // Botón a la derecha

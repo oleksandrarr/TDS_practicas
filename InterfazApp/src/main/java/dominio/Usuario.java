@@ -200,6 +200,9 @@ public class Usuario {
 	    }
 	}
 
+	public void eliminarContacto(Contacto contacto) {
+		contactos.remove(contacto);
+	}
 
 	public ContactoIndividual getContactoIndividual(int id) {
 	    for (Contacto c : contactos) {
