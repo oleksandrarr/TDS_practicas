@@ -44,5 +44,8 @@ public class Grupo extends Contacto{
 		return this.nombre;
 	}
 	
-	
+	public void añadirContacto(Contacto contacto) {
+		System.out.println("AÑADIRRRRRR"+contacto.getNombre()+this.integrantes.size());
+		this.integrantes.add((ContactoIndividual) contacto);
+	}
 }

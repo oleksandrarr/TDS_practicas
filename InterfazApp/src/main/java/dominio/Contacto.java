@@ -83,7 +83,7 @@ public abstract class Contacto {
 		}
 		
 		public boolean registrarMensaje(Mensaje mensaje) {
-			System.out.println("(())))"+mensaje.getTexto()+" "+this.getId()+nombre);
+			
 			this.listaMensaje.add(mensaje);
 			return true;
 		}

@@ -53,6 +53,11 @@ public enum Controlador {
 	}
 	
 	public Contacto getContactoPorId(int contactoId) {
+		 for (Contacto c : usuarioActual.getContactos()) {
+		        if (c.getId() == contactoId) {
+		            return c; // Devuelve la referencia original.
+		        }
+		    }
 		ContactoDAO c = factoria.getContactoDAO();
 		return c.get(contactoId);
 	}
@@ -411,6 +416,17 @@ public enum Controlador {
 	        e.printStackTrace();
 	    }
 		return null;
+	}
+
+	public void añadirContactoAGrupo(Grupo grupo, ContactoIndividual elementAt) {
+		System.out.println("¿¿¿¿¿¿¿"+System.identityHashCode(getContactoPorId(grupo.getId())));
+		
+		grupo.añadirContacto(getContactoPorId(elementAt.getId()));
+		ContactoDAO contactoDAO = factoria.getContactoDAO();
+		contactoDAO.update(((Grupo)getContactoPorId(grupo.getId())));
+		System.out.println(System.identityHashCode(grupo)+"/////344343//"+grupo+((Grupo)getContactoPorId(grupo.getId())).getNombre()
+				+(grupo).getContactos().size());
+		
 	}
 
 }
