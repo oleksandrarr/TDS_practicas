@@ -24,7 +24,7 @@ public class Usuario {
 	private boolean premium;
 	private String saludo;
 
-
+	//Como el saludo es opcional, decidimos tener dos constructores
 	public Usuario(String nombre, String apellidos, String email, String login,String numeroTelefono, String password,
 			String fechaNacimiento, URL imagen) {
 		this.id = 0;
@@ -88,7 +88,7 @@ public class Usuario {
 	public List<Contacto> getContactos() {
 		return contactos;
 	}
-
+	//Devuelve todos los contactos del usuario, de ambos tipos
 	public List<ContactoIndividual> getContactosIndividuales(){
 		List<ContactoIndividual> lista = new LinkedList<ContactoIndividual>();
 		for(Contacto c : contactos) {
@@ -98,7 +98,7 @@ public class Usuario {
 		}
 		return lista;
 	}
-	
+	//Devuelve los grupos del contacto
 	public List<Grupo> getGrupos(){
 		List<Grupo> lista = new LinkedList<Grupo>();
 		for(Contacto c : contactos) {
@@ -203,7 +203,7 @@ public class Usuario {
 	public void eliminarContacto(Contacto contacto) {
 		contactos.remove(contacto);
 	}
-
+    //Encuentra un contacto por su id
 	public ContactoIndividual getContactoIndividual(int id) {
 	    for (Contacto c : contactos) {
 	        if (c instanceof ContactoIndividual) { // Verifica el tipo antes de hacer el casting
@@ -215,7 +215,8 @@ public class Usuario {
 	    }
 	    return null; // Devuelve null si no encuentra el contacto
 	}
-
+	//Metodo que encuentra los mensajes que se estan buscando 
+	//El usuario tiene todos los contactos que a su vez tienen todos los mensajes
 	public List<Mensaje> encontrarMensajes(String texto, int idContacto, String contacto){
 		List<Mensaje> mensajesEncontrados= new ArrayList<>();
 		for(Contacto c: contactos) {
@@ -241,7 +242,7 @@ public class Usuario {
 		this.imagen = imagen;
 	}
 	
-
+    
 	public double calcularDescuento() {
 		double descuento = 0;
 		int numMensajesUltMes = (int) contactos.stream().flatMap(cont -> cont.getListaMensaje().stream()).filter(m -> m.getFechaHoraEnvio().getMonthValue() == (LocalDateTime.now().getMonthValue())).count();

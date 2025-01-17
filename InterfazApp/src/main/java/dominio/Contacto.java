@@ -14,43 +14,52 @@ public abstract class Contacto {
 	protected String tipoContacto;
 	protected URL imagen;
 	 
-
-	    public String getTipoContacto() {
+	
+	
+	//Constructor de la clase
+	public Contacto(String nombre) {
+	        this.nombre = nombre;
+	        this.listaMensaje = new ArrayList<Mensaje>();
+	        this.id = 0;
+	    }
+	
+	
+	//Devuelve el id con el que se distingue el contacto en la persistencia
+     public int getId() {
+			return id;
+    }
+	    
+	//Devuelve el tipo de contacto (Grupo o individual)
+	public String getTipoContacto() {
 		return tipoContacto;
 	}
-	    
+	 
+	//Para definir el tipo de contacto
 	public void setTipoContacto(String tipoContacto) {
 		this.tipoContacto = tipoContacto;
 		
 	}
 
-		public Contacto(String nombre) {
-	        this.nombre = nombre;
-	        this.listaMensaje = new ArrayList<Mensaje>();
-	        this.id = 0;
-	    }
-
-	    public int getId() {
-			return id;
-		}
-
-
-		public void setListaMensaje(List<Mensaje> listaMensaje) {
+	//Cuando recuperamos el contacto persistido hay que añadirle los mensajes
+	public void setListaMensaje(List<Mensaje> listaMensaje) {
 			this.listaMensaje = listaMensaje;
-		}
-
-		public void setId(int id) {
+	}
+    
+	//Cuando se crea el objeto en la base de datos le asignamos el id que nos da 
+	//el servicio de persistencia
+	public void setId(int id) {
 			this.id = id;
-		}
+	}
 
 	    
 
-
-	    public List<Mensaje> getListaMensaje() {
+    //Devuelve la lista de mensajes que tenemos con el contacto
+	public List<Mensaje> getListaMensaje() {
 	        return listaMensaje;
-	    }
-	    
-	    public Optional<Mensaje> getUltimoMensaje(){
+    }
+	//Metodo que devuelve el ultimo mensaje si este existe
+	//Este metodo es el que utilizamos en la lista de chats recientes
+	public Optional<Mensaje> getUltimoMensaje(){
 	    	if(listaMensaje == null || listaMensaje.isEmpty()) {
 	    		
 	    		return Optional.empty();

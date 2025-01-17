@@ -8,7 +8,7 @@ import java.util.List;
 public class Mensaje {
 	public static final int ENVIADO = 0;
 	public static final int RECIBIDO = 1;
-
+	
 	int id;
 	private String texto;
 	private int emoticono;
@@ -28,7 +28,7 @@ public class Mensaje {
 		this.tipoMensaje = tipoMensaje;
 	}
     
-    //Constructor mensaje emotcono
+    //Constructor mensaje emoticono
     public Mensaje(int emoticono,int usuario, int contacto, LocalDateTime fechaHoraEnvio, int tipoMensaje) {
 		
 		this.emoticono = emoticono;
@@ -38,7 +38,7 @@ public class Mensaje {
 		this.tipoMensaje = tipoMensaje;
 	}
     
-  
+   //El tipo de mensaje es Enviado o recibido 
 	public int getTipoMensaje() {
 		return tipoMensaje;
 	}
@@ -103,7 +103,8 @@ public class Mensaje {
 		this.fechaHoraEnvio = fechaHoraEnvio;
 	}
 	
-	//hay que cambiar los mensajes , el emisor y recteptor deben se numeros de telefono
+	//Encuentra el mensaje que contiene el texto o si el texto es vacio
+	// interpretamos que lo que se quiere son todos los mensajes de ese contacto
 	public boolean encontrarMensaje(String texto) {
 		if (texto == null || texto.isEmpty()) {
 	        return true; // Si no hay texto considero que todos los mensajes coinciden con la busqueda

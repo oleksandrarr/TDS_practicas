@@ -13,6 +13,7 @@ public class ContactoIndividual extends Contacto {
 	private String numeroTelefono;
 	private Optional<String> nombre;
 	
+	//El contacto Individual tiene el numero de telefono del usuario
 	public ContactoIndividual(String nombre, int idUsuario,String numeroTelefono) {
 		super(nombre);
 		this.usuario = idUsuario;
@@ -41,13 +42,13 @@ public class ContactoIndividual extends Contacto {
 	public Optional<String> getNombreOptional() {
         return nombre; 
     }
-
+	//Devuelve nombre si existe, si no existe se devuelve el numero de telefono(Implementado en otras clases)
 	public void setNombreOptiona(String nombre) {
 		this.nombre=Optional.of(nombre);
 	}
 
 
-	
+	//Imagen de perfil del contacto, que en este caso será la misma que la del usuario
 	@Override
 	public URL getImagen() {
 		return this.imagen;
