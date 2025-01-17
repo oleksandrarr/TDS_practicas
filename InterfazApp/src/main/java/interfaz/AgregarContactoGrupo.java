@@ -32,6 +32,7 @@ import dominio.Grupo;
 
 public class AgregarContactoGrupo extends JFrame {
 	public AgregarContactoGrupo(int id, ElementoChat elementoChat, VentanaPrincipal ventanaPrincipal) {
+			// Recuperamos el contacto dado su id
 			List<Contacto> listaContactosUsuario = Controlador.INSTANCE.getUsuarioActual().getContactos();
 			Contacto contacto = null;
 			for(Contacto c : listaContactosUsuario) {
@@ -40,13 +41,14 @@ public class AgregarContactoGrupo extends JFrame {
 					break;
 				}
 			}
-			System.out.println("GRUPO: " + contacto);
 			
+			// Ventana principal
 	        setTitle("Añadir miembro");
 	        setSize(500, 300);
 	        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        setLayout(new BorderLayout());
 	        
+	        //panel a la izquierda con la lista de contactos del usuario
 	        JPanel panelContactos = new JPanel();
 			panelContactos.setBackground(Utilidades.VERDE_FONDO);
 			panelContactos.setLayout(new BoxLayout(panelContactos, BoxLayout.X_AXIS));
@@ -72,6 +74,7 @@ public class AgregarContactoGrupo extends JFrame {
 			scrollPaneContactos.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			panelContactos.add(scrollPaneContactos);
 			
+			//panel a la derecha, con los contactos del grupo
 			JPanel panelGrupo = new JPanel();
 			panelGrupo.setLayout(new BoxLayout(panelGrupo, BoxLayout.X_AXIS));
 			panelGrupo.setBackground(Utilidades.VERDE_FONDO);
@@ -105,6 +108,7 @@ public class AgregarContactoGrupo extends JFrame {
 			scrollPaneGrupo.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Grupo"));
 			// panelGrupo.add(scrollPaneGrupo);
 			
+			//panel botones
 			JPanel panelBotones = new JPanel();
 			panelBotones.setPreferredSize(new Dimension(70, 0));
 			panelBotones.setBackground(Utilidades.VERDE_FONDO);
@@ -190,19 +194,6 @@ public class AgregarContactoGrupo extends JFrame {
 						Controlador.INSTANCE.añadirContactoAGrupo(id,(ContactoIndividual) modeloGrupo.getElementAt(i));
 					}
 					
-					/*
-					List<ContactoIndividual> listaGrupo = new ArrayList<>();
-
-					// Iterar sobre el modelo del grupo (panel derecho)
-					for (int i = 0; i < modeloGrupo.size(); i++) {
-						Contacto contacto = modeloGrupo.getElementAt(i);
-						if (contacto instanceof ContactoIndividual) {
-							System.out.println("contactrrerere"+contacto.getNombre());
-							listaGrupo.add((ContactoIndividual) contacto);
-						}
-					}*/
-					System.out.println("Integrantes: " + grupoFinal.getContactos() + "   Nombre: " + grupoFinal.getNombre());
-					//Controlador.INSTANCE.actualizarGrupo(listaGrupo, grupoFinal);
 					ventanaPrincipal.actualizarListaContactos();
 					dispose();
 					
