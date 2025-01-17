@@ -180,7 +180,7 @@ public class Chat extends JPanel {
 				BubbleText burbuja = new BubbleText(chat, indice, Color.WHITE,
 						"Tú " + hora.format(soloHora), Mensaje.ENVIADO, 11);
 				chat.add(burbuja); // Añadir la burbuja al panel de chat
-
+				ventanaPrincipal.actualizarListaContactos();
 				// Desplazar la vista hacia el final
 				chat.scrollRectToVisible(new Rectangle(0, chat.getHeight(), 1, 1));
 				// Refrescar la interfaz gráfica

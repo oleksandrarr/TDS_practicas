@@ -242,7 +242,7 @@ public enum Controlador {
 		return true;
 	}
     //Igual que el metodo anterior pero esta vez el mensaje es un emoticono
-	public boolean enviarMensajeEmoticono(Contacto contacto, int emoticono, int tipo) throws DAOException {
+	public boolean enviarMensajeEmoticono(Contacto contacto, int emo, int tipo) throws DAOException {
 		// Validaciones iniciales
 		if (usuarioActual == null) {
 			throw new IllegalStateException("No hay un usuario autenticado. Inicie sesión primero.");
@@ -252,12 +252,13 @@ public enum Controlador {
 			throw new IllegalArgumentException("El contacto proporcionado es nulo.");
 		}
 
+		
 		Mensaje mensaje;
 		// Crear el mensaje
-		if (tipo == 1) {
-			mensaje = new Mensaje(emoticono, usuarioActual.getId(), contacto.getId(), LocalDateTime.now(), tipo);
+		if (tipo == dominio.Mensaje.ENVIADO) {
+			mensaje = new Mensaje(emo, usuarioActual.getId(), contacto.getId(), LocalDateTime.now(), tipo);
 		} else {
-			mensaje = new Mensaje(emoticono, contacto.getId(), usuarioActual.getId(), LocalDateTime.now(), tipo);
+			mensaje = new Mensaje(emo, contacto.getId(), usuarioActual.getId(), LocalDateTime.now(), tipo);
 		}
 		contacto.registrarMensaje(mensaje);
 		MensajeDAO mensajeDAO = factoria.getMensajeDAO();
@@ -265,8 +266,9 @@ public enum Controlador {
 		ContactoDAO contactoDAO = factoria.getContactoDAO();
 		contactoDAO.update(contacto);
 
-		if (contacto instanceof ContactoIndividual) {	//enviar mensaje a contacto individual
+		if (contacto instanceof ContactoIndividual) {	// Contacto individual
 			ContactoIndividual c = (ContactoIndividual) contacto;
+
 			// Asegurar que el usuario existe
 			Usuario usuarioEncontrado = RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario());
 			if (usuarioEncontrado == null) {
@@ -274,17 +276,19 @@ public enum Controlador {
 			}
 
 			UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
-
+			//Tenemos que comprobar que el contacto al que le enviamos el mensaje nos tiene registrado
+			// como contacto, si no es asi se crea un contacto sin nombre en el usuario destino, 
+			//se muestra el numero de telefono en ese caso
 			if (usuarioEncontrado.getContactoIndividual(usuarioActual.getId()) != null) {
 				Mensaje mensaje2;
-				if (tipo == Mensaje.ENVIADO) {
-					mensaje2 = new Mensaje(emoticono,
+				if (tipo == Mensaje.ENVIADO) {	//enviamos el mensaje
+					mensaje2 = new Mensaje(emo,
 							usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(),
 							usuarioEncontrado.getId(), LocalDateTime.now(), 1);
-				} else {
-					mensaje2 = new Mensaje(emoticono, usuarioEncontrado.getId(),
+				} else {	//recibimos el mensaje
+					mensaje2 = new Mensaje(emo, usuarioEncontrado.getId(),
 							usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(), LocalDateTime.now(),
-							1);
+							0);
 				}
 				usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).registrarMensaje(mensaje2);
 				mensajeDAO.registrar(mensaje2);
@@ -301,13 +305,13 @@ public enum Controlador {
 				usuarioEncontrado.añadirContacto(contactoUsuarioActual);
 				Mensaje mensaje2;
 				if (tipo == Mensaje.ENVIADO) {
-					mensaje2 = new Mensaje(emoticono,
+					mensaje2 = new Mensaje(emo,
 							usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(),
 							usuarioEncontrado.getId(), LocalDateTime.now(), 1);
 				} else {
-					mensaje2 = new Mensaje(emoticono, usuarioEncontrado.getId(),
+					mensaje2 = new Mensaje(emo, usuarioEncontrado.getId(),
 							usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(), LocalDateTime.now(),
-							1);
+							0);
 				}
 				contactoUsuarioActual.registrarMensaje(mensaje2);
 				mensajeDAO.registrar(mensaje2);
@@ -315,22 +319,16 @@ public enum Controlador {
 				usuarioDAO.update(usuarioEncontrado);
 				contactoDAO.update(contacto);
 			}
-		} else {	//enviar emoticonos al grupo
+
+		    } else {	//enviar mensaje al grupo
+
 			Grupo g = (Grupo) contacto;
-
+			
 			for (ContactoIndividual c : g.getContactos()) {
-				
-				enviarMensajeEmoticono(c, mensaje.getEmoticono(), tipo);
+				enviarMensajeEmoticono(getContactoPorId(c.getId()), emo, tipo);
 			}
+			
 		}
-
-		try {
-			VentanaPrincipal.getInstance().actualizarListaContactos();
-		} catch (IOException e1) {
-
-			e1.printStackTrace();
-		}
-
 		return true;
 	}
     //obtiene los mensajes de un contacto
