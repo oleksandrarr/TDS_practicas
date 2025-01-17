@@ -442,4 +442,12 @@ public enum Controlador {
 		
 	}
 
+	public void hacerPremium(boolean b) {
+		usuarioActual.setPremium(true);
+		UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
+		usuarioDAO.update(usuarioActual);
+
+		
+	}
+
 }

@@ -156,7 +156,7 @@ public class PremiumSin {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Controlador.INSTANCE.getUsuarioActual().setPremium(true);
+				Controlador.INSTANCE.hacerPremium(true);
 				JOptionPane.showMessageDialog(frame, "Tiene el Premium.", "Premium Pagado",
 						JOptionPane.INFORMATION_MESSAGE);
 				frame.dispose();
