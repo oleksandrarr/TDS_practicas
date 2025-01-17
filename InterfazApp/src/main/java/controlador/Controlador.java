@@ -108,7 +108,7 @@ public enum Controlador {
 	 * CONTACTOS
 	 */
 
-	public ContactoIndividual añadirContactoIndividual(String nombre, String telefono) {
+	public ContactoIndividual añadirContactoIndividual(String nombre, String telefono) {	//añadir contacto a la lista de contactos del usuario actual
 
 		Usuario usuarioContacto = RepositorioUsuarios.INSTANCE.findUsuarioPorTelefono(telefono);
 		if (usuarioContacto == null) {
@@ -130,7 +130,7 @@ public enum Controlador {
 		return (ContactoIndividual) contacto;
 	}
 
-	public ContactoIndividual getContactoIndividual(int codigo) {
+	public ContactoIndividual getContactoIndividual(int codigo) {	//busca y devuelve el contacto dado su id
 		ContactoIndividual c = usuarioActual.getContactoIndividual(codigo);
 
 		if (c == null) {
@@ -170,7 +170,7 @@ public enum Controlador {
 		ContactoDAO contactoDAO = factoria.getContactoDAO();
 		contactoDAO.update(contacto);
 
-		if (contacto instanceof ContactoIndividual) {
+		if (contacto instanceof ContactoIndividual) {	// Contacto individual
 			ContactoIndividual c = (ContactoIndividual) contacto;
 
 			// Asegurar que el usuario existe
@@ -183,11 +183,11 @@ public enum Controlador {
 
 			if (usuarioEncontrado.getContactoIndividual(usuarioActual.getId()) != null) {
 				Mensaje mensaje2;
-				if (tipo == Mensaje.ENVIADO) {
+				if (tipo == Mensaje.ENVIADO) {	//enviamos el mensaje
 					mensaje2 = new Mensaje(texto,
 							usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(),
 							usuarioEncontrado.getId(), LocalDateTime.now(), 1);
-				} else {
+				} else {	//recibimos el mensaje
 					mensaje2 = new Mensaje(texto, usuarioEncontrado.getId(),
 							usuarioEncontrado.getContactoIndividual(usuarioActual.getId()).getId(), LocalDateTime.now(),
 							0);
@@ -221,11 +221,10 @@ public enum Controlador {
 				usuarioDAO.update(usuarioEncontrado);
 				contactoDAO.update(contacto);
 			}
-		} else {
+		} else {	//enviar mensaje al grupo
 			Grupo g = (Grupo) contacto;
 			
 			for (ContactoIndividual c : g.getContactos()) {
-				System.out.println("aeenfsfswjkfnkwejfrjkew aa"+c.getNombre());
 				enviarMensaje(getContactoPorId(c.getId()), mensaje.getTexto(), tipo);
 			}
 
@@ -256,7 +255,7 @@ public enum Controlador {
 		ContactoDAO contactoDAO = factoria.getContactoDAO();
 		contactoDAO.update(contacto);
 
-		if (contacto instanceof ContactoIndividual) {
+		if (contacto instanceof ContactoIndividual) {	//enviar mensaje a contacto individual
 			ContactoIndividual c = (ContactoIndividual) contacto;
 			// Asegurar que el usuario existe
 			Usuario usuarioEncontrado = RepositorioUsuarios.INSTANCE.findUsuario(c.getUsuario());
@@ -306,7 +305,7 @@ public enum Controlador {
 				usuarioDAO.update(usuarioEncontrado);
 				contactoDAO.update(contacto);
 			}
-		} else {
+		} else {	//enviar emoticonos al grupo
 			Grupo g = (Grupo) contacto;
 
 			for (ContactoIndividual c : g.getContactos()) {
@@ -367,17 +366,6 @@ public enum Controlador {
 
 		return grupo;
 	}
-	
-	/*public void actualizarGrupo(List<ContactoIndividual> contactos, Grupo grupo) {	
-	    grupo.setContactos(contactos);
-	    
-		ContactoDAO contactoDAO = factoria.getContactoDAO();
-		contactoDAO.update(grupo);
-
-		UsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
-		usuarioDAO.update(usuarioActual);
-		
-	}*/
 
 	public List<Mensaje> buscarMensaje(String texto, String telefono, String contacto) {
 		List<Mensaje> mensajesEncontrados = new ArrayList<>();
@@ -434,7 +422,6 @@ public enum Controlador {
 	}
 
 	public void añadirContactoAGrupo(int id, ContactoIndividual elementAt) {
-		System.out.println("AÑADIDO :"+((Grupo)getContactoPorId(id)).getNombre());
 		((Grupo)getContactoPorId(id)).añadirContacto(getContactoPorId(elementAt.getId()));
 		ContactoDAO contactoDAO = factoria.getContactoDAO();
 		contactoDAO.update(((Grupo)getContactoPorId(id)));
