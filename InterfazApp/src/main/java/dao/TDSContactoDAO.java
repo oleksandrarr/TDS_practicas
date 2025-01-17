@@ -301,11 +301,22 @@ public final class TDSContactoDAO implements ContactoDAO {
                 }
             }else {
             	 Grupo contactoGru = (Grupo) contacto;
-
+            	 StringBuilder contactosIds = new StringBuilder();
+                 for (Contacto c : ((Grupo)contacto).getContactos()) {
+                     if (contactosIds.length() > 0) {
+                         contactosIds.append(",");
+                     }
+                     contactosIds.append(c.getId());
+                 }
+            	  
                  if (prop.getNombre().equals(NOMBRE)) {
                      // Actualizar el nombre si existe
                          prop.setValor(contactoGru.getNombre());
                          servPersistencia.modificarPropiedad(prop);
+                 }
+                 if(prop.getNombre().equals(CONTACTOS_GRUPO)) {
+                	 prop.setValor(contactosIds.toString());
+                	 servPersistencia.modificarPropiedad(prop);
                  }
             }
             

@@ -226,7 +226,7 @@ public enum Controlador {
 			
 			for (ContactoIndividual c : g.getContactos()) {
 				System.out.println("aeenfsfswjkfnkwejfrjkew aa"+c.getNombre());
-				enviarMensaje(c, mensaje.getTexto(), tipo);
+				enviarMensaje(getContactoPorId(c.getId()), mensaje.getTexto(), tipo);
 			}
 
 		}
@@ -434,7 +434,7 @@ public enum Controlador {
 	}
 
 	public void añadirContactoAGrupo(int id, ContactoIndividual elementAt) {
-
+		System.out.println("AÑADIDO :"+((Grupo)getContactoPorId(id)).getNombre());
 		((Grupo)getContactoPorId(id)).añadirContacto(getContactoPorId(elementAt.getId()));
 		ContactoDAO contactoDAO = factoria.getContactoDAO();
 		contactoDAO.update(((Grupo)getContactoPorId(id)));
