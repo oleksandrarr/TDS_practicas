@@ -39,29 +39,10 @@ import dominio.Contacto;
 public class VentanaBuscar {
 
 	private JFrame frame;
-	private String mensaje;
-	private String telefono;
-	private String usuario;
 	private JPanel panelMensajes;
 	private JTextField txtTelefono;
 	private JTextField textField_texto;
 	private JTextField textField_usuario;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaBuscar window = new VentanaBuscar();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -213,12 +194,8 @@ public class VentanaBuscar {
 				List<Contacto> lista = Controlador.INSTANCE.getUsuarioActual().getContactos();
 
 				List<dominio.Mensaje> listaMensajes = Controlador.INSTANCE.buscarMensaje(mensaje, telefono, usuario);
-				System.out.println("/////////////7277e3784722ii" + listaMensajes.size());
 				panelMensajes.removeAll();
 				for (dominio.Mensaje m : listaMensajes) {
-					System.out.println("/////////////7277e3784722iittttt" + m.getReceptor());
-					System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeMI:" + m.getEmisor() + "//"
-							+ Controlador.INSTANCE.getUsuarioActual().getId() + "//" + m.getReceptor() + m.getTexto());
 					mensaje = m.getTexto();
 					if (m.getTipoMensaje() == dominio.Mensaje.ENVIADO) {
 						emisor = Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre();
@@ -228,11 +205,6 @@ public class VentanaBuscar {
 						receptor = Controlador.INSTANCE.getUsuarioPorId(m.getReceptor()).getNombre();
 					}
 					panelMensajes.add(añadirPanelMensaje(receptor, emisor, mensaje));
-					System.out.println("Buscando mensajes con:");
-					System.out.println("Texto: " + mensaje);
-					System.out.println("Teléfono: " + telefono);
-					System.out.println("Usuario: " + usuario);
-
 				}
 
 				panelMensajes.revalidate();

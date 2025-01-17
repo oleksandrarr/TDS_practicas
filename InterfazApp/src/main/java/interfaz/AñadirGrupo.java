@@ -28,11 +28,9 @@ public class AñadirGrupo {
 
 	private JFrame frame;
 	private JTextField nombreGrupoField;
-	private List<ContactoIndividual> contactos;
-	private String nombreGrupo;
 	private VentanaPrincipal ventanaPrincipal;
 	private JTextField urlField; // Campo de texto para la URL
-	private String imagen; // Variable para guardar el valor de la URL
+	private List<ContactoIndividual> contactos;
 
 	/**
 	 * Constructor para inicializar la GUI de Añadir Grupo.
@@ -41,7 +39,6 @@ public class AñadirGrupo {
 	 */
 	public AñadirGrupo(List<ContactoIndividual> contactos, VentanaPrincipal ventanaPrincipal) {
 		initialize(contactos, ventanaPrincipal);
-
 	}
 
 	/**
@@ -111,13 +108,7 @@ public class AñadirGrupo {
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-
-				if (contactos.isEmpty()) {
-					JOptionPane.showMessageDialog(frame, "No hay contactos elegidos.", "Error",
-							JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-
+				
 				URL img = null;
 				try {
 					if (urlImagen.isEmpty()) {

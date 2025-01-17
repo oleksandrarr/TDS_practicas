@@ -41,7 +41,6 @@ import java.awt.FlowLayout;
 public class Chat extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel cajaEmoji;
 	private VentanaPrincipal ventanaPrincipal;
 
 	public Chat(Contacto contacto, VentanaPrincipal ventanaPrincipal) throws IOException {
@@ -69,8 +68,6 @@ public class Chat extends JPanel {
 		chat.setBackground(new Color(122, 184, 135));
 		chat.setLayout(new BoxLayout(chat, BoxLayout.Y_AXIS));
 		chat.setSize(320, 640);
-		// chat.setMinimumSize(new Dimension(300, 400));
-		// chat.setMaximumSize(new Dimension(700, 700));
 
 		// Panel inferior (bajo el chat)
 		JPanel bajoChat = new JPanel();
@@ -109,8 +106,6 @@ public class Chat extends JPanel {
 		scroll.setSize(500, 640);
 		fixSize(scroll, 280, 400);
 		this.add(scroll, BorderLayout.CENTER);
-		// Añadir componentes al panel principal
-		// this.add(chat,BorderLayout.CENTER);
 		this.add(bajoChat, BorderLayout.SOUTH);
 		setVisible(true);
 
@@ -223,7 +218,6 @@ public class Chat extends JPanel {
 					// Crear una nueva burbuja para mostrar el mensaje en el área de chat
 
 					LocalDateTime hora = LocalDateTime.now();
-					System.out.println("EN CHAT TIENE EL "+contacto.getListaMensaje().getLast().getTexto());
 					BubbleText burbuja = new BubbleText(chat, mensaje.toString(), Color.WHITE,
 							"Tú " + hora.format(soloHora), Mensaje.ENVIADO, 11);
 					chat.add(burbuja); // Añadir la burbuja al panel de chat

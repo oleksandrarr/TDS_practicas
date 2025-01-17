@@ -33,22 +33,6 @@ public class PremiumSin {
 	private JPanel panelCentro;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PremiumSin window = new PremiumSin();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public PremiumSin() {
@@ -71,7 +55,6 @@ public class PremiumSin {
 		frame.setBackground(Utilidades.VERDE_FONDO);
 
 		añadirPanelNombre();
-		
 		añadirPanelCentro();
 		añadirPanelBotones();
 	}

@@ -24,7 +24,6 @@ import java.awt.FlowLayout;
 public class VentanaInicial {
 
 	private JFrame frmVentanaInicial;
-	private RegistroView pantallaRegistroView;
 
 	public VentanaInicial() throws IOException {
 		initialize();

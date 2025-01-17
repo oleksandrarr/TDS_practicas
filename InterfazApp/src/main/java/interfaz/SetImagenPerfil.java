@@ -13,12 +13,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class setImagenPerfil {
+public class SetImagenPerfil {
 
     private URL urlSeleccionada; // URL seleccionada
     private VentanaPrincipal ventanaPrincipal; // Referencia a VentanaPrincipal
 
-    public setImagenPerfil(VentanaPrincipal ventanaPrincipal) {
+    public SetImagenPerfil(VentanaPrincipal ventanaPrincipal) {
         this.ventanaPrincipal = ventanaPrincipal; // Guardar referencia
     }
 
