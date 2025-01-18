@@ -224,7 +224,8 @@ public class Usuario {
 				mensajesEncontrados.addAll(c.encontrarMensaje(texto));
 			}else if(c.getNombre().equals(contacto)) {
 				mensajesEncontrados.addAll(c.encontrarMensaje(texto));
-			}else if(idContacto==0 && contacto==null) {
+			}else if(idContacto==0 && (contacto==null||contacto.isEmpty())) {
+				
 				mensajesEncontrados.addAll(c.encontrarMensaje(texto));
 			}
 		}

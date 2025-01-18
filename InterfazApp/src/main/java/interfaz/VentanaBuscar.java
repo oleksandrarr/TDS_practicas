@@ -183,7 +183,8 @@ public class VentanaBuscar {
 		btnNewButton_Aceptar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String mensaje = textField_texto.getText();
+				String mensajeBuscado = textField_texto.getText();
+				System.out.println("///"+mensajeBuscado);
 				String telefono = txtTelefono.getText();
 				String usuario = textField_usuario.getText();
 
@@ -193,10 +194,11 @@ public class VentanaBuscar {
 				Contacto contacto = null;
 				List<Contacto> lista = Controlador.INSTANCE.getUsuarioActual().getContactos();
 
-				List<dominio.Mensaje> listaMensajes = Controlador.INSTANCE.buscarMensaje(mensaje, telefono, usuario);
+				List<dominio.Mensaje> listaMensajes = Controlador.INSTANCE.buscarMensaje(mensajeBuscado, telefono, usuario);
+				System.out.println("Lista de mensajes"+listaMensajes.size());
 				panelMensajes.removeAll();
 				for (dominio.Mensaje m : listaMensajes) {
-					mensaje = m.getTexto();
+					
 					if (m.getTipoMensaje() == dominio.Mensaje.ENVIADO) {
 						emisor = Controlador.INSTANCE.getUsuarioPorId(m.getEmisor()).getNombre();
 						receptor = Controlador.INSTANCE.getContactoPorId(m.getReceptor()).getNombre();
@@ -204,7 +206,7 @@ public class VentanaBuscar {
 						emisor = Controlador.INSTANCE.getContactoPorId(m.getEmisor()).getNombre();
 						receptor = Controlador.INSTANCE.getUsuarioPorId(m.getReceptor()).getNombre();
 					}
-					panelMensajes.add(añadirPanelMensaje(receptor, emisor, mensaje));
+					panelMensajes.add(añadirPanelMensaje(receptor, emisor, m.getTexto()));
 				}
 
 				panelMensajes.revalidate();

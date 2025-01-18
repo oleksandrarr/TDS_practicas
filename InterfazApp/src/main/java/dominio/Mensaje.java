@@ -106,11 +106,15 @@ public class Mensaje {
 	//Encuentra el mensaje que contiene el texto o si el texto es vacio
 	// interpretamos que lo que se quiere son todos los mensajes de ese contacto
 	public boolean encontrarMensaje(String texto) {
-		if (texto == null || texto.isEmpty()) {
-	        return true; // Si no hay texto considero que todos los mensajes coinciden con la busqueda
-	    }
-		if(this.texto.toLowerCase().contains(texto.toLowerCase())){
-			return true;
+		if(this.texto!=null) {
+			if (texto == null || texto.isEmpty()) {
+		        return true; // Si no hay texto considero que todos los mensajes coinciden con la busqueda
+		    }
+			if(this.texto.toLowerCase().contains(texto.toLowerCase())){
+				return true;
+			}else {
+				return false;
+			}
 		}else {
 			return false;
 		}

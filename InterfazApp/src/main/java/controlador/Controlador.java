@@ -382,7 +382,7 @@ public enum Controlador {
 		int idContacto = 0;
 		if (!telefono.isEmpty() && !telefono.equals(usuarioActual.getNumeroTelefono())) {
 			idContacto = 0; // Ya tengo el contacto
-		} else if (!telefono.isEmpty()) {
+		} else if (!telefono.isEmpty() && !telefono.equals(usuarioActual.getNumeroTelefono())) {
 			idContacto = getContactoPorTelefono(telefono).getId();
 		}
 
