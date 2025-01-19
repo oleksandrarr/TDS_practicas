@@ -380,12 +380,12 @@ public enum Controlador {
 	public List<Mensaje> buscarMensaje(String texto, String telefono, String contacto) {
 		List<Mensaje> mensajesEncontrados = new ArrayList<>();
 		int idContacto = 0;
+		// Aqui distinguimos si el telefono es de un contacto o del propio usuario
 		if (!telefono.isEmpty() && !telefono.equals(usuarioActual.getNumeroTelefono())) {
-			idContacto = 0; // Ya tengo el contacto
+			idContacto = 0; //El telefono es del usuario
 		} else if (!telefono.isEmpty() && !telefono.equals(usuarioActual.getNumeroTelefono())) {
-			idContacto = getContactoPorTelefono(telefono).getId();
+			idContacto = getContactoPorTelefono(telefono).getId(); //Si el telefono es de un contacto
 		}
-
 		mensajesEncontrados = usuarioActual.encontrarMensajes(texto, idContacto, contacto);
 		return mensajesEncontrados;
 

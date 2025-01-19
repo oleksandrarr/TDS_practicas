@@ -184,7 +184,7 @@ public class VentanaBuscar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String mensajeBuscado = textField_texto.getText();
-				System.out.println("///"+mensajeBuscado);
+				
 				String telefono = txtTelefono.getText();
 				String usuario = textField_usuario.getText();
 
@@ -195,7 +195,7 @@ public class VentanaBuscar {
 				List<Contacto> lista = Controlador.INSTANCE.getUsuarioActual().getContactos();
 
 				List<dominio.Mensaje> listaMensajes = Controlador.INSTANCE.buscarMensaje(mensajeBuscado, telefono, usuario);
-				System.out.println("Lista de mensajes"+listaMensajes.size());
+				
 				panelMensajes.removeAll();
 				for (dominio.Mensaje m : listaMensajes) {
 					

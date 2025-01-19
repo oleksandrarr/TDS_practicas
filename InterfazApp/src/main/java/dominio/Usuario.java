@@ -218,15 +218,21 @@ public class Usuario {
 	//Metodo que encuentra los mensajes que se estan buscando 
 	//El usuario tiene todos los contactos que a su vez tienen todos los mensajes
 	public List<Mensaje> encontrarMensajes(String texto, int idContacto, String contacto){
+		System.out.println("arer(//"+idContacto+"//"+contacto);
 		List<Mensaje> mensajesEncontrados= new ArrayList<>();
 		for(Contacto c: contactos) {
-			if(c instanceof ContactoIndividual && ((ContactoIndividual)c).getId()==idContacto) {
-				mensajesEncontrados.addAll(c.encontrarMensaje(texto));
-			}else if(c.getNombre().equals(contacto)) {
-				mensajesEncontrados.addAll(c.encontrarMensaje(texto));
-			}else if(idContacto==0 && (contacto==null||contacto.isEmpty())) {
-				
-				mensajesEncontrados.addAll(c.encontrarMensaje(texto));
+			if(c instanceof ContactoIndividual) {
+				if(idContacto==0 && contacto.isEmpty()) {//Si no hay contacto y telefono
+					mensajesEncontrados.addAll(c.encontrarMensaje(texto));
+				}else if(idContacto==0 && (c.getNombre().equals(contacto)||contacto.isEmpty())) {//El telefono no esta o es igual al telefono del usario y el contacto no esta o es igual al contacto
+					mensajesEncontrados.addAll(c.encontrarMensaje(texto));
+				}else if(c.getId()==idContacto || c.getNombre().equals(contacto) || contacto.equals(((ContactoIndividual)c).getNumeroTelefono())) {
+					mensajesEncontrados.addAll(c.encontrarMensaje(texto));
+				}
+			}else {
+				if(c.getNombre().equals(contacto)) {
+					mensajesEncontrados.addAll(c.encontrarMensaje(texto));
+				}
 			}
 		}
 		return mensajesEncontrados;
